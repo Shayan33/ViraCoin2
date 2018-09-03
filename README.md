@@ -9,7 +9,7 @@
     - [Use Case](#Use-Case:)
 1. [How to use?](#How-to-Use)
 1. [ICO](#ico)
-    -[Public ICO](#Public-ICO:)
+    - [Public ICO](#Public-ICO:)
 1. [Build](#Build)
 
 ## What-is-ViraCoin?
