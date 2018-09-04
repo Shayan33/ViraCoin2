@@ -13,9 +13,9 @@ contract ViraCoinToken {
         address PrevOwner;
         address InitalOwner;
         address Issuer;
-        uint256 Price;
+        //uint256 Price;
         address AttorneyOwner;
-       //bytes32 AttorneySecret;
+        //bytes32 AttorneySecret;
         bool Available;
         bool Initaited;
         bool HaveAttorneyOwner;
@@ -50,7 +50,7 @@ contract ViraCoinToken {
         CurrentOwner=newOwner;
     }
     
-    function IssueNewToken(bytes initVector,bytes32 uUID,uint256 production,uint256 price) public  payable CanRegister returns (bytes32){
+    function IssueNewToken(bytes initVector,bytes32 uUID,uint256 production/*,uint256 price*/) public  payable CanRegister returns (bytes32){
         require(!Tokens[uUID].Initaited,"Double");
         bytes32 InitVector=keccak256(initVector);
         require(!Registered[InitVector],"Already Exist.");
@@ -64,14 +64,14 @@ contract ViraCoinToken {
         Tokens[uUID].CurrentOwner=msg.sender;
         Tokens[uUID].InitalOwner=msg.sender;
         Tokens[uUID].Issuer=msg.sender;
-        Tokens[uUID].Price=price;
+        //Tokens[uUID].Price=price;
         Tokens[uUID].Available=true;
         Tokens[uUID].Initaited=true;
         
         return Tokens[uUID].Data;
     }
     
-    function IssueNewToken(bytes initVector,bytes32 uUID,uint256 production,uint256 price,address owner) public payable CanRegister returns (bytes32){
+    function IssueNewToken(bytes initVector,bytes32 uUID,uint256 production/*,uint256 price*/,address owner) public payable CanRegister returns (bytes32){
         require(!Tokens[uUID].Initaited,"Double");
         bytes32 InitVector=keccak256(initVector);
         require(!Registered[InitVector],"Already Exist.");
@@ -85,7 +85,7 @@ contract ViraCoinToken {
         Tokens[uUID].CurrentOwner=owner;
         Tokens[uUID].InitalOwner=owner;
         Tokens[uUID].Issuer=msg.sender;
-        Tokens[uUID].Price=price;
+        //Tokens[uUID].Price=price;
         Tokens[uUID].Available=true;
         Tokens[uUID].Initaited=true;
         
@@ -117,7 +117,7 @@ contract ViraCoinToken {
         uint256 Registration,
         address InitalOwner,
         address Issuer,
-        uint256 Price,
+        //uint256 Price,
         address AttorneyOwner,
         bool HaveAttorneyOwner
         ){
@@ -128,7 +128,7 @@ contract ViraCoinToken {
         Registration=Tokens[asset].Registration;
         InitalOwner=Tokens[asset].InitalOwner;
         Issuer=Tokens[asset].Issuer;
-        Price=Tokens[asset].Price;
+        //Price=Tokens[asset].Price;
         AttorneyOwner=Tokens[asset].AttorneyOwner;
         HaveAttorneyOwner=Tokens[asset].HaveAttorneyOwner;
     }
@@ -157,5 +157,6 @@ contract ViraCoinToken {
         Tokens[asset].ISTransferring=false;
     }
 
+    
 }
 
