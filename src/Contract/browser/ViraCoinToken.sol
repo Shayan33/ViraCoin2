@@ -10,6 +10,7 @@ contract ViraCoinToken {
         uint256 Production;
         uint256 Registration;
         address CurrentOwner;
+        address PrevOwner;
         address InitalOwner;
         address Issuer;
         uint256 Price;
@@ -136,6 +137,7 @@ contract ViraCoinToken {
         require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
         require(!Tokens[asset].ISTransferring,"Transferring.");
         Tokens[asset].ISTransferring=true;
+        Tokens[asset].PrevOwner=Tokens[asset].CurrentOwner;
         Tokens[asset].CurrentOwner=to;
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
         Tokens[asset].HaveAttorneyOwner=false;
@@ -147,6 +149,7 @@ contract ViraCoinToken {
         require(!Tokens[asset].ISTransferring,"Transferring.");
         require(Tokens[asset].AttorneySecret==keccak256(abi.encodePacked(Secret)),"Wrong Secret.");
         Tokens[asset].ISTransferring=true;
+        Tokens[asset].PrevOwner=Tokens[asset].CurrentOwner;
         Tokens[asset].CurrentOwner=to;
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
         Tokens[asset].HaveAttorneyOwner=false;
