@@ -5,7 +5,7 @@ pragma experimental "v0.5.0";
 contract ViraCoinToken {
     
     struct TokenData {       
-        bytes32 UUID;
+        bytes32 tok;
         bytes32 Data;
         uint256 Production;
         uint256 Registration;
@@ -62,147 +62,168 @@ contract ViraCoinToken {
         CurrentOwner=newOwner;
     }
     
-    function IssueNewToken(bytes initVector,bytes32 uUID,uint256 production/*,uint256 price*/) public  payable CanRegister returns (bytes32){
-        require(!Tokens[uUID].Available,"Available");
-        require(!Tokens[uUID].Initaited,"Double");
+    event EIssueNewToken(address Issuer,address Owner,bytes32 ID,bytes32 Data);
+    
+    function IssueNewToken(bytes initVector,bytes32 tok,uint256 production/*,uint256 price*/) public  payable CanRegister returns (bytes32){
+        require(!Tokens[tok].Available,"Available");
+        require(!Tokens[tok].Initaited,"Double");
         bytes32 InitVector=keccak256(initVector);
         require(!Registered[InitVector],"Already Exist.");
-        Tokens[uUID].UUID=uUID;
+        Tokens[tok].tok=tok;
         Registered[InitVector]=true;
-        Tokens[uUID].Production=production;
+        Tokens[tok].Production=production;
         uint256 Now=now;
-        bytes32 BaseData=keccak256(abi.encodePacked(uUID,initVector,production,Now,msg.sender));
-        Tokens[uUID].Data=BaseData;
-        Tokens[uUID].Registration=Now;
-        Tokens[uUID].CurrentOwner=msg.sender;
-        Tokens[uUID].InitalOwner=msg.sender;
-        Tokens[uUID].Issuer=msg.sender;
-        //Tokens[uUID].Price=price;
-        Tokens[uUID].Available=true;
-        Tokens[uUID].Initaited=true;
+        bytes32 BaseData=keccak256(abi.encodePacked(tok,initVector,production,Now,msg.sender));
+        Tokens[tok].Data=BaseData;
+        Tokens[tok].Registration=Now;
+        Tokens[tok].CurrentOwner=msg.sender;
+        Tokens[tok].InitalOwner=msg.sender;
+        Tokens[tok].Issuer=msg.sender;
+        //Tokens[tok].Price=price;
+        Tokens[tok].Available=true;
+        Tokens[tok].Initaited=true;
         
-        return Tokens[uUID].Data;
+        emit EIssueNewToken(Tokens[tok].Issuer,Tokens[tok].CurrentOwner,tok,Tokens[tok].Data);
+        return Tokens[tok].Data;
     }
     
-    function IssueNewToken(bytes initVector,bytes32 uUID,uint256 production/*,uint256 price*/,address owner) public payable CanRegister returns (bytes32){
-        require(!Tokens[uUID].Available,"Available");
-        require(!Tokens[uUID].Initaited,"Double");
+    function IssueNewToken(bytes initVector,bytes32 tok,uint256 production/*,uint256 price*/,address owner) public payable CanRegister returns (bytes32){
+        require(!Tokens[tok].Available,"Available");
+        require(!Tokens[tok].Initaited,"Double");
         bytes32 InitVector=keccak256(initVector);
         require(!Registered[InitVector],"Already Exist.");
-        Tokens[uUID].UUID=uUID;
+        Tokens[tok].tok=tok;
         Registered[InitVector]=true;
-        Tokens[uUID].Production=production;
+        Tokens[tok].Production=production;
         uint256 Now=now;
-        bytes32 BaseData=keccak256(abi.encodePacked(uUID,initVector,production,Now,msg.sender));
-        Tokens[uUID].Data=BaseData;
-        Tokens[uUID].Registration=Now;
-        Tokens[uUID].CurrentOwner=owner;
-        Tokens[uUID].InitalOwner=owner;
-        Tokens[uUID].Issuer=msg.sender;
-        //Tokens[uUID].Price=price;
-        Tokens[uUID].Available=true;
-        Tokens[uUID].Initaited=true;
+        bytes32 BaseData=keccak256(abi.encodePacked(tok,initVector,production,Now,msg.sender));
+        Tokens[tok].Data=BaseData;
+        Tokens[tok].Registration=Now;
+        Tokens[tok].CurrentOwner=owner;
+        Tokens[tok].InitalOwner=owner;
+        Tokens[tok].Issuer=msg.sender;
+        //Tokens[tok].Price=price;
+        Tokens[tok].Available=true;
+        Tokens[tok].Initaited=true;
         
-        return Tokens[uUID].Data;
+        emit EIssueNewToken(Tokens[tok].Issuer,Tokens[tok].CurrentOwner,tok,Tokens[tok].Data);
+        return Tokens[tok].Data;
     }
     
-    function SetAttorney(bytes32 asset,address Attorney/*,bytes32 Secret*/)public{
-        require(Tokens[asset].Available,"Not Available");
-        require(Tokens[asset].Initaited,"No shch a coin exist.");
-        require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
-        Tokens[asset].AttorneyOwner=Attorney;
-        //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(Secret));
-        //Tokens[asset].HaveAttorneyOwner=true;
+    event EAttorney(bytes32 Tok,address Sender,address Attorney,bool SC);
+    
+    function SetAttorney(bytes32 Tok,address Attorney/*,bytes32 Secret*/)public{
+        require(Tokens[Tok].Available,"Not Available");
+        require(Tokens[Tok].Initaited,"No shch a coin exist.");
+        require(Tokens[Tok].CurrentOwner==msg.sender,"Only Owner.");
+        Tokens[Tok].AttorneyOwner=Attorney;
+        //Tokens[Tok].AttorneySecret=keccak256(abi.encodePacked(Secret));
+        //Tokens[Tok].HaveAttorneyOwner=true;
+        emit  EAttorney(Tok,msg.sender,Tokens[Tok].AttorneyOwner,true);
     }
-    function ClearAttorne(bytes32 asset)public{
-        require(Tokens[asset].Available,"Not Available");
-        require(Tokens[asset].Initaited,"No shch a coin exist.");
-        require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
-        Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
-        //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
-        //Tokens[asset].HaveAttorneyOwner=false;
+    function ClearAttorne(bytes32 Tok)public{
+        require(Tokens[Tok].Available,"Not Available");
+        require(Tokens[Tok].Initaited,"No shch a coin exist.");
+        require(Tokens[Tok].CurrentOwner==msg.sender,"Only Owner.");
+        Tokens[Tok].AttorneyOwner=0x0000000000000000000000000000000000000000;
+        //Tokens[Tok].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
+        //Tokens[Tok].HaveAttorneyOwner=false;
+        emit  EAttorney(Tok,msg.sender,Tokens[Tok].AttorneyOwner,false);
     }
-    function ClearAttorneByAttorne(bytes32 asset)public{
-        require(Tokens[asset].Available,"Not Available");
-        require(Tokens[asset].Initaited,"No shch a coin exist.");
-        require(Tokens[asset].AttorneyOwner==msg.sender,"Only Attorne.");
-        Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
-        //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
-        //Tokens[asset].HaveAttorneyOwner=false;
+    function ClearAttorneByAttorne(bytes32 Tok)public{
+        require(Tokens[Tok].Available,"Not Available");
+        require(Tokens[Tok].Initaited,"No shch a coin exist.");
+        require(Tokens[Tok].AttorneyOwner==msg.sender,"Only Attorne.");
+        Tokens[Tok].AttorneyOwner=0x0000000000000000000000000000000000000000;
+        //Tokens[Tok].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
+        //Tokens[Tok].HaveAttorneyOwner=false;
+        emit  EAttorney(Tok,msg.sender,Tokens[Tok].AttorneyOwner,false);
     }
     
-    function PassAttorne(bytes32 asset,address Attorney/*,bytes32 Secret*/)public{
-        require(Tokens[asset].Available,"Not Available");
-        require(Tokens[asset].Initaited,"No shch a coin exist.");
-        require(Tokens[asset].AttorneyOwner==msg.sender,"Only Attorne.");
-        Tokens[asset].AttorneyOwner=Attorney;
-        //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(Secret));
+    function PassAttorne(bytes32 Tok,address Attorney/*,bytes32 Secret*/)public{
+        require(Tokens[Tok].Available,"Not Available");
+        require(Tokens[Tok].Initaited,"No shch a coin exist.");
+        require(Tokens[Tok].AttorneyOwner==msg.sender,"Only Attorne.");
+        Tokens[Tok].AttorneyOwner=Attorney;
+        //Tokens[Tok].AttorneySecret=keccak256(abi.encodePacked(Secret));
+        emit  EAttorney(Tok,msg.sender,Tokens[Tok].AttorneyOwner,true);
     }
     
-    function GetData(bytes32 asset) public view returns(
-        bytes32 Asset,
+    function GetData(bytes32 Tok) public view returns(
+        bytes32 tok,
         bytes32 Data,
         uint256 Production,
         uint256 Registration,
+        address PrevOwner,
         address InitalOwner,
         address Issuer,
         //uint256 Price,
         address AttorneyOwner//,
         //bool HaveAttorneyOwner
         ){
-        require(Tokens[asset].Available,"Not Available");
-        require(Tokens[asset].Initaited,"No shch a coin exist.");
-        require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
-        Asset=Tokens[asset].UUID;
-        Data=Tokens[asset].Data;
-        Production=Tokens[asset].Production;
-        Registration=Tokens[asset].Registration;
-        InitalOwner=Tokens[asset].InitalOwner;
-        Issuer=Tokens[asset].Issuer;
-        //Price=Tokens[asset].Price;
-        AttorneyOwner=Tokens[asset].AttorneyOwner;
-        //HaveAttorneyOwner=Tokens[asset].HaveAttorneyOwner;
+        require(Tokens[Tok].Available,"Not Available");
+        require(Tokens[Tok].Initaited,"No shch a coin exist.");
+        require(Tokens[Tok].CurrentOwner==msg.sender,"Only Owner.");
+        tok=Tokens[Tok].tok;
+        Data=Tokens[Tok].Data;
+        Production=Tokens[Tok].Production;
+        Registration=Tokens[Tok].Registration;
+        PrevOwner=Tokens[Tok].PrevOwner;
+        InitalOwner=Tokens[Tok].InitalOwner;
+        Issuer=Tokens[Tok].Issuer;
+        //Price=Tokens[Tok].Price;
+        AttorneyOwner=Tokens[Tok].AttorneyOwner;
+        //HaveAttorneyOwner=Tokens[Tok].HaveAttorneyOwner;
     }
     
-    function Transfer(bytes32 asset,address to) public{
-        require(Tokens[asset].Available,"Not Available");
-        require(Tokens[asset].Initaited,"No shch a coin exist.");
-        require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
-        require(!Tokens[asset].ISTransferring,"Transferring.");
-        Tokens[asset].ISTransferring=true;
-        Tokens[asset].PrevOwner=Tokens[asset].CurrentOwner;
-        Tokens[asset].CurrentOwner=to;
-        Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
-        //Tokens[asset].HaveAttorneyOwner=false;
-        //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
-        Tokens[asset].ISTransferring=false;
+    event ETransfer(bytes32 Tok,address Sender,address From,address To);
+    
+    function Transfer(bytes32 Tok,address to) public{
+        require(Tokens[Tok].Available,"Not Available");
+        require(Tokens[Tok].Initaited,"No shch a coin exist.");
+        require(Tokens[Tok].CurrentOwner==msg.sender,"Only Owner.");
+        require(!Tokens[Tok].ISTransferring,"Transferring.");
+        Tokens[Tok].ISTransferring=true;
+        Tokens[Tok].PrevOwner=Tokens[Tok].CurrentOwner;
+        Tokens[Tok].CurrentOwner=to;
+        Tokens[Tok].AttorneyOwner=0x0000000000000000000000000000000000000000;
+        //Tokens[Tok].HaveAttorneyOwner=false;
+        //Tokens[Tok].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
+        Tokens[Tok].ISTransferring=false;
+        
+        emit ETransfer(Tok,msg.sender,Tokens[Tok].PrevOwner,Tokens[Tok].CurrentOwner);
     }
-    function AttorneyTransfer(bytes32 asset,address to/*,bytes32 Secret*/) public{
-        require(Tokens[asset].Available,"Not Available");
-        require(Tokens[asset].Initaited,"No shch a coin exist.");
-        require(Tokens[asset].AttorneyOwner==msg.sender,"Only AttorneyOwner.");
-        require(!Tokens[asset].ISTransferring,"Transferring.");
-        //require(Tokens[asset].AttorneySecret==keccak256(abi.encodePacked(Secret)),"Wrong Secret.");
-        Tokens[asset].ISTransferring=true;
-        Tokens[asset].PrevOwner=Tokens[asset].CurrentOwner;
-        Tokens[asset].CurrentOwner=to;
-        Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
-        //Tokens[asset].HaveAttorneyOwner=false;
-        //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
-        Tokens[asset].ISTransferring=false;
+    function AttorneyTransfer(bytes32 Tok,address to/*,bytes32 Secret*/) public{
+        require(Tokens[Tok].Available,"Not Available");
+        require(Tokens[Tok].Initaited,"No shch a coin exist.");
+        require(Tokens[Tok].AttorneyOwner==msg.sender,"Only AttorneyOwner.");
+        require(!Tokens[Tok].ISTransferring,"Transferring.");
+        //require(Tokens[Tok].AttorneySecret==keccak256(abi.encodePacked(Secret)),"Wrong Secret.");
+        Tokens[Tok].ISTransferring=true;
+        Tokens[Tok].PrevOwner=Tokens[Tok].CurrentOwner;
+        Tokens[Tok].CurrentOwner=to;
+        Tokens[Tok].AttorneyOwner=0x0000000000000000000000000000000000000000;
+        //Tokens[Tok].HaveAttorneyOwner=false;
+        //Tokens[Tok].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
+        Tokens[Tok].ISTransferring=false;
+        
+        emit ETransfer(Tok,msg.sender,Tokens[Tok].PrevOwner,Tokens[Tok].CurrentOwner);
     }
 
-    function Burn(bytes32 asset)public {
-        require(Tokens[asset].Available,"Not Available");
-        require(Tokens[asset].Initaited,"No shch a coin exist.");
-        require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
-        Tokens[asset].Available=false;
-        Tokens[asset].ISTransferring=true;
-        Tokens[asset].PrevOwner=Tokens[asset].CurrentOwner;
-        Tokens[asset].CurrentOwner=0x0000000000000000000000000000000000000000;
-        Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
-        //Tokens[asset].HaveAttorneyOwner=false;
-        Tokens[asset].ISTransferring=false;
+    event EBurn(bytes32 Tok,address Sender);
+    function Burn(bytes32 Tok)public {
+        require(Tokens[Tok].Available,"Not Available");
+        require(Tokens[Tok].Initaited,"No shch a coin exist.");
+        require(Tokens[Tok].CurrentOwner==msg.sender,"Only Owner.");
+        Tokens[Tok].Available=false;
+        Tokens[Tok].ISTransferring=true;
+        Tokens[Tok].PrevOwner=Tokens[Tok].CurrentOwner;
+        Tokens[Tok].CurrentOwner=0x0000000000000000000000000000000000000000;
+        Tokens[Tok].AttorneyOwner=0x0000000000000000000000000000000000000000;
+        //Tokens[Tok].HaveAttorneyOwner=false;
+        Tokens[Tok].ISTransferring=false;
+        
+        emit EBurn(Tok,msg.sender);
     }
 }
 
