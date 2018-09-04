@@ -36,6 +36,11 @@ contract ViraCoinToken {
         RegisterPrice=registerPrice;
     }
 
+     function() external payable
+     { 
+         
+     }
+
        modifier CanRegister {
         require(msg.value >= RegisterPrice,"Pay Price.");
         _;
@@ -46,6 +51,13 @@ contract ViraCoinToken {
         _;
     } 
     
+    function Withdraw() public ContractOwner{
+        CurrentOwner.transfer(address(this).balance);
+    }
+    
+    function Kill() public ContractOwner{
+        selfdestruct(CurrentOwner);
+    }
     function AssignAuthority(address newOwner) public ContractOwner{
         CurrentOwner=newOwner;
     }
@@ -93,6 +105,7 @@ contract ViraCoinToken {
         
         return Tokens[uUID].Data;
     }
+    
     function SetAttorney(bytes32 asset,address Attorney/*,bytes32 Secret*/)public{
         require(Tokens[asset].Available,"Not Available");
         require(Tokens[asset].Initaited,"No shch a coin exist.");
@@ -118,7 +131,15 @@ contract ViraCoinToken {
         Tokens[asset].HaveAttorneyOwner=false;
     }
     
-    function getData(bytes32 asset) public view returns(
+    function PassAttorne(bytes32 asset,address Attorney/*,bytes32 Secret*/)public{
+        require(Tokens[asset].Available,"Not Available");
+        require(Tokens[asset].Initaited,"No shch a coin exist.");
+        require(Tokens[asset].AttorneyOwner==msg.sender,"Only Attorne.");
+        Tokens[asset].AttorneyOwner=Attorney;
+        //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(Secret));
+    }
+    
+    function GetData(bytes32 asset) public view returns(
         bytes32 Asset,
         bytes32 Data,
         uint256 Production,
