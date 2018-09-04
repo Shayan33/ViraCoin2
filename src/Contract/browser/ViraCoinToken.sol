@@ -11,11 +11,12 @@ contract ViraCoinToken {
         uint256 Registration;
         address CurrentOwner;
         address InitalOwner;
-        address Isuuer;
+        address Issuer;
         uint256 Price;
         address AttorneyOwner;
         bool Available;
         bool Initaited;
+        bool HaveAttorneyOwner;
     }
 
     string public constant name= "Vira Coin";
@@ -59,7 +60,7 @@ contract ViraCoinToken {
         Tokens[uUID].Registration=Now;
         Tokens[uUID].CurrentOwner=msg.sender;
         Tokens[uUID].InitalOwner=msg.sender;
-        Tokens[uUID].Isuuer=msg.sender;
+        Tokens[uUID].Issuer=msg.sender;
         Tokens[uUID].Price=price;
         Tokens[uUID].Available=true;
         Tokens[uUID].Initaited=true;
@@ -67,7 +68,7 @@ contract ViraCoinToken {
         return Tokens[uUID].Data;
     }
     
-     function IssueNewToken(bytes initVector,bytes32 uUID,uint256 production,uint256 price,address owner) public payable CanRegister returns (bytes32){
+    function IssueNewToken(bytes initVector,bytes32 uUID,uint256 production,uint256 price,address owner) public payable CanRegister returns (bytes32){
         require(!Tokens[uUID].Initaited,"Double");
         bytes32 InitVector=keccak256(initVector);
         require(!Registered[InitVector],"Already Exist.");
@@ -80,7 +81,7 @@ contract ViraCoinToken {
         Tokens[uUID].Registration=Now;
         Tokens[uUID].CurrentOwner=owner;
         Tokens[uUID].InitalOwner=owner;
-        Tokens[uUID].Isuuer=msg.sender;
+        Tokens[uUID].Issuer=msg.sender;
         Tokens[uUID].Price=price;
         Tokens[uUID].Available=true;
         Tokens[uUID].Initaited=true;
@@ -90,10 +91,40 @@ contract ViraCoinToken {
     function SetAttorney(bytes32 asset,address Attorney)public{
         require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
         Tokens[asset].AttorneyOwner=Attorney;
+        Tokens[asset].HaveAttorneyOwner=true;
     }
-     function ClearAttorne(bytes32 asset)public{
+    function ClearAttorne(bytes32 asset)public{
         require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
+        Tokens[asset].HaveAttorneyOwner=false;
+    }
+    function ClearAttorneByAttorne(bytes32 asset)public{
+        require(Tokens[asset].AttorneyOwner==msg.sender,"Only Attorne.");
+        Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
+        Tokens[asset].HaveAttorneyOwner=false;
+    }
+    
+    function getData(bytes32 asset) public view returns(
+        bytes32 Asset,
+        bytes32 Data,
+        uint256 Production,
+        uint256 Registration,
+        address InitalOwner,
+        address Issuer,
+        uint256 Price,
+        address AttorneyOwner,
+        bool HaveAttorneyOwner
+        ){
+        require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
+        Asset=Tokens[asset].UUID;
+        Data=Tokens[asset].Data;
+        Production=Tokens[asset].Production;
+        Registration=Tokens[asset].Registration;
+        InitalOwner=Tokens[asset].InitalOwner;
+        Issuer=Tokens[asset].Issuer;
+        Price=Tokens[asset].Price;
+        AttorneyOwner=Tokens[asset].AttorneyOwner;
+        HaveAttorneyOwner=Tokens[asset].HaveAttorneyOwner;
     }
 
 }
