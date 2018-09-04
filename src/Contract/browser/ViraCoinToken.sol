@@ -18,7 +18,7 @@ contract ViraCoinToken {
         //bytes32 AttorneySecret;
         bool Available;
         bool Initaited;
-        bool HaveAttorneyOwner;
+        //bool HaveAttorneyOwner;
         bool ISTransferring;
     }
 
@@ -58,7 +58,7 @@ contract ViraCoinToken {
     function Kill() public ContractOwner{
         selfdestruct(CurrentOwner);
     }
-    function AssignAuthority(address newOwner) public ContractOwner{
+    function PassAuthority(address newOwner) public ContractOwner{
         CurrentOwner=newOwner;
     }
     
@@ -112,7 +112,7 @@ contract ViraCoinToken {
         require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
         Tokens[asset].AttorneyOwner=Attorney;
         //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(Secret));
-        Tokens[asset].HaveAttorneyOwner=true;
+        //Tokens[asset].HaveAttorneyOwner=true;
     }
     function ClearAttorne(bytes32 asset)public{
         require(Tokens[asset].Available,"Not Available");
@@ -120,7 +120,7 @@ contract ViraCoinToken {
         require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
         //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
-        Tokens[asset].HaveAttorneyOwner=false;
+        //Tokens[asset].HaveAttorneyOwner=false;
     }
     function ClearAttorneByAttorne(bytes32 asset)public{
         require(Tokens[asset].Available,"Not Available");
@@ -128,7 +128,7 @@ contract ViraCoinToken {
         require(Tokens[asset].AttorneyOwner==msg.sender,"Only Attorne.");
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
         //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
-        Tokens[asset].HaveAttorneyOwner=false;
+        //Tokens[asset].HaveAttorneyOwner=false;
     }
     
     function PassAttorne(bytes32 asset,address Attorney/*,bytes32 Secret*/)public{
@@ -147,8 +147,8 @@ contract ViraCoinToken {
         address InitalOwner,
         address Issuer,
         //uint256 Price,
-        address AttorneyOwner,
-        bool HaveAttorneyOwner
+        address AttorneyOwner//,
+        //bool HaveAttorneyOwner
         ){
         require(Tokens[asset].Available,"Not Available");
         require(Tokens[asset].Initaited,"No shch a coin exist.");
@@ -161,7 +161,7 @@ contract ViraCoinToken {
         Issuer=Tokens[asset].Issuer;
         //Price=Tokens[asset].Price;
         AttorneyOwner=Tokens[asset].AttorneyOwner;
-        HaveAttorneyOwner=Tokens[asset].HaveAttorneyOwner;
+        //HaveAttorneyOwner=Tokens[asset].HaveAttorneyOwner;
     }
     
     function Transfer(bytes32 asset,address to) public{
@@ -173,7 +173,7 @@ contract ViraCoinToken {
         Tokens[asset].PrevOwner=Tokens[asset].CurrentOwner;
         Tokens[asset].CurrentOwner=to;
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
-        Tokens[asset].HaveAttorneyOwner=false;
+        //Tokens[asset].HaveAttorneyOwner=false;
         //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
         Tokens[asset].ISTransferring=false;
     }
@@ -187,7 +187,7 @@ contract ViraCoinToken {
         Tokens[asset].PrevOwner=Tokens[asset].CurrentOwner;
         Tokens[asset].CurrentOwner=to;
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
-        Tokens[asset].HaveAttorneyOwner=false;
+        //Tokens[asset].HaveAttorneyOwner=false;
         //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
         Tokens[asset].ISTransferring=false;
     }
@@ -201,7 +201,7 @@ contract ViraCoinToken {
         Tokens[asset].PrevOwner=Tokens[asset].CurrentOwner;
         Tokens[asset].CurrentOwner=0x0000000000000000000000000000000000000000;
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
-        Tokens[asset].HaveAttorneyOwner=false;
+        //Tokens[asset].HaveAttorneyOwner=false;
         Tokens[asset].ISTransferring=false;
     }
 }
