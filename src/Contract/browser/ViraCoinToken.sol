@@ -36,7 +36,7 @@ contract ViraCoinToken {
         _;
     } 
     
-    function Register(bytes initVector,bytes32 uUID,uint256 production,uint256 price) public  payable CanRegister returns (bytes32){
+    function IssueNewToken(bytes initVector,bytes32 uUID,uint256 production,uint256 price) public  payable CanRegister returns (bytes32){
         require(!Tokens[uUID].Initaited,"Double");
         bytes32 InitVector=keccak256(initVector);
         require(!Registered[InitVector],"Already Exist.");
@@ -57,7 +57,7 @@ contract ViraCoinToken {
         return Tokens[uUID].Data;
     }
     
-     function Register(bytes initVector,bytes32 uUID,uint256 production,uint256 price,address owner) public payable CanRegister returns (bytes32){
+     function IssueNewToken(bytes initVector,bytes32 uUID,uint256 production,uint256 price,address owner) public payable CanRegister returns (bytes32){
         require(!Tokens[uUID].Initaited,"Double");
         bytes32 InitVector=keccak256(initVector);
         require(!Registered[InitVector],"Already Exist.");
