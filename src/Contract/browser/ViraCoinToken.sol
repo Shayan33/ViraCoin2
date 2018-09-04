@@ -95,6 +95,7 @@ contract ViraCoinToken {
     }
     function SetAttorney(bytes32 asset,address Attorney/*,bytes32 Secret*/)public{
         require(Tokens[asset].Available,"Not Available");
+        require(Tokens[asset].Initaited,"No shch a coin exist.");
         require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
         Tokens[asset].AttorneyOwner=Attorney;
         //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(Secret));
@@ -102,6 +103,7 @@ contract ViraCoinToken {
     }
     function ClearAttorne(bytes32 asset)public{
         require(Tokens[asset].Available,"Not Available");
+        require(Tokens[asset].Initaited,"No shch a coin exist.");
         require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
         //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
@@ -109,6 +111,7 @@ contract ViraCoinToken {
     }
     function ClearAttorneByAttorne(bytes32 asset)public{
         require(Tokens[asset].Available,"Not Available");
+        require(Tokens[asset].Initaited,"No shch a coin exist.");
         require(Tokens[asset].AttorneyOwner==msg.sender,"Only Attorne.");
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
         //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
@@ -127,6 +130,7 @@ contract ViraCoinToken {
         bool HaveAttorneyOwner
         ){
         require(Tokens[asset].Available,"Not Available");
+        require(Tokens[asset].Initaited,"No shch a coin exist.");
         require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
         Asset=Tokens[asset].UUID;
         Data=Tokens[asset].Data;
@@ -141,6 +145,7 @@ contract ViraCoinToken {
     
     function Transfer(bytes32 asset,address to) public{
         require(Tokens[asset].Available,"Not Available");
+        require(Tokens[asset].Initaited,"No shch a coin exist.");
         require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
         require(!Tokens[asset].ISTransferring,"Transferring.");
         Tokens[asset].ISTransferring=true;
@@ -153,6 +158,7 @@ contract ViraCoinToken {
     }
     function AttorneyTransfer(bytes32 asset,address to/*,bytes32 Secret*/) public{
         require(Tokens[asset].Available,"Not Available");
+        require(Tokens[asset].Initaited,"No shch a coin exist.");
         require(Tokens[asset].AttorneyOwner==msg.sender,"Only AttorneyOwner.");
         require(!Tokens[asset].ISTransferring,"Transferring.");
         //require(Tokens[asset].AttorneySecret==keccak256(abi.encodePacked(Secret)),"Wrong Secret.");
@@ -167,6 +173,7 @@ contract ViraCoinToken {
 
     function Burn(bytes32 asset)public {
         require(Tokens[asset].Available,"Not Available");
+        require(Tokens[asset].Initaited,"No shch a coin exist.");
         require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
         Tokens[asset].Available=false;
         Tokens[asset].ISTransferring=true;
