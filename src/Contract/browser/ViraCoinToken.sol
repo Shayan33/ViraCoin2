@@ -15,7 +15,7 @@ contract ViraCoinToken {
         address Issuer;
         uint256 Price;
         address AttorneyOwner;
-        bytes32 AttorneySecret;
+       //bytes32 AttorneySecret;
         bool Available;
         bool Initaited;
         bool HaveAttorneyOwner;
@@ -91,22 +91,22 @@ contract ViraCoinToken {
         
         return Tokens[uUID].Data;
     }
-    function SetAttorney(bytes32 asset,address Attorney,bytes32 Secret)public{
+    function SetAttorney(bytes32 asset,address Attorney/*,bytes32 Secret*/)public{
         require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
         Tokens[asset].AttorneyOwner=Attorney;
-        Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(Secret));
+        //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(Secret));
         Tokens[asset].HaveAttorneyOwner=true;
     }
     function ClearAttorne(bytes32 asset)public{
         require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
-        Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
+        //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
         Tokens[asset].HaveAttorneyOwner=false;
     }
     function ClearAttorneByAttorne(bytes32 asset)public{
         require(Tokens[asset].AttorneyOwner==msg.sender,"Only Attorne.");
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
-        Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
+        //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
         Tokens[asset].HaveAttorneyOwner=false;
     }
     
@@ -141,19 +141,19 @@ contract ViraCoinToken {
         Tokens[asset].CurrentOwner=to;
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
         Tokens[asset].HaveAttorneyOwner=false;
-        Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
+        //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
         Tokens[asset].ISTransferring=false;
     }
-    function Transfer(bytes32 asset,address to,bytes32 Secret) public{
+    function AttorneyTransfer(bytes32 asset,address to/*,bytes32 Secret*/) public{
         require(Tokens[asset].AttorneyOwner==msg.sender,"Only AttorneyOwner.");
         require(!Tokens[asset].ISTransferring,"Transferring.");
-        require(Tokens[asset].AttorneySecret==keccak256(abi.encodePacked(Secret)),"Wrong Secret.");
+        //require(Tokens[asset].AttorneySecret==keccak256(abi.encodePacked(Secret)),"Wrong Secret.");
         Tokens[asset].ISTransferring=true;
         Tokens[asset].PrevOwner=Tokens[asset].CurrentOwner;
         Tokens[asset].CurrentOwner=to;
         Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
         Tokens[asset].HaveAttorneyOwner=false;
-        Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
+        //Tokens[asset].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
         Tokens[asset].ISTransferring=false;
     }
 
