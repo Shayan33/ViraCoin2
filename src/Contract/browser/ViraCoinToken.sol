@@ -11,7 +11,7 @@ contract ViraCoinToken {
         uint256 Registration;
         address CurrentOwner;
         address InitalOwner;
-        address Registrar;
+        address Isuuer;
         uint256 Price;
         bool Available;
         bool Initaited;
@@ -26,13 +26,13 @@ contract ViraCoinToken {
     mapping (bytes32=>TokenData) Tokens;  
     address CurrentOwner;
 
-    constructor() public{
+    constructor(uint256 registerPrice) public{
         CurrentOwner=msg.sender;
-        RegisterPrice=100;
+        RegisterPrice=registerPrice;
     }
 
        modifier CanRegister {
-        require(msg.value >= RegisterPrice);
+        require(msg.value >= RegisterPrice,"Pay Price");
         _;
     } 
     
@@ -49,7 +49,7 @@ contract ViraCoinToken {
         Tokens[uUID].Registration=Now;
         Tokens[uUID].CurrentOwner=msg.sender;
         Tokens[uUID].InitalOwner=msg.sender;
-        Tokens[uUID].Registrar=msg.sender;
+        Tokens[uUID].Isuuer=msg.sender;
         Tokens[uUID].Price=price;
         Tokens[uUID].Available=true;
         Tokens[uUID].Initaited=true;
@@ -70,7 +70,7 @@ contract ViraCoinToken {
         Tokens[uUID].Registration=Now;
         Tokens[uUID].CurrentOwner=owner;
         Tokens[uUID].InitalOwner=owner;
-        Tokens[uUID].Registrar=msg.sender;
+        Tokens[uUID].Isuuer=msg.sender;
         Tokens[uUID].Price=price;
         Tokens[uUID].Available=true;
         Tokens[uUID].Initaited=true;
