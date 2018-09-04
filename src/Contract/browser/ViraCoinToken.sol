@@ -13,6 +13,7 @@ contract ViraCoinToken {
         address InitalOwner;
         address Isuuer;
         uint256 Price;
+        address AttorneyOwner;
         bool Available;
         bool Initaited;
     }
@@ -25,7 +26,7 @@ contract ViraCoinToken {
     mapping(bytes32=>bool) Registered;
     mapping (bytes32=>TokenData) Tokens;  
     address CurrentOwner;
-
+    
     constructor(uint256 registerPrice) public{
         CurrentOwner=msg.sender;
         RegisterPrice=registerPrice;
@@ -86,5 +87,14 @@ contract ViraCoinToken {
         
         return Tokens[uUID].Data;
     }
+    function SetAttorney(bytes32 asset,address Attorney)public{
+        require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
+        Tokens[asset].AttorneyOwner=Attorney;
+    }
+     function ClearAttorne(bytes32 asset)public{
+        require(Tokens[asset].CurrentOwner==msg.sender,"Only Owner.");
+        Tokens[asset].AttorneyOwner=0x0000000000000000000000000000000000000000;
+    }
+
 }
 
