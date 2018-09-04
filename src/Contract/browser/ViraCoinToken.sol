@@ -32,9 +32,18 @@ contract ViraCoinToken {
     }
 
        modifier CanRegister {
-        require(msg.value >= RegisterPrice,"Pay Price");
+        require(msg.value >= RegisterPrice,"Pay Price.");
         _;
     } 
+    
+         modifier ContractOwner {
+        require(msg.sender == CurrentOwner,"Only Contract Owner.");
+        _;
+    } 
+    
+    function AssignAuthority(address newOwner) public ContractOwner{
+        CurrentOwner=newOwner;
+    }
     
     function IssueNewToken(bytes initVector,bytes32 uUID,uint256 production,uint256 price) public  payable CanRegister returns (bytes32){
         require(!Tokens[uUID].Initaited,"Double");
