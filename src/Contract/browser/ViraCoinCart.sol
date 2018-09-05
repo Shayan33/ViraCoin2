@@ -8,7 +8,6 @@ contract ViraCoinCart {
         struct TokenData{
             bytes32 TokenID;
             bytes32 Data;
-            uint256 Production;
             address Owner;
             bool Available;
             bool ForSale;
@@ -40,6 +39,11 @@ contract ViraCoinCart {
         _;
         }
         
+        modifier CanAdd {
+        require(msg.value >= Fee,"Pay Price.");
+        _;
+        }
+        
         function Withdraw() public ContractOwner{
             CurrentOwner.transfer(address(this).balance);
         }
@@ -52,9 +56,20 @@ contract ViraCoinCart {
             CurrentOwner=newOwner;
         }
         
-        function ChangeFee(uint256 NewFee)public ContractOwner{
+        function UpdateFee(uint256 NewFee)public ContractOwner{
             Fee=NewFee;
         }
         
+        function NewAsset(bytes32 TokenID,bytes32 Data) public payable CanAdd{
+            require(!Tokens[TokenID].ForSale,"Already In Shop.");
+            require(VCT.ApproveAttorney(TokenID),"First set Shop as your asset attorny.");
+            require(VCT.GetTokenOwner(TokenID)==msg.sender,"Only Token Owner.");
+            require(VCT.AttorneyGet(TokenID)==Data,"Wrong Data.");
+            Tokens[TokenID].TokenID=TokenID;
+            Tokens[TokenID].Data=Data;
+            Tokens[TokenID].Owner=msg.sender;
+            Tokens[TokenID].Available=true;
+            Tokens[TokenID].ForSale=true;
+        }
         
 }
