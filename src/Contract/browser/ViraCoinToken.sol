@@ -238,12 +238,11 @@ contract ViraCoinToken {
         emit EBurn(Tok,msg.sender);
     }
     
-    function AttorneyGet(bytes32 Tok) public view returns(bytes32 Data,uint256 Production){
+    function AttorneyGet(bytes32 Tok) public view returns(bytes32){
         require(Tokens[Tok].Available,"Not Available");
         require(Tokens[Tok].Initaited,"No shch a coin exist.");
         require(Tokens[Tok].AttorneyOwner==msg.sender,"Only Attorney.");
-        Data=Tokens[Tok].Data;
-        Production=Tokens[Tok].Production;
+        return Tokens[Tok].Data;
     }
 }
 
