@@ -8,7 +8,7 @@ contract ViraCoinCart {
         struct TokenData{
             bytes32 TokenID;
             bytes32 Data;
-            bytes32 Price;
+            uint256 Price;
             address Owner;
             bool Available;
             bool ForSale;
@@ -24,7 +24,7 @@ contract ViraCoinCart {
         
         ViraCoinToken VCT;
         mapping(bytes32=>TokenData)Tokens;
-        
+        mapping(address=>uint256) Funds;
         constructor(uint256 fee,address VCTA) public{
             CurrentOwner=msg.sender;
             Fee=fee;
@@ -61,7 +61,7 @@ contract ViraCoinCart {
             Fee=NewFee;
         }
         
-        function NewAsset(bytes32 TokenID,bytes32 Data,bytes32 Price) public payable CanAdd{
+        function NewAsset(bytes32 TokenID,bytes32 Data,uint256 Price) public payable CanAdd{
             require(!Tokens[TokenID].ForSale,"Already In Shop.");
             require(VCT.ApproveAttorney(TokenID),"First set Shop as your asset attorny.");
             require(VCT.GetTokenOwner(TokenID)==msg.sender,"Only Token Owner.");
@@ -72,7 +72,15 @@ contract ViraCoinCart {
             Tokens[TokenID].Price=Price;
             Tokens[TokenID].Available=true;
             Tokens[TokenID].ForSale=true;
-            
+        }
+        //check exception raise
+        function Buy(bytes32 TokenID) public payable{
+            require(Tokens[TokenID].ForSale,"Not Available.");
+            require(Tokens[TokenID].Price>=msg.value,"Not enough fund.");
+            Funds[Tokens[TokenID].Owner]=Tokens[TokenID].Price;
+            VCT.AttorneyTransfer(TokenID,msg.sender);
+            Tokens[TokenID].Owner=msg.sender;
+            Tokens[TokenID].ForSale=false;
         }
         
 }
