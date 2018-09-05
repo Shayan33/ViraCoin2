@@ -154,7 +154,12 @@ contract ViraCoinToken {
         require(Tokens[Tok].AttorneyOwner==msg.sender,"Only Attorney.");
         return true;
     }
-    
+    function GetTokenOwner(bytes32 Tok) external view returns(address){
+        require(Tokens[Tok].Available,"Not Available");
+        require(Tokens[Tok].Initaited,"No shch a coin exist.");
+        require(Tokens[Tok].AttorneyOwner==msg.sender,"Only Attorney.");
+        return Tokens[Tok].CurrentOwner;
+    }
     function GetData(bytes32 Tok) public view returns(
         bytes32 tok,
         bytes32 Data,
