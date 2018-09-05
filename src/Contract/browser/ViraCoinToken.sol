@@ -148,6 +148,13 @@ contract ViraCoinToken {
         emit  EAttorney(Tok,msg.sender,Tokens[Tok].AttorneyOwner,true);
     }
     
+    function ApproveAttorney(bytes32 Tok) external view returns (bool){
+        require(Tokens[Tok].Available,"Not Available");
+        require(Tokens[Tok].Initaited,"No shch a coin exist.");
+        require(Tokens[Tok].AttorneyOwner==msg.sender,"Only Attorney.");
+        return true;
+    }
+    
     function GetData(bytes32 Tok) public view returns(
         bytes32 tok,
         bytes32 Data,
