@@ -1,5 +1,4 @@
 pragma solidity ^0.4.24;
-pragma experimental "v0.5.0";
 
 
 contract ViraCoinToken {
@@ -121,7 +120,7 @@ contract ViraCoinToken {
         //Tokens[Tok].HaveAttorneyOwner=true;
         emit  EAttorney(Tok,msg.sender,Tokens[Tok].AttorneyOwner,true);
     }
-    function ClearAttorne(bytes32 Tok)public{
+    function ClearAttorney(bytes32 Tok)public{
         require(Tokens[Tok].Available,"Not Available");
         require(Tokens[Tok].Initaited,"No shch a coin exist.");
         require(Tokens[Tok].CurrentOwner==msg.sender,"Only Owner.");
@@ -130,20 +129,20 @@ contract ViraCoinToken {
         //Tokens[Tok].HaveAttorneyOwner=false;
         emit  EAttorney(Tok,msg.sender,Tokens[Tok].AttorneyOwner,false);
     }
-    function ClearAttorneByAttorne(bytes32 Tok)public{
+    function ClearAttorneByAttorney(bytes32 Tok)public{
         require(Tokens[Tok].Available,"Not Available");
         require(Tokens[Tok].Initaited,"No shch a coin exist.");
-        require(Tokens[Tok].AttorneyOwner==msg.sender,"Only Attorne.");
+        require(Tokens[Tok].AttorneyOwner==msg.sender,"Only Attorney.");
         Tokens[Tok].AttorneyOwner=0x0000000000000000000000000000000000000000;
         //Tokens[Tok].AttorneySecret=keccak256(abi.encodePacked(0x0000000000000000000000000000000000000000));
         //Tokens[Tok].HaveAttorneyOwner=false;
         emit  EAttorney(Tok,msg.sender,Tokens[Tok].AttorneyOwner,false);
     }
     
-    function PassAttorne(bytes32 Tok,address Attorney/*,bytes32 Secret*/)public{
+    function PassAttorney(bytes32 Tok,address Attorney/*,bytes32 Secret*/)public{
         require(Tokens[Tok].Available,"Not Available");
         require(Tokens[Tok].Initaited,"No shch a coin exist.");
-        require(Tokens[Tok].AttorneyOwner==msg.sender,"Only Attorne.");
+        require(Tokens[Tok].AttorneyOwner==msg.sender,"Only Attorney.");
         Tokens[Tok].AttorneyOwner=Attorney;
         //Tokens[Tok].AttorneySecret=keccak256(abi.encodePacked(Secret));
         emit  EAttorney(Tok,msg.sender,Tokens[Tok].AttorneyOwner,true);
@@ -175,6 +174,7 @@ contract ViraCoinToken {
         AttorneyOwner=Tokens[Tok].AttorneyOwner;
         //HaveAttorneyOwner=Tokens[Tok].HaveAttorneyOwner;
     }
+    
     
     event ETransfer(bytes32 Tok,address Sender,address From,address To);
     
@@ -224,6 +224,14 @@ contract ViraCoinToken {
         Tokens[Tok].ISTransferring=false;
         
         emit EBurn(Tok,msg.sender);
+    }
+    
+    function AttorneyGet(bytes32 Tok) public view returns(bytes32 Data,uint256 Production){
+        require(Tokens[Tok].Available,"Not Available");
+        require(Tokens[Tok].Initaited,"No shch a coin exist.");
+        require(Tokens[Tok].AttorneyOwner==msg.sender,"Only Attorney.");
+        Data=Tokens[Tok].Data;
+        Production=Tokens[Tok].Production;
     }
 }
 
