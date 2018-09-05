@@ -73,14 +73,25 @@ contract ViraCoinCart {
             Tokens[TokenID].Available=true;
             Tokens[TokenID].ForSale=true;
         }
+                
+        function Add(uint256 _a,uint256 _b)internal pure returns(uint256){
+            uint256 c = _a + _b;
+            require(c >= _a);
+            return c;
+        }
         //check exception raise
         function Buy(bytes32 TokenID) public payable{
             require(Tokens[TokenID].ForSale,"Not Available.");
             require(Tokens[TokenID].Price>=msg.value,"Not enough fund.");
-            Funds[Tokens[TokenID].Owner]=Tokens[TokenID].Price;
+            Funds[Tokens[TokenID].Owner]=Add(Funds[Tokens[TokenID].Owner],Tokens[TokenID].Price);
             VCT.AttorneyTransfer(TokenID,msg.sender);
             Tokens[TokenID].Owner=msg.sender;
             Tokens[TokenID].ForSale=false;
         }
-        
+        function WithdrawFunds()public {
+            require(Funds[msg.sender]>0,"you have no funds.");
+            uint256 val=Funds[msg.sender];
+            Funds[msg.sender]=0;
+            msg.sender.transfer(val);
+        }
 }
