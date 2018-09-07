@@ -85,7 +85,7 @@ contract ViraCoinCart {
         //check exception raise
         function Buy(bytes32 TokenID) public payable{
             require(Tokens[TokenID].ForSale,"Not Available.");
-            require(Tokens[TokenID].Price>=msg.value,"Not enough fund.");
+            require(Tokens[TokenID].Price<=msg.value,"Not enough fund.");
             Funds[Tokens[TokenID].Owner]=Add(Funds[Tokens[TokenID].Owner],Tokens[TokenID].Price);
             VCT.AttorneyTransfer(TokenID,msg.sender);
             Tokens[TokenID].Owner=msg.sender;
