@@ -24,15 +24,15 @@ contract ViraCoinToken {
     string public constant name= "Vira Coin";
     string public constant symbol="VC";
     uint256 public constant decimals = 18;
-    uint256 public RegisterPrice;
+    uint256 public Fee;
     
     mapping(bytes32=>bool) Registered;
     mapping (bytes32=>TokenData) Tokens;  
     address CurrentOwner;
     
-    constructor(uint256 registerPrice) public{
+    constructor(uint256 fee) public{
         CurrentOwner=msg.sender;
-        RegisterPrice=registerPrice;
+        Fee=fee;
     }
 
      function() external payable
@@ -41,7 +41,7 @@ contract ViraCoinToken {
      }
 
        modifier CanRegister {
-        require(msg.value >= RegisterPrice,"Pay Price.");
+        require(msg.value >= Fee,"Pay Price.");
         _;
     } 
     
@@ -53,7 +53,9 @@ contract ViraCoinToken {
     function Withdraw() public ContractOwner{
         CurrentOwner.transfer(address(this).balance);
     }
-    
+    function UpdateFee(uint256 NewFee)public ContractOwner{
+            Fee=NewFee;
+    }
     function Kill() public ContractOwner{
         selfdestruct(CurrentOwner);
     }
