@@ -61,6 +61,7 @@ contract ViraCoinCart {
             Fee=NewFee;
         }
         
+        event ENewAsset(bytes32 TokenID,bytes32 Data,address Owner,uint256 Price);
         function NewAsset(bytes32 TokenID,bytes32 Data,uint256 Price) public payable CanAdd{
             require(!Tokens[TokenID].ForSale,"Already In Shop.");
             require(VCT.ApproveAttorney(TokenID),"First set Shop as your asset attorny.");
@@ -72,6 +73,7 @@ contract ViraCoinCart {
             Tokens[TokenID].Price=Price;
             Tokens[TokenID].Available=true;
             Tokens[TokenID].ForSale=true;
+            emit ENewAsset(TokenID,Data,msg.sender,Price);
         }
                 
         function Add(uint256 _a,uint256 _b)internal pure returns(uint256){
@@ -79,6 +81,7 @@ contract ViraCoinCart {
             require(c >= _a);
             return c;
         }
+        event EBuy(bytes32 TokenID,address To);
         //check exception raise
         function Buy(bytes32 TokenID) public payable{
             require(Tokens[TokenID].ForSale,"Not Available.");
@@ -87,11 +90,25 @@ contract ViraCoinCart {
             VCT.AttorneyTransfer(TokenID,msg.sender);
             Tokens[TokenID].Owner=msg.sender;
             Tokens[TokenID].ForSale=false;
+            emit EBuy(TokenID,msg.sender);
         }
+        
+        event EWithdrawFunds(address Withdrawer,uint256 value);
         function WithdrawFunds()public {
             require(Funds[msg.sender]>0,"you have no funds.");
             uint256 val=Funds[msg.sender];
             Funds[msg.sender]=0;
             msg.sender.transfer(val);
+            emit EWithdrawFunds(msg.sender,val);
         }
+        
+        event EUpdatePrice(bytes32 TokenID,uint256 From,uint256 To);
+        function UpdatePrice(bytes32 TokenID,uint256 NewPrice) public{
+            require(Tokens[TokenID].ForSale,"Not Available.");
+            require(Tokens[TokenID].Owner==msg.sender,"Only Owner");
+            uint256 Price=Tokens[TokenID].Price;
+            Tokens[TokenID].Price=NewPrice;
+            emit EUpdatePrice(TokenID,Price,NewPrice);
+        }
+        
 }
