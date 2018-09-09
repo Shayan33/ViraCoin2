@@ -1,5 +1,109 @@
+@font-face {
+  font-family: 'YekanWeb';
+  src: url('fonts/Yekan/Yekan.eot');
+  src: url('fonts/Yekan/Yekan.ttf') format('truetype'), url('fonts/Yekan/Yekan.woff') format('woff'), url('fonts/Yekan/yekannumbers-regular.ttf') format('truetype'), url('fonts/Yekan/yekannumbers-regular.woff') format('woff')
+}
+@font-face {
+  font-family: 'hdvhksks';
+  src: url('fonts/IranSans/hdvhksks.ttf');
+}
+@font-face {
+  font-family: 'Roya';
+  src: url('fonts/Roya/BRoya.ttf');
+}
+html{
+  direction: rtl;
+}
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: hdvhksks,YekanWeb,Roya, Tahoma;
+}
+/*--------NavMenue--------*/
+.navbar li .glyphicon {
+  margin-left: 10px;
+}
+
+/* Highlighting rules for nav menu items */
+.navbar .navbar-nav .active a,
+.navbar .navbar-nav .active a:hover,
+.navbar .navbar-nav .active a:focus {
+  background-image: none;
+  background-color: #4189C7;
+  color: white;
+}
+
+.navbar-toggle {
+  position: relative;
+  float: left;
+  padding: 9px 10px;
+  margin-top: 8px;
+  margin-left: 15px;
+  margin-bottom: 8px;
+  background-color: transparent;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.navbar-brand {
+  float: right;
+}
+
+.navbar {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+@media (max-width: 768px) {
+  .navbar li a {
+      float: right;
+      margin: 2px auto;
+      width: 98%;
+      border: 1px solid #4189C7;
+      border-radius: 3px;
+  }
+
+  .dropdown-menu {
+      float: right;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-header {
+      float: right;
+  }
+
+  .navbar .navbar-collapse {
+      border-top: 1px solid #444;
+      padding: 0;
+  }
+
+  .navbar .container-fluid {
+      padding: 0;
+      margin: 0;
+  }
+
+      .navbar .container-fluid .navbar-brand {
+          margin: 0;
+      }
+
+  .navbar ul {
+      float: right;
+  }
+
+  .navbar li {
+      float: right;
+      font-size: 15px;
+      margin: 6px;
+  }
+
+      .navbar li a {
+          padding: 10px 16px;
+          border-radius: 4px;
+      }
+}
+/*---------end nav--------*/
+.MainContent{
+  margin-top: 60px;
 }
