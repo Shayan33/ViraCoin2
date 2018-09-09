@@ -4,12 +4,12 @@ module.exports = function(grunt) {
       pkg: grunt.file.readJSON('package.json'),
       browserify: {
         js: {
-          src: 'httpdocs/scripts/*.js',
+          src: 'src/scripts/*.js',
           dest: 'build/scripts/app.js',
         },
       },
       jshint: {
-        all: ['Gruntfile.js', 'httpdocs/**/*.js'],
+        all: ['Gruntfile.js', 'src/**/*.js'],
         options: {
           esversion: 6
         }
@@ -17,14 +17,14 @@ module.exports = function(grunt) {
       copy: {
         all: {
           expand: true,
-          cwd: 'httpdocs/',
+          cwd: 'src/',
           src: ['**/*.html', '**/*.css'],
           dest: 'build/',
         },
       },
       watch: {
         scripts: {
-          files: ['httpdocs/**'],
+          files: ['src/**'],
           tasks: ['jshint','browserify','copy'],
           options: {
             spawn: false,
