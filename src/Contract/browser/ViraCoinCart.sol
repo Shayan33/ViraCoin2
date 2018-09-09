@@ -44,7 +44,9 @@ contract ViraCoinCart {
         require(msg.value >= Fee,"Pay Price.");
         _;
         }
-        
+        function GetFunds() public view ContractOwner returns(uint256){
+            return address(this).balance;
+        }
         function Withdraw() public ContractOwner{
             CurrentOwner.transfer(address(this).balance);
         }
