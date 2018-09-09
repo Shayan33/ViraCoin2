@@ -49,7 +49,9 @@ contract ViraCoinToken {
         require(msg.sender == CurrentOwner,"Only Contract Owner.");
         _;
     } 
-    
+    function GetFunds() public view ContractOwner returns(uint256){
+        return address(this).balance;
+    }
     function Withdraw() public ContractOwner{
         CurrentOwner.transfer(address(this).balance);
     }
