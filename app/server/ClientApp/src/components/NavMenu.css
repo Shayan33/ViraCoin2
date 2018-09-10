@@ -24,14 +24,24 @@
     border-radius: 4px;
 }
 
-.navbar-brand {
-    float: left;
-}
-
 .navbar {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.NewButtons{
+    float: right;
+    margin-top: 7px;
+    margin-right: 7px;
+}
+
+.Logo{
+    position: fixed;
+    color: white;
+    text-align: center;
+    left: 0px;
+    right: 0px;
+    top: 5px;
+}
 @media (max-width: 768px) {
     .navbar li {
         padding-top: 2px;
@@ -43,12 +53,15 @@
         border: 1px solid #4189C7;
         border-radius: 3px;
     }
+    .NewButtons{
+        float: none;
+        margin: auto;
+        margin-bottom: 5px;
+        width: 100%;
+    }
 }
 
 @media (min-width: 768px) {
-    .navbar-header {
-        float: left;
-    }
 
     .navbar .navbar-collapse {
         border-top: 1px solid #444;
@@ -78,9 +91,5 @@
             padding: 10px 16px;
             border-radius: 4px;
         }
-}
-.HeaderText {
-    float: right;
-    font-weight: bold;
-    color: #c6c6c6
+
 }

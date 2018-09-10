@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { NavMenu } from './NavMenu';
 import { Glyphicon } from 'react-bootstrap';
-
+import {Footer} from './Footer';
 export class Layout extends Component {
   displayName = Layout.name
   constructor(props) {
@@ -39,6 +39,13 @@ export class Layout extends Component {
             You are not connected to the network!!!
         </p>
         </h1>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </div> :
       <div>
         <h1 className="text-danger text-center" >
@@ -49,6 +56,13 @@ export class Layout extends Component {
             Please switch to main ethereum network!!!
         </p>
         </h1>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </div> :
       <div>
         <h1 className="text-danger text-center" >
@@ -63,11 +77,19 @@ export class Layout extends Component {
         <p className="text-warning text-center">
           Please check <a href="https://metamask.io">metamask.io</a> to install metamask.
         </p>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </div>;
     return (
       <div>
         <NavMenu />
         {Content}
+        <Footer />
       </div>
     );
   }

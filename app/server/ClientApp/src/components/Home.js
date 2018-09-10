@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-
+import './Home.css'
 export class Home extends Component {
   displayName = Home.name
 
   render() {
     return (
-      <div>
-        
+      <div className="HomePage container">
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
     );
   }
