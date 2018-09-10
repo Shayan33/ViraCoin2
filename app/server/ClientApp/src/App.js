@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
-import { Router, Route } from 'react-router-dom';
-import './App.css';
-import history from './components/history';
+import { Router, Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
+import history from './components/history'
 
-class App extends Component {
+export default class App extends Component {
   displayName = App.name
+
   render() {
     return (
       <Layout>
         <Router history={history}>
           <div>
-            <Route exact path={Math.url} component={Home}/>
+            <Route exact path={Math.path} component={Home} />
           </div>
         </Router>
       </Layout>
     );
   }
 }
-
-export default App;
