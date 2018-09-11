@@ -33,7 +33,24 @@
     margin-top: 7px;
     margin-right: 7px;
 }
-
+.ToolTipe{
+    float: right;
+    margin-top: 10px;
+    margin-right: 10px;
+    font-size: 24px;
+    color: whitesmoke;
+}
+.ToolTipe:hover{
+    cursor: pointer;
+    color: #4189C7;
+    font-size: 29px;
+}
+.ToolTipeText{
+    display: none;
+}
+.ThatHr{
+    display: none;
+}
 .Logo{
     position: fixed;
     color: white;
@@ -52,12 +69,40 @@
         width: 98%;
         border: 1px solid #4189C7;
         border-radius: 3px;
+        text-align: center;
     }
     .NewButtons{
         float: none;
         margin: auto;
         margin-bottom: 5px;
         width: 100%;
+    }
+    .ToolTipe{
+        display: inline-flex;
+        float: none;
+        margin: 1px;
+        margin-top: 0px;
+        margin-bottom: 9px;
+        padding: 4px;
+        padding-left: 10px;
+        width: 32%;
+        background-color: #4189C7;
+        font-size: 14px;
+        border-radius: 3px;
+        border: rgb(86, 174, 252) 1px solid;
+        box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
+        text-align: center
+    }
+    .ToolTipe:hover{
+        cursor: pointer;
+        color: white;
+        font-size: 16px;
+    }
+    .ToolTipeText{
+        display: block;
+    }
+    .ThatHr{
+        display: block;
     }
 }
 
