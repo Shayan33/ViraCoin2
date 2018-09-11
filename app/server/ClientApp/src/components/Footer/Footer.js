@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
-import './Footer.css'
+import './Footer.css';
 export class Footer extends Component {
     displayName = Footer.name
     render() {

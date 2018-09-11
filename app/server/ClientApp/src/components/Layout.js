@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { NavMenu } from './NavMenu/NavMenu';
 import { Glyphicon } from 'react-bootstrap';
 import { Footer } from './Footer/Footer';
-import { Header } from './Header/Header'
+import { Header } from './Header/Header';
 export class Layout extends Component {
   displayName = Layout.name
   constructor(props) {

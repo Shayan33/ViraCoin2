@@ -3,71 +3,78 @@ import { Link } from 'react-router-dom';
 import { Glyphicon, Nav, Navbar, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import ReactTooltip from 'react-tooltip';
-import history from '../history'
+import history from '../history';
+import { Statics } from '../Statics';
 import './NavMenu.css';
+
 export class NavMenu extends Component {
   displayName = NavMenu.name
   constructor(props) {
     super(props);
-    this.state = { Collapse: false, IsLogin: true };
+    this.state = { Collapse: false, IsLogin: Statics.IsLogin() };
   }
-  IsLogin() {
-    return this.state.IsLogin;
+  Login() {
+    Statics.Login();
+    this.setState({ IsLogin: Statics.IsLogin() });
+  }
+  LogOut() {
+    Statics.LogOut();
+    this.setState({ IsLogin: Statics.IsLogin() });
+    history.push('/');
   }
   render() {
-    let LoginView = this.IsLogin() ?
-      <button onClick={() => this.setState({ IsLogin: !this.state.IsLogin })} className="btn btn-success NewButtons">
-        <Glyphicon glyph='user' style={{ marginRight: '5px', marginTop: '3px' }} />Sign In
-      </button> :
+    let LoginView = this.state.IsLogin ?
       <div>
-        <div onClick={() => this.setState({ IsLogin: !this.state.IsLogin })} className="ToolTipe">
-          <Glyphicon glyph='off' style={{ marginRight: '5px', marginTop: '3px' }} 
-          data-tip="Sign Out"
-          data-place="bottom"
-          data-type="light"
+        <div onClick={() => this.LogOut()} className="ToolTipe">
+          <Glyphicon glyph='off' style={{ marginRight: '5px', marginTop: '3px' }}
+            data-tip="Sign Out"
+            data-place="bottom"
+            data-type="light"
           />
           <span className='ToolTipeText'>Sign Out</span>
         </div>
-        <div onClick={() => this.setState({ IsLogin: !this.state.IsLogin })} className="ToolTipe">
-          <Glyphicon glyph='cog' style={{ marginRight: '5px', marginTop: '3px' }} 
-          data-tip="Account Settings"
-          data-place="bottom"
-          data-type="light"
+        <div onClick={() => history.push('/Account')} className="ToolTipe">
+          <Glyphicon glyph='cog' style={{ marginRight: '5px', marginTop: '3px' }}
+            data-tip="Account Settings"
+            data-place="bottom"
+            data-type="light"
           />
-           <span className='ToolTipeText'>Account</span>
+          <span className='ToolTipeText'>Account</span>
           <ReactTooltip />
         </div>
         <div onClick={() => this.setState({ IsLogin: !this.state.IsLogin })} className="ToolTipe">
-          <Glyphicon glyph='bell' style={{ marginRight: '5px', marginTop: '3px' }} 
-          data-tip="Notifications"
-          data-place="bottom"
-          data-type="light"
+          <Glyphicon glyph='bell' style={{ marginRight: '5px', marginTop: '3px' }}
+            data-tip="Notifications"
+            data-place="bottom"
+            data-type="light"
           />
           <span className='ToolTipeText'>Notifs</span>
         </div>
-      </div>
-      ;
-    let DashBord1 = !this.IsLogin() ?
-        <LinkContainer to={'/Inventory'} exact onClick={() => history.push('/Inventory')}>
-          <NavItem>
-            <Glyphicon glyph='inbox' /> Inventory
+      </div> :
+      <button onClick={() => this.Login()} className="btn btn-success NewButtons">
+        <Glyphicon glyph='user' style={{ marginRight: '5px', marginTop: '3px' }} />Sign In
+   </button>;
+    let DashBord1 = this.state.IsLogin ?
+      <LinkContainer to={'/Inventory'} exact onClick={() => history.push('/Inventory')}>
+        <NavItem>
+          <Glyphicon glyph='inbox' /> Inventory
         </NavItem>
-        </LinkContainer> :
+      </LinkContainer> :
       <div></div>;
-      let DashBord2 = !this.IsLogin() ?
+    let DashBord2 = this.state.IsLogin ?
       <LinkContainer to={'/Submit'} exact onClick={() => history.push('/Submit')}>
         <NavItem>
           <Glyphicon glyph='plus' /> Submit
       </NavItem>
       </LinkContainer> :
-    <div></div>;
-    let DashBord3 = !this.IsLogin() ?
-    <LinkContainer to={'/Transactions'} exact onClick={() => history.push('/Transactions')}>
-      <NavItem>
-        <Glyphicon glyph='transfer' /> Transactions
+      <div></div>;
+    let DashBord3 = this.state.IsLogin ?
+      <LinkContainer to={'/Transactions'} exact onClick={() => history.push('/Transactions')}>
+        <NavItem>
+          <Glyphicon glyph='transfer' /> Transactions
     </NavItem>
-    </LinkContainer> :
-  <div></div>;
+      </LinkContainer> :
+      <div></div>;
     return (
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <div className="Logo">
@@ -92,7 +99,7 @@ export class NavMenu extends Component {
             {DashBord2}
             {DashBord3}
           </Nav>
-          <hr className='ThatHr'/>
+          <hr className='ThatHr' />
           <div>
             {LoginView}
           </div>

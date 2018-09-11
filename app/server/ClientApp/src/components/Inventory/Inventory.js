@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
-import './Inventory.css'
+import { Statics } from '../Statics';
+import './Inventory.css';
 export class Inventory extends Component {
     displayName = Inventory.name
+    constructor(props) {
+        super(props);
+        Statics.IsLogin();
+    }
     render() {
         return (
             <div>

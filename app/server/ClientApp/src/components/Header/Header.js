@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
-import './Header.css'
+import './Header.css';
 export class Header extends Component {
     displayName = Header.name
     render() {

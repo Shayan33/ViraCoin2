@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
-import './Account.css'
+import { Statics } from '../Statics';
+import './Account.css';
 export class Account extends Component {
     displayName = Account.name
+    constructor(props) {
+        super(props);
+        Statics.IsLogin();
+    }
     render() {
         return (
             <div>
