@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Glyphicon, Nav, Navbar, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import ReactTooltip from 'react-tooltip';
-import history from './history'
+import history from '../history'
 import './NavMenu.css';
 export class NavMenu extends Component {
   displayName = NavMenu.name
@@ -71,7 +71,7 @@ export class NavMenu extends Component {
     return (
       <Navbar inverse fixedTop fluid collapseOnSelect>
         <div className="Logo">
-          <img src={require('../img/ethereum.png')} alt='logo' style={{ width: '50px', height: '45px' }} />
+          <img src={require('../../img/ethereum.png')} alt='logo' style={{ width: '50px', height: '45px' }} />
         </div>
         <Navbar.Header>
           <Navbar.Toggle />

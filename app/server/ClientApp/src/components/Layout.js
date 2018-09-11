@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { NavMenu } from './NavMenu';
+import { NavMenu } from './NavMenu/NavMenu';
 import { Glyphicon } from 'react-bootstrap';
-import {Footer} from './Footer';
+import { Footer } from './Footer/Footer';
+import { Header } from './Header/Header'
 export class Layout extends Component {
   displayName = Layout.name
   constructor(props) {
@@ -88,6 +89,7 @@ export class Layout extends Component {
     return (
       <div>
         <NavMenu />
+        <Header />
         {Content}
         <Footer />
       </div>
