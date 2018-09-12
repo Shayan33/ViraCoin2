@@ -11,15 +11,15 @@ export class NavMenu extends Component {
   displayName = NavMenu.name
   constructor(props) {
     super(props);
-    this.state = { Collapse: false, IsLogin: Statics.IsLogin() };
+    this.state = { Collapse: false, IsLogin: Statics.NavMenueLogin() };
   }
   Login() {
     Statics.Login();
-    this.setState({ IsLogin: Statics.IsLogin() });
+    this.setState({ IsLogin: Statics.NavMenueLogin() });
   }
   LogOut() {
     Statics.LogOut();
-    this.setState({ IsLogin: Statics.IsLogin() });
+    this.setState({ IsLogin: Statics.NavMenueLogin() });
     history.push('/');
   }
   render() {

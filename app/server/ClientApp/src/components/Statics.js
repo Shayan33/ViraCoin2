@@ -7,7 +7,9 @@ export class Statics {
         if (!res) history.push('/');
         return res;
     }
-
+    static NavMenueLogin() {
+        return Statics.CheckCookie(SignInCookieName, Token);
+    }
     static GetToken() {
         return Token;
     }
@@ -35,10 +37,10 @@ export class Statics {
         var ca = document.cookie.split(';');
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
-            while (c.charAt(0) == ' ') {
+            while (c.charAt(0) === ' ') {
                 c = c.substring(1);
             }
-            if (c.indexOf(name) == 0) {
+            if (c.indexOf(name) === 0) {
                 return c.substring(name.length, c.length);
             }
         }
@@ -47,7 +49,7 @@ export class Statics {
 
     static CheckCookie(CName, Value) {
         var ca = Statics.GetCookie(CName);
-        if (ca != "") {
+        if (ca !== "") {
             return ca === Value ? true : false;
         } else {
             return false;
