@@ -15,7 +15,7 @@ export class Admin extends Component {
         else if (this.state.ToknOrCart === 2) Content = <CartAdmin />;
         else Content = <h1>None</h1>;
         return (
-            <div>
+            <div className='PopUp'>
                 <button onClick={() => this.setState({ ToknOrCart: 1 })}>Token</button>
                 <button onClick={() => this.setState({ ToknOrCart: 2 })}>Cart</button>
                 {Content}

@@ -10,7 +10,7 @@ export class Transactions extends Component {
     }
     render() {
         return (
-            <div>
+            <div className='PopUp'>
                 <h1>Transactions</h1>
             </div>
         );

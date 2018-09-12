@@ -10,7 +10,7 @@ export class Submit extends Component {
     }
     render() {
         return (
-            <div>
+            <div className='PopUp'>
                 <h1>Submit</h1>
             </div>
         );

@@ -10,7 +10,7 @@ export class Inventory extends Component {
     }
     render() {
         return (
-            <div>
+            <div className='PopUp'>
                 <h1>Inventory</h1>
             </div>
         );

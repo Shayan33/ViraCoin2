@@ -10,7 +10,7 @@ export class Account extends Component {
     }
     render() {
         return (
-            <div>
+            <div className='PopUp'>
                 <h1>Account</h1>
             </div>
         );

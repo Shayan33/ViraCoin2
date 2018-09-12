@@ -25,7 +25,7 @@ export default class App extends Component {
                 <Route exact path={'/'} component={Home} />
                 <Route path={'/Account'} component={Account} />
                 <Route path={'/Inventory'} component={Inventory} />
-                <Route path={'/Item/:ID'} component={Item} />
+                <Route path={'/Item'} component={Item} />
                 <Route path={'/Search'} component={Search} />
                 <Route path={'/Submit'} component={Submit} />
                 <Route path={'/Transactions'} component={Transactions} />

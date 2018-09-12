@@ -5,7 +5,7 @@ export class Search extends Component {
     displayName = Search.name
     render() {
         return (
-            <div>
+            <div className='PopUp'>
                 <h1>Search</h1>
             </div>
         );

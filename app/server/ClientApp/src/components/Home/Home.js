@@ -5,7 +5,7 @@ export class Home extends Component {
 
   render() {
     return (
-      <div className="HomePage container">
+      <div className="PopUp">
         <br />
         <br />
         <br />

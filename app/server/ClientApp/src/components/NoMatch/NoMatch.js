@@ -16,7 +16,7 @@ export class NoMatch extends Component {
     }
     render() {
         return (
-            <div>
+            <div className='PopUp'>
                 <h1>Nomatch</h1>
             </div>
         );

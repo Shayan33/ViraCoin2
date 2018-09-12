@@ -10,7 +10,7 @@ export class Item extends Component {
     displayName = Item.name
     render() {
         return (
-            <div>
+            <div className='PopUp'>
                 <h1>Item</h1>
             </div>
         );

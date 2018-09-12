@@ -28,7 +28,7 @@ export class Layout extends Component {
   }
   render() {
     let Content = this.CheckWeb3() ? this.CheckMainNet() ? this.CheckOnline() ?
-      <div className='container'>
+      <div className='container ContainerTheme'>
         {this.props.children}
       </div> :
       <div className="container">
