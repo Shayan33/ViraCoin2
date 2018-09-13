@@ -3,31 +3,14 @@ import { NavMenu } from './NavMenu/NavMenu';
 import { Glyphicon } from 'react-bootstrap';
 import { Footer } from './Footer/Footer';
 import { Header } from './Header/Header';
+import { Web3s } from './BlockChain/Web3';
 export class Layout extends Component {
   displayName = Layout.name
   constructor(props) {
     super(props);
-    this.state = { MainNetID: "1" };
-  }
-  CheckWeb3() {
-    if (typeof window.web3 !== 'undefined') {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  CheckMainNet() {
-    if (window.web3.version.network === this.state.MainNetID) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  CheckOnline() {
-    return window.web3.isConnected();
   }
   render() {
-    let Content = this.CheckWeb3() ? this.CheckMainNet() ? this.CheckOnline() ?
+    let Content = Web3s.CheckWeb3() ? Web3s.CheckMainNet() ? Web3s.CheckOnline() ?
       <div className='container ContainerTheme'>
         {this.props.children}
       </div> :

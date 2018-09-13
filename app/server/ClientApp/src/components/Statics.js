@@ -1,6 +1,7 @@
 import history from './history';
 var Token = 'Null';
 var SignInCookieName = 'a';
+var MainNetID = "3";
 export class Statics {
     static IsLogin() {
         var res = Statics.CheckCookie(SignInCookieName, Token);
@@ -54,5 +55,9 @@ export class Statics {
         } else {
             return false;
         }
+    }
+
+    static GetMainNetID() {
+        return MainNetID;
     }
 }
