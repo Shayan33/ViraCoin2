@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using server.Models;
+using server.Sessions;
 
 namespace server
 {
@@ -26,6 +27,8 @@ namespace server
             {
                 options.UseSqlite("TempDB");
             });
+
+            services.AddSingleton<SessionProvider>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
