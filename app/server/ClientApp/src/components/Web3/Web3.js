@@ -24,9 +24,18 @@ export class Web3s {
     }
 
     static GetAccount() {
-        return window.web3.eth.defaultAccount;
+        return String(window.web3.eth.defaultAccount);
     }
     static CheckWeb3Initaited() {
         return Web3s.CheckWeb3() && Web3s.CheckMainNet() && Web3s.CheckOnline();
     }
+
+    // static Sign() {
+    //     var p = window.web3.eth.sign(Web3s.GetAccount(),"hamed", (err, res) => {
+    //         alert(err);
+    //         if (!err) console.log(JSON.stringify(res));
+    //         else console.error(err);
+    //     });
+    //     console.log(JSON.stringify(p));
+    // }
 }

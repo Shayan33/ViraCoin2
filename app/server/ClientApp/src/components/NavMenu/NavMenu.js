@@ -5,8 +5,8 @@ import { LinkContainer } from 'react-router-bootstrap';
 import ReactTooltip from 'react-tooltip';
 import history from '../history';
 import { Statics } from '../Statics';
+import { Web3s } from '../Web3/Web3';
 import './NavMenu.css';
-
 export class NavMenu extends Component {
   displayName = NavMenu.name
   constructor(props) {
@@ -52,7 +52,7 @@ export class NavMenu extends Component {
         </div>
       </div> :
       <button onClick={() => this.Login()} className="btn btn-success NewButtons">
-        <Glyphicon glyph='user' style={{ marginRight: '5px', marginTop: '3px' }} />Sign In / Up
+        <Glyphicon glyph='user' style={{ marginRight: '5px', marginTop: '3px' }} />Register / Sign In
    </button>;
     let DashBord1 = this.state.IsLogin ?
       <LinkContainer to={'/Inventory'} exact onClick={() => history.push('/Inventory')}>
