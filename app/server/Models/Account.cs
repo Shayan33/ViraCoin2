@@ -17,9 +17,6 @@ namespace server.Models
         [StringLength(100)]
         public string Signture { get; set; }
 
-        [StringLength(5)]
-        public string PassPhrase { get; set; }
-
         [StringLength(20)]
         public string Name { get; set; }
 

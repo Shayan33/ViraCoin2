@@ -9,7 +9,7 @@ using server.Models;
 namespace server.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20180913020430_init")]
+    [Migration("20180913104613_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,9 +45,6 @@ namespace server.Migrations
 
                     b.Property<string>("OfficeNumber")
                         .HasMaxLength(30);
-
-                    b.Property<string>("PassPhrase")
-                        .HasMaxLength(5);
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(30)

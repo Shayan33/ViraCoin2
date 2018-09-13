@@ -14,7 +14,6 @@ namespace server.Migrations
                     ID = table.Column<Guid>(nullable: false),
                     PubKey = table.Column<string>(maxLength: 25, nullable: true),
                     Signture = table.Column<string>(maxLength: 100, nullable: true),
-                    PassPhrase = table.Column<string>(maxLength: 5, nullable: true),
                     Name = table.Column<string>(maxLength: 20, nullable: true),
                     MiddleName = table.Column<string>(maxLength: 20, nullable: true),
                     LastName = table.Column<string>(maxLength: 20, nullable: true),

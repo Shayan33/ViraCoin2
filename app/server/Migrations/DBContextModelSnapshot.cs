@@ -44,9 +44,6 @@ namespace server.Migrations
                     b.Property<string>("OfficeNumber")
                         .HasMaxLength(30);
 
-                    b.Property<string>("PassPhrase")
-                        .HasMaxLength(5);
-
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(30)
                         .IsUnicode(true);
