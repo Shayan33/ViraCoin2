@@ -3,17 +3,30 @@ import { NavMenu } from './NavMenu/NavMenu';
 import { Glyphicon } from 'react-bootstrap';
 import { Footer } from './Footer/Footer';
 import { Header } from './Header/Header';
-import { Web3s } from './BlockChain/Web3';
+import { Web3s } from './Web3/Web3';
 export class Layout extends Component {
   displayName = Layout.name
   constructor(props) {
     super(props);
   }
   render() {
-    let Content = Web3s.CheckWeb3() ? Web3s.CheckMainNet() ? Web3s.CheckOnline() ?
+    let Content = Web3s.CheckWeb3() ? Web3s.CheckMainNet() ? Web3s.CheckOnline() ? (String(Web3s.GetAccount()) !== 'undefined') ?
       <div className='container ContainerTheme'>
         {this.props.children}
       </div> :
+      <div className="container">
+        <div className='LayoutErrors PopUp'>
+          <h1 className="text-danger text-center" >
+            <Glyphicon glyph="lock" style={{ paddingTop: '20px', fontSize: '130px' }} />
+          </h1>
+          <h1>
+            <p className="text-danger text-center">
+              Please log in to your ethereum account.
+            </p>
+          </h1>
+        </div>
+      </div>
+      :
       <div className="container">
         <div className='LayoutErrors PopUp'>
           <h1 className="text-danger text-center" >

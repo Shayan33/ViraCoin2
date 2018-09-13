@@ -52,7 +52,7 @@ export class NavMenu extends Component {
         </div>
       </div> :
       <button onClick={() => this.Login()} className="btn btn-success NewButtons">
-        <Glyphicon glyph='user' style={{ marginRight: '5px', marginTop: '3px' }} />Sign In
+        <Glyphicon glyph='user' style={{ marginRight: '5px', marginTop: '3px' }} />Sign In / Up
    </button>;
     let DashBord1 = this.state.IsLogin ?
       <LinkContainer to={'/Inventory'} exact onClick={() => history.push('/Inventory')}>
