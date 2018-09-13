@@ -18,7 +18,7 @@ namespace server.Controllers
             context = _context;
         }
 
-        [HttpGet]
+        [HttpGet("{ID}")]
         public IActionResult Get([FromRoute]Guid ID)
         {
             var account = context.Accounts.Find(ID);
@@ -26,7 +26,7 @@ namespace server.Controllers
             return Ok(account);
         }
 
-        [HttpPost]
+        [HttpPost("{ID}")]
         public async Task<IActionResult> FillProfile([FromRoute] Guid ID, [FromBody] Account Acc)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
