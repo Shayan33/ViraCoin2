@@ -32,7 +32,7 @@ export class Layout extends Component {
         {this.props.children}
       </div> :
       <div className="container">
-        <div className='LayoutErrors'>
+        <div className='LayoutErrors PopUp'>
           <h1 className="text-danger text-center" >
             <Glyphicon glyph="off" style={{ paddingTop: '20px', fontSize: '130px' }} />
           </h1>
@@ -44,7 +44,7 @@ export class Layout extends Component {
         </div>
       </div> :
       <div className="container">
-        <div className='LayoutErrors'>
+        <div className='LayoutErrors PopUp'>
           <h1 className="text-danger text-center" >
             <Glyphicon glyph="warning-sign" style={{ paddingTop: '20px', fontSize: '130px' }} />
           </h1>
@@ -56,7 +56,7 @@ export class Layout extends Component {
         </div>
       </div> :
       <div className="container">
-        <div className='LayoutErrors'>
+        <div className='LayoutErrors PopUp'>
           <h1 className="text-danger text-center" >
             <Glyphicon glyph="remove" style={{ paddingTop: '20px', fontSize: '130px' }} />
           </h1>
