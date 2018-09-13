@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using server.Models;
 using System;
@@ -18,7 +19,18 @@ namespace server.Sessions
                   {
                       var sessions = c.RequestServices.GetRequiredService<SessionProvider>();
                       var DB = c.RequestServices.GetRequiredService<DBContext>();
-                      var Token = c.Request.Headers["LoginToken"].ToString();
+                      var PubKey = c.Request.Headers["PubKey"].ToString();
+                      var Sign = c.Request.Headers["Sign"].ToString();
+                      var User = await DB.Accounts.FindAsync(PubKey);
+                      if(User!=null &&User.Signture==Sign)
+                      {
+                          sessions.Add(User.ID);
+                          c.Response.Headers.Add(Guid.NewGuid().ToString(), User.ID.ToString());
+                          c.Response.StatusCode = 200;
+                          await c.Response.WriteAsync(User.ID.ToString());
+                          return;
+                      }
+                      c.Response.StatusCode = 400;
                   });
               });
         }

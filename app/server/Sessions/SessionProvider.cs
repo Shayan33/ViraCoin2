@@ -46,5 +46,17 @@ namespace server.Sessions
                 catch{}
             }
         }
+        public bool Get(Guid Key)
+        {
+            if (_sessions.TryGetValue(Key, out var T))
+            {
+                lock (_lock)
+                {
+                    _sessions[Key] = DateTime.Now;
+                }
+                return true;
+            }
+            return false;
+        }
     }
 }
