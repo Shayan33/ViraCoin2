@@ -1,3 +1,4 @@
+import { Web3s } from './Web3/Web3';
 import history from './history';
 var Token = 'Null';
 var SignInCookieName = 'a';
@@ -25,11 +26,45 @@ export class Statics {
         Statics.SetCookie(CName, 'null', -1);
     }
     static Login() {
-        // todo server
-        Statics.SetCookie(SignInCookieName, Token, 10);
+        if (Web3s.CheckWeb3Initaited()) {
+            fetch('Login', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'PubKey': Web3s.GetAccount(),
+                }
+            }).then(res => {
+                if (res.status === 200) {
+                    Token=res.headers.get('Session');
+                    SignInCookieName=res.headers.get('Cookie');
+                    Statics.SetCookie(SignInCookieName, Token, 10);
+                    setTimeout(
+                        function () {
+                            history.push('/Inventory');
+                        }
+                            .bind(this),
+                        1500
+                    );
+                }
+                else if (res.status === 201) {
+                    Token=res.headers.get('Session');
+                    SignInCookieName=res.headers.get('Cookie');
+                    Statics.SetCookie(SignInCookieName, Token, 10);
+                    setTimeout(
+                        function () {
+                            history.push('/Account');
+                        }
+                            .bind(this),
+                        1500
+                    );
+
+                } else {
+                    console.error('sth went wrong');
+                }
+            });
+        }
     }
     static LogOut() {
-        // todo server
         Statics.ClearCookie(SignInCookieName);
         history.push('/');
     }

@@ -18,36 +18,38 @@ namespace server.Sessions
               {
                   app2.Run(async c =>
                   {
-                      if (c.Request.Headers.ContainsKey("PubKey") && c.Request.Headers.ContainsKey("Sign"))
+                      if (c.Request.Headers.ContainsKey("PubKey") /*&& c.Request.Headers.ContainsKey("Sign")*/)
                       {
                           var sessions = c.RequestServices.GetRequiredService<SessionProvider>();
                           var DB = c.RequestServices.GetRequiredService<DBContext>();
                           var PubKey = c.Request.Headers["PubKey"].ToString();
-                          var Sign = c.Request.Headers["Sign"].ToString();
+                          // var Sign = c.Request.Headers["Sign"].ToString();
                           var User = await DB.Accounts.FirstOrDefaultAsync(x => x.PubKey == PubKey);
                           if (User != null)
                           {
-                              if (User.Signture == Sign)
-                              {
-                                  sessions.Add(User.ID);
-                                  c.Response.Headers.Add(Guid.NewGuid().ToString(), User.ID.ToString());
-                                  c.Response.StatusCode = 200;
-                                  await c.Response.WriteAsync(User.ID.ToString());
-                                  return;
-                              }
-                              c.Response.StatusCode = 400;
+                              //   if (User.Signture == Sign)
+                              //   {
+                              sessions.Add(User.ID);
+                              c.Response.Headers.Add("Session", User.ID.ToString());
+                              c.Response.Headers.Add("Cookie", Guid.NewGuid().ToString());
+                              c.Response.StatusCode = 200;
+                              await c.Response.WriteAsync(User.ID.ToString());
                               return;
+                              //   }
+                              //   c.Response.StatusCode = 400;
+                              //   return;
                           }
                           User = new Account()
                           {
                               ID = Guid.NewGuid(),
-                              Signture = Sign,
+                              //Signture = Sign,
                               PubKey = PubKey
                           };
                           DB.Accounts.Add(User);
                           await DB.SaveChangesAsync();
                           sessions.Add(User.ID);
-                          c.Response.Headers.Add(Guid.NewGuid().ToString(), User.ID.ToString());
+                          c.Response.Headers.Add("Session", User.ID.ToString());
+                          c.Response.Headers.Add("Cookie", Guid.NewGuid().ToString());
                           c.Response.StatusCode = 201;
                           await c.Response.WriteAsync(User.ID.ToString());
                       }
@@ -117,7 +119,7 @@ namespace server.Sessions
                         c.Response.StatusCode = 401;
                     }
                 });
-                
+
                 app2.UseMvc(routes =>
                 {
                     routes.MapRoute(

@@ -15,12 +15,22 @@ export class NavMenu extends Component {
   }
   Login() {
     Statics.Login();
-    this.setState({ IsLogin: Statics.NavMenueLogin() });
+    setTimeout(
+      function () {
+        this.setState({ IsLogin: Statics.NavMenueLogin() });
+      }
+        .bind(this),
+      1000
+    );
   }
   LogOut() {
     Statics.LogOut();
     this.setState({ IsLogin: Statics.NavMenueLogin() });
     history.push('/');
+  }
+  UpdatePage(PageName){
+    this.setState({ IsLogin: Statics.NavMenueLogin() });
+    history.push(PageName);
   }
   render() {
     let LoginView = this.state.IsLogin ?
@@ -33,7 +43,7 @@ export class NavMenu extends Component {
           />
           <span className='ToolTipeText'>Sign Out</span>
         </div>
-        <div onClick={() => history.push('/Account')} className="ToolTipe">
+        <div onClick={() => this.UpdatePage('/Account')} className="ToolTipe">
           <Glyphicon glyph='cog' style={{ marginRight: '5px', marginTop: '3px' }}
             data-tip="Account Settings"
             data-place="bottom"
@@ -55,21 +65,21 @@ export class NavMenu extends Component {
         <Glyphicon glyph='user' style={{ marginRight: '5px', marginTop: '3px' }} />Register / Sign In
    </button>;
     let DashBord1 = this.state.IsLogin ?
-      <LinkContainer to={'/Inventory'} exact onClick={() => history.push('/Inventory')}>
+      <LinkContainer to={'/Inventory'} exact onClick={() => this.UpdatePage('/Inventory')}>
         <NavItem>
           <Glyphicon glyph='inbox' /> Inventory
         </NavItem>
       </LinkContainer> :
       <div></div>;
     let DashBord2 = this.state.IsLogin ?
-      <LinkContainer to={'/Submit'} exact onClick={() => history.push('/Submit')}>
+      <LinkContainer to={'/Submit'} exact onClick={() => this.UpdatePage('/Submit')}>
         <NavItem>
           <Glyphicon glyph='plus' /> Submit
       </NavItem>
       </LinkContainer> :
       <div></div>;
     let DashBord3 = this.state.IsLogin ?
-      <LinkContainer to={'/Transactions'} exact onClick={() => history.push('/Transactions')}>
+      <LinkContainer to={'/Transactions'} exact onClick={() => this.UpdatePage('/Transactions')}>
         <NavItem>
           <Glyphicon glyph='transfer' /> Transactions
     </NavItem>

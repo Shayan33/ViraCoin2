@@ -27,7 +27,7 @@ export class Web3s {
         return String(window.web3.eth.defaultAccount);
     }
     static CheckWeb3Initaited() {
-        return Web3s.CheckWeb3() && Web3s.CheckMainNet() && Web3s.CheckOnline();
+        return Web3s.CheckWeb3() && Web3s.CheckMainNet() && Web3s.CheckOnline() && (String(Web3s.GetAccount()) !== 'undefined');
     }
 
     // static Sign() {
