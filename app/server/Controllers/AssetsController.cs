@@ -128,8 +128,8 @@ namespace server.Controllers
             return Ok(asset);
         }
 
-        [HttpPost("Upload/{id}"), DisableRequestSizeLimit]
-        public ActionResult UploadFile([FromRoute]Guid id)
+        [HttpPost("Up"), DisableRequestSizeLimit]
+        public ActionResult UploadFile()
         {
             try
             {
@@ -137,7 +137,7 @@ namespace server.Controllers
                 short index = 0;
                 foreach (var file in Request.Form.Files)
                 {
-                    string folderName = "Img";
+                    string folderName = "Files";
                     string webRootPath = _hostingEnvironment.ContentRootPath;
                     string newPath = Path.Combine(webRootPath, folderName);
                     if (!Directory.Exists(newPath))
@@ -146,12 +146,12 @@ namespace server.Controllers
                     }
                     string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                     var fileFromat = Path.GetExtension(fileName);
-                    string[] formats = new string[] { ".png", ".jpg", ".jpeg" };
+                    string[] formats = new string[] { ".png", ".jpg", ".jpeg", ".txt", ".pdf" };
                     if (!formats.Contains(fileFromat.ToLower())) continue;
                     if (file.Length > 0 && file.Length < 2e6)
                     {
                         var Name = Guid.NewGuid().ToString();
-                        sb.Append($"\"{index}\":\"{Name}\",");
+                        sb.Append($"\"{index}\":\"{Name}{fileFromat}\",");
                         string fullPath = Path.Combine(newPath, $"{Name}{fileFromat}");
                         using (var stream = new FileStream(fullPath, FileMode.Create))
                         {
@@ -169,6 +169,41 @@ namespace server.Controllers
             {
                 return BadRequest("Upload Failed: " + ex.Message);
             }
+        }
+        [HttpGet("Down/{id}")]
+        public async Task<IActionResult> File(string id)
+        {
+            if (id == null)
+                return NotFound("filename not present");
+
+            var path = Path.Combine(
+                           _hostingEnvironment.ContentRootPath,
+                           "Files", id);
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, GetContentType(path), Path.GetFileName(path));
+        }
+        private string GetContentType(string path)
+        {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types[ext];
+        }
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+            {
+                 {".txt", "text/plain"},
+                {".pdf", "application/pdf"},
+                {".png", "image/png"},
+                {".jpg", "image/jpeg"},
+                {".jpeg", "image/jpeg"}
+            };
         }
 
         private bool AssetExists(Guid id)

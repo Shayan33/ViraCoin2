@@ -9,7 +9,7 @@ using server.Models;
 namespace server.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20180914141048_init")]
+    [Migration("20180914210033_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,8 +70,6 @@ namespace server.Migrations
                         .HasMaxLength(32);
 
                     b.Property<bool>("Available");
-
-                    b.Property<byte[]>("CompleteData");
 
                     b.Property<byte[]>("CurrentOwner")
                         .HasMaxLength(32);

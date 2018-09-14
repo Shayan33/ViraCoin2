@@ -45,7 +45,6 @@ namespace server.Migrations
                     Available = table.Column<bool>(nullable: false),
                     ForSale = table.Column<bool>(nullable: false),
                     OWnerID = table.Column<Guid>(nullable: false),
-                    CompleteData = table.Column<byte[]>(nullable: true),
                     ImgPath1 = table.Column<string>(maxLength: 45, nullable: true),
                     ImgPath2 = table.Column<string>(maxLength: 45, nullable: true),
                     ImgPath3 = table.Column<string>(maxLength: 45, nullable: true),

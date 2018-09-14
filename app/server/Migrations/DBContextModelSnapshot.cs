@@ -69,8 +69,6 @@ namespace server.Migrations
 
                     b.Property<bool>("Available");
 
-                    b.Property<byte[]>("CompleteData");
-
                     b.Property<byte[]>("CurrentOwner")
                         .HasMaxLength(32);
 

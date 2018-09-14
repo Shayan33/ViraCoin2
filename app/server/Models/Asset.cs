@@ -44,8 +44,6 @@ namespace server.Models
         public Guid OWnerID { get; set; }
         public Account Owner { get; set; }
 
-        public byte[] CompleteData { get; set; }
-
         [StringLength(45)]
         public string ImgPath1 { get; set; }
         [StringLength(45)]
