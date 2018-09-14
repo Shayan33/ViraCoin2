@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
 import { ToastContainer, ToastStore } from 'react-toasts';
 import { Statics } from '../Statics';
+import { Web3s } from '../Web3/Web3';
 import './Account.css';
 export class Account extends Component {
     displayName = Account.name
@@ -18,7 +19,8 @@ export class Account extends Component {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'PrivateToken': Statics.GetToken()
+                'PrivateToken': Statics.GetToken(),
+                'PubKey': Web3s.GetAccount()
             }
         })
             .then(response => response.json())
@@ -47,7 +49,7 @@ export class Account extends Component {
         fetch('api/api/Account/' + Statics.GetToken(), {
             method: 'POST',
             headers: {
-
+                'PubKey': Web3s.GetAccount(),
                 'PrivateToken': Statics.GetToken(),
                 'Content-Type': 'application/json'
             }, body: JSON.stringify({
@@ -60,9 +62,13 @@ export class Account extends Component {
                 address: this.state.address
             })
         }).then(response => {
-            response.json();
-            if (response.status === 200) ToastStore.success('Changes saved successfully.', 2000);
-            else ToastStore.error('Something went wrong.', 2000);
+            if (response.status === 200) {
+                ToastStore.success('Changes saved successfully.', 2000);
+                response.json()
+            }
+            else {
+                ToastStore.error('Something went wrong.', 2000);
+            }
         }).then(data => {
             this.setState({
                 name: data.name,

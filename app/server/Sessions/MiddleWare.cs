@@ -29,7 +29,7 @@ namespace server.Sessions
                           {
                               //   if (User.Signture == Sign)
                               //   {
-                              sessions.Add(User.ID);
+                              sessions.Add(User.ID, PubKey);
                               c.Response.Headers.Add("Session", User.ID.ToString());
                               c.Response.Headers.Add("Cookie", Guid.NewGuid().ToString());
                               c.Response.StatusCode = 200;
@@ -47,7 +47,7 @@ namespace server.Sessions
                           };
                           DB.Accounts.Add(User);
                           await DB.SaveChangesAsync();
-                          sessions.Add(User.ID);
+                          sessions.Add(User.ID, PubKey);
                           c.Response.Headers.Add("Session", User.ID.ToString());
                           c.Response.Headers.Add("Cookie", Guid.NewGuid().ToString());
                           c.Response.StatusCode = 201;
@@ -94,13 +94,14 @@ namespace server.Sessions
             {
                 app2.Use(async (c, n) =>
                 {
-                    if (c.Request.Headers.ContainsKey("PrivateToken"))
+                    if (c.Request.Headers.ContainsKey("PrivateToken") && c.Request.Headers.ContainsKey("PubKey"))
                     {
+                         var PubKey = c.Request.Headers["PubKey"].ToString(); 
                         var Token = c.Request.Headers["PrivateToken"].ToString();
                         if (Guid.TryParse(Token, out var t))
                         {
                             var sessions = c.RequestServices.GetRequiredService<SessionProvider>();
-                            if (sessions.Get(t))
+                            if (sessions.Get(t,PubKey))
                             {
                                 await n.Invoke();
                             }

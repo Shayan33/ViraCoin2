@@ -8,19 +8,19 @@ namespace server.Sessions
 {
     public class SessionProvider
     {
-        private readonly Dictionary<Guid, DateTime> _sessions;
+        private readonly Dictionary<Guid, SessionData> _sessions;
         private readonly Timer _timer;
         private object _lock;
         public SessionProvider()
         {
             _lock = new object();
-            _sessions = new Dictionary<Guid, DateTime>();
+            _sessions = new Dictionary<Guid, SessionData>();
             _timer = new Timer((z) =>
               {
                   lock (_lock)
                   {
                       var Now = DateTime.Now;
-                      var Temps = _sessions.Where(x => x.Value.AddMinutes(5) < Now);
+                      var Temps = _sessions.Where(x => x.Value.Time < Now.AddMinutes(-5));
                       foreach (var item in Temps)
                       {
                           _sessions.Remove(item.Key);
@@ -28,14 +28,14 @@ namespace server.Sessions
                   }
               }, null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5));
         }
-        public void Add(Guid Key)
+        public void Add(Guid Key, string PubKey)
         {
             lock (_lock)
             {
-                _sessions.TryAdd(Key, DateTime.Now);
+                _sessions.TryAdd(Key, new SessionData(PubKey, DateTime.Now));
             }
         }
-        public void  Remove(Guid Key)
+        public void Remove(Guid Key)
         {
             lock (_lock)
             {
@@ -43,20 +43,33 @@ namespace server.Sessions
                 {
                     _sessions.Remove(Key);
                 }
-                catch{}
+                catch { }
             }
         }
-        public bool Get(Guid Key)
+        public bool Get(Guid Key, string pk)
         {
             if (_sessions.TryGetValue(Key, out var T))
             {
+                bool flag = false;
                 lock (_lock)
                 {
-                    _sessions[Key] = DateTime.Now;
+                    flag = string.Equals(_sessions[Key].PubKey, pk);
+                    _sessions[Key].Time = DateTime.Now;
                 }
-                return true;
+                return flag;
             }
             return false;
+        }
+
+        class SessionData
+        {
+            public SessionData(string pk, DateTime t)
+            {
+                PubKey = pk;
+                Time = t;
+            }
+            public string PubKey { get; set; }
+            public DateTime Time { get; set; }
         }
     }
 }
