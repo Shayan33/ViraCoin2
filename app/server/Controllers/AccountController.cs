@@ -42,7 +42,7 @@ namespace server.Controllers
             acc.Address = Acc.Address;
             acc.Fa = Acc.Fa;
             context.Entry(acc).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.Accounts.Add(acc);
+            context.Accounts.Update(acc);
             await context.SaveChangesAsync();
             return Ok(acc);
         }

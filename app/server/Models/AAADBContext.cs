@@ -24,7 +24,6 @@ namespace server.Models
             modelBuilder.Entity<Account>(e =>
             {
                 e.HasIndex(p => p.PubKey).IsUnique();
-                e.Property(p => p.Signture).IsUnicode();
                 e.Property(p => p.EmailAddress).IsUnicode();
                 e.Property(p => p.PhoneNumber).IsUnicode();
             });

@@ -9,7 +9,7 @@ using server.Models;
 namespace server.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20180913104613_init")]
+    [Migration("20180914141048_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,11 +51,7 @@ namespace server.Migrations
                         .IsUnicode(true);
 
                     b.Property<string>("PubKey")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("Signture")
-                        .HasMaxLength(100)
-                        .IsUnicode(true);
+                        .HasMaxLength(50);
 
                     b.HasKey("ID");
 

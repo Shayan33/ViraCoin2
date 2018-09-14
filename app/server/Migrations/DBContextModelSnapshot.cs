@@ -49,11 +49,7 @@ namespace server.Migrations
                         .IsUnicode(true);
 
                     b.Property<string>("PubKey")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("Signture")
-                        .HasMaxLength(100)
-                        .IsUnicode(true);
+                        .HasMaxLength(50);
 
                     b.HasKey("ID");
 

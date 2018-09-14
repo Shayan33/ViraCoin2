@@ -11,11 +11,8 @@ namespace server.Models
         [Key]
         public Guid ID { get; set; }
 
-        [StringLength(25)]
+        [StringLength(50)]
         public string PubKey { get; set; }
-
-        [StringLength(100)]
-        public string Signture { get; set; }
 
         [StringLength(20)]
         public string Name { get; set; }

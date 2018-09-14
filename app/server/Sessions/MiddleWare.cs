@@ -120,12 +120,7 @@ namespace server.Sessions
                     }
                 });
 
-                app2.UseMvc(routes =>
-                {
-                    routes.MapRoute(
-                        name: "default",
-                        template: "{controller}/{action=Index}/{id?}");
-                });
+                app2.UseMvc();
             });
         }
     }
