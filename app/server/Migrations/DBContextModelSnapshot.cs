@@ -64,20 +64,20 @@ namespace server.Migrations
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<byte[]>("AttorneyOwner")
-                        .HasMaxLength(32);
+                    b.Property<string>("AttorneyOwner")
+                        .HasMaxLength(100);
 
                     b.Property<bool>("Available");
 
-                    b.Property<byte[]>("CurrentOwner")
-                        .HasMaxLength(32);
+                    b.Property<string>("CurrentOwner")
+                        .HasMaxLength(100);
 
-                    b.Property<byte[]>("Data")
-                        .HasMaxLength(40)
+                    b.Property<string>("Data")
+                        .HasMaxLength(100)
                         .IsUnicode(true);
 
-                    b.Property<byte[]>("FirstOwner")
-                        .HasMaxLength(32);
+                    b.Property<string>("FirstOwner")
+                        .HasMaxLength(100);
 
                     b.Property<bool>("ForSale");
 
@@ -105,22 +105,22 @@ namespace server.Migrations
                     b.Property<string>("ImgPath8")
                         .HasMaxLength(45);
 
-                    b.Property<byte[]>("Issuer")
-                        .HasMaxLength(32);
+                    b.Property<string>("Issuer")
+                        .HasMaxLength(100);
 
                     b.Property<string>("MetaDate");
 
                     b.Property<Guid>("OWnerID");
 
-                    b.Property<byte[]>("PrevOwner")
-                        .HasMaxLength(32);
+                    b.Property<string>("PrevOwner")
+                        .HasMaxLength(100);
 
                     b.Property<DateTime>("Production");
 
                     b.Property<DateTime>("Registration");
 
-                    b.Property<byte[]>("Token")
-                        .HasMaxLength(40);
+                    b.Property<string>("Token")
+                        .HasMaxLength(100);
 
                     b.HasKey("ID");
 

@@ -1,7 +1,8 @@
 import { Statics } from '../Statics';
+import { ViraCoinTokenABI } from './ViraCoinTokenABI';
 import history from '../history';
-const ViraCoinTokenRopsNetAddress = "0x11dfa93fb8d3c35c3472557d5ccbc76dbda289f3";
-const ViraCoinCartRopsNetAddress = "0xdc079ca42012a7b6bd3056ec0e3099da2658014";
+const ViraCoinTokenRopsNetAddress = '0x11dfa93fb8d3c35c3472557d5ccbc76dbda289f3';
+const ViraCoinCartRopsNetAddress = '0xdc079ca42012a7b6bd3056ec0e3099da2658014';
 var NewTokenFee = 100000000000000000;
 var ShopFee = 1000000000000000;
 var Acc = "null";
@@ -46,4 +47,14 @@ export class Web3s {
     //     });
     //     console.log(JSON.stringify(p));
     // }
+}
+export class ViraCoinToken {
+    static ViraToken() {
+        var ViraTokenContract = window.web3.eth.contract(ViraCoinTokenABI);
+        var instance = ViraTokenContract.at(ViraCoinCartRopsNetAddress);
+        return instance;
+    }
+    static Fee() {
+        ViraCoinToken.ViraToken().Fee();
+    }
 }

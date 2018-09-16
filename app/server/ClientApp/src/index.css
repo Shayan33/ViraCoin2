@@ -84,3 +84,10 @@ body {
         transform: scale(1);
     }
 }
+
+.ComponentBaseStyle{
+    margin-top: 30px;
+    margin-bottom: 40px;
+    border-radius: 5px;
+    padding: 5px;
+}

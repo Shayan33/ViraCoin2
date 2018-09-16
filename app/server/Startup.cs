@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
 using server.Models;
 using server.Sessions;
 
@@ -55,6 +56,18 @@ namespace server
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.Map("/Guid", app2 =>
+            {
+                app2.Run(async c =>
+                {
+                    c.Response.ContentType = "application/json";
+                    await c.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                    {
+                        Guid = System.Guid.NewGuid()
+                    }));
+                });
+            });
 
             app.UseMySessions();
 

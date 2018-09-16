@@ -11,30 +11,30 @@ namespace server.Models
         [Key]
         public Guid ID { get; set; }
         #region Token Data
-        [MinLength(32),MaxLength(40)]
-        public byte[] Token { get; set; }
+        [StringLength(100)]
+        public string Token { get; set; }
 
-        [MinLength(32), MaxLength(40)]
-        public byte[] Data { get; set; }
+        [StringLength(100)]
+        public string Data { get; set; }
 
         public DateTime Production { get; set; }
 
         public DateTime Registration { get; set; }
 
-        [MinLength(20),MaxLength(32)]
-        public byte[] CurrentOwner { get; set; }
+         [StringLength(100)]
+        public string CurrentOwner { get; set; }
 
-        [MinLength(20), MaxLength(32)]
-        public byte[] PrevOwner { get; set; }
+         [StringLength(100)]
+        public string PrevOwner { get; set; }
 
-        [MinLength(20), MaxLength(32)]
-        public byte[] FirstOwner { get; set; }
+         [StringLength(100)]
+        public string FirstOwner { get; set; }
 
-        [MinLength(20), MaxLength(32)]
-        public byte[] Issuer { get; set; }
+        [StringLength(100)]
+        public string Issuer { get; set; }
 
-        [MinLength(20), MaxLength(32)]
-        public byte[] AttorneyOwner { get; set; }
+        [StringLength(100)]
+        public string AttorneyOwner { get; set; }
 
         public bool Available { get; set; }
 

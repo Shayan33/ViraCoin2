@@ -12,7 +12,8 @@
     "react-scripts": "^1.1.5",
     "react-tooltip": "^3.8.2",
     "rimraf": "^2.6.2",
-    "react-toasts": "^2.0.13"
+    "react-toasts": "^2.0.13",
+    "react-dropzone": "^5.1.0"
   },
   "scripts": {
     "start": "rimraf ./build && react-scripts start",

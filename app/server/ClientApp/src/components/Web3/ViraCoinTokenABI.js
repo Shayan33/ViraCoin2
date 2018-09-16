@@ -1,4 +1,4 @@
-export const TokenABI=[
+export const ViraCoinTokenABI=[
 	{
 		"constant": true,
 		"inputs": [
