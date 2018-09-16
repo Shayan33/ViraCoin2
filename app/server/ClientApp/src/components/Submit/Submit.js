@@ -49,10 +49,11 @@ export class Submit extends Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    alert(ViraCoinToken.Fee());
+    ViraCoinToken.Issue(Web3s.Hex(this.state.token)
+      , Web3s.Hex(this.state.token),
+      1);
 
   }
-
   onDrop = (files) => {
     if (this.state.files.length === 9) {
       this.setState({ full: true });

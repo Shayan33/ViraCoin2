@@ -38,7 +38,9 @@ export class Web3s {
     static CheckWeb3Initaited() {
         return Web3s.CheckWeb3() && Web3s.CheckMainNet() && Web3s.CheckOnline() && (String(Web3s.GetAccount()) !== 'undefined');
     }
-
+    static Hex(Data){
+        return window.web3.toHex(Data);
+    }
     // static Sign() {
     //     var p = window.web3.eth.sign(Web3s.GetAccount(),"hamed", (err, res) => {
     //         alert(err);
@@ -51,10 +53,21 @@ export class Web3s {
 export class ViraCoinToken {
     static ViraToken() {
         var ViraTokenContract = window.web3.eth.contract(ViraCoinTokenABI);
-        var instance = ViraTokenContract.at(ViraCoinCartRopsNetAddress);
+        var instance = ViraTokenContract.at(ViraCoinTokenRopsNetAddress);
         return instance;
     }
     static Fee() {
-        ViraCoinToken.ViraToken().Fee();
+        ViraCoinToken.ViraToken().Fee((e, r) => {
+            if(!e)alert(r);
+            else console.error(e);
+        });
+    }
+    static Issue(IV,Tok,Proud){
+        ViraCoinToken.ViraToken().IssueNewToken(IV,Tok,Proud,
+            {value: 100000000000000000},
+            (e,r)=>{
+                if(!e) alert(r);
+                else console.error(e);
+            });
     }
 }
