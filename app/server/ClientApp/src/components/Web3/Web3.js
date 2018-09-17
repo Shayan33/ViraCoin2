@@ -63,6 +63,7 @@ export class ViraCoinToken {
         });
     }
     static Issue(IV,Tok,Proud){
+        alert(Tok);
         ViraCoinToken.ViraToken().IssueNewToken(IV,Tok,Proud,
             {value: 100000000000000000},
             (e,r)=>{

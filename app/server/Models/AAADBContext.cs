@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace server.Models
 {
-    public class DBContext:DbContext
+    public class DBContext : DbContext
     {
-        public DBContext(DbContextOptions<DBContext> options):base(options)
+        public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
 
         }
@@ -33,6 +33,12 @@ namespace server.Models
                 e.HasIndex(p => p.Token).IsUnique();
                 e.Property(p => p.Data).IsUnicode();
             });
+
+            modelBuilder.Entity<Asset>(e =>
+           {
+               e.HasIndex(p => new { p.I1, p.I2, p.I3, p.I4 }).IsUnique();
+
+           });
         }
     }
 }

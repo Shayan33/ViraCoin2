@@ -13,6 +13,7 @@ export class Submit extends Component {
     var now = new Date();
     this.state = {
       token: '',
+      tokenHexData: '',
       data: '',
       production: 0,
       registration: now.toISOString().slice(0, 10),
@@ -34,7 +35,7 @@ export class Submit extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     fetch('Guid').then(res => res.json())
       .then(data =>
-        this.setState({ token: data.Guid })
+        this.setState({ token: data.Guid, tokenHexData: data.HexString })
       ).catch(e => console.error(e));
   }
 
@@ -49,8 +50,8 @@ export class Submit extends Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    ViraCoinToken.Issue(Web3s.Hex(this.state.token)
-      , Web3s.Hex(this.state.token),
+    ViraCoinToken.Issue(this.state.tokenHexData
+      , this.state.tokenHexData,
       1);
 
   }

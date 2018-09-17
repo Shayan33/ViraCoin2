@@ -17,17 +17,22 @@ namespace server.Models
         [StringLength(100)]
         public string Data { get; set; }
 
+        public long I1 { get; set; }
+        public long I2 { get; set; }
+        public long I3 { get; set; }
+        public long I4 { get; set; }
+
         public DateTime Production { get; set; }
 
         public DateTime Registration { get; set; }
 
-         [StringLength(100)]
+        [StringLength(100)]
         public string CurrentOwner { get; set; }
 
-         [StringLength(100)]
+        [StringLength(100)]
         public string PrevOwner { get; set; }
 
-         [StringLength(100)]
+        [StringLength(100)]
         public string FirstOwner { get; set; }
 
         [StringLength(100)]

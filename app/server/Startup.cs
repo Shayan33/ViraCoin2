@@ -62,9 +62,11 @@ namespace server
                 app2.Run(async c =>
                 {
                     c.Response.ContentType = "application/json";
+                    var g=System.Guid.NewGuid();
                     await c.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
                     {
-                        Guid = System.Guid.NewGuid()
+                        Guid = g,
+                        HexString=ToHexString(g.ToByteArray())
                     }));
                 });
             });
@@ -80,6 +82,15 @@ namespace server
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+        }
+        private string ToHexString(byte[] bytes)
+        {
+            var hex = new System.Text.StringBuilder(bytes.Length * 2);
+            foreach (var b in bytes)
+            {
+                hex.AppendFormat("{0:x2}", b);
+            }
+            return hex.ToString();
         }
     }
 }
