@@ -62,15 +62,15 @@ namespace server
                 app2.Run(async c =>
                 {
                     c.Response.ContentType = "application/json";
-                    var g=System.Guid.NewGuid();
+                    var g = System.Guid.NewGuid();
                     await c.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
                     {
                         Guid = g,
-                        HexString=ToHexString(g.ToByteArray())
+                        HexString = ToHexString(g.ToByteArray())
                     }));
                 });
             });
-
+            app.Map("/papi", app2 => app2.UseMvc());
             app.UseMySessions();
 
             app.UseSpa(spa =>

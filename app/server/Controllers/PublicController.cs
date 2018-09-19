@@ -1,0 +1,70 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using server.Models;
+
+namespace server.Controllers
+{
+    [Route("papi/[controller]")]
+    [ApiController]
+    public class PublicController : ControllerBase
+    {
+        private readonly DBContext _context;
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public PublicController(DBContext context, IHostingEnvironment hostingEnvironment)
+        {
+            _context = context;
+            _hostingEnvironment = hostingEnvironment;
+        }
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok(_context.Assets
+                .Where(x => x.ForSale && x.ForSale)
+                .Select(x => new { x.ImgPath, x.Token }));
+        }
+
+        [HttpGet("Down/{id}")]
+        public async Task<IActionResult> File(string id)
+        {
+            if (id == null)
+                return NotFound("filename not present");
+
+            var path = Path.Combine(
+                           _hostingEnvironment.ContentRootPath,
+                           "Files", id);
+
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, GetContentType(path), Path.GetFileName(path));
+        }
+        private string GetContentType(string path)
+        {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types[ext];
+        }
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+            {
+                 {".txt", "text/plain"},
+                {".pdf", "application/pdf"},
+                {".png", "image/png"},
+                {".jpg", "image/jpeg"},
+                {".jpeg", "image/jpeg"}
+            };
+        }
+    }
+}

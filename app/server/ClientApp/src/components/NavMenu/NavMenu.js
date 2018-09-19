@@ -52,14 +52,6 @@ export class NavMenu extends Component {
           <span className='ToolTipeText'>Account</span>
           <ReactTooltip />
         </div>
-        <div onClick={() => this.setState({ IsLogin: !this.state.IsLogin })} className="ToolTipe">
-          <Glyphicon glyph='bell' style={{ marginRight: '5px', marginTop: '3px' }}
-            data-tip="Notifications"
-            data-place="bottom"
-            data-type="light"
-          />
-          <span className='ToolTipeText'>Notifs</span>
-        </div>
       </div> :
       <button onClick={() => this.Login()} className="btn btn-success NewButtons">
         <Glyphicon glyph='user' style={{ marginRight: '5px', marginTop: '3px' }} />Register / Sign In

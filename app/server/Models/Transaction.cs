@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace server.Models
         public Guid ID { get; set; }
 
         public Guid SenderID { get; set; }
+        [JsonIgnore]
         public Account Sender { get; set; }
 
         public Guid? CoinBaseRelatedCoinID { get; set; }

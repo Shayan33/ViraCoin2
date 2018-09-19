@@ -88,6 +88,8 @@ export class Account extends Component {
             <div >
                 <ToastContainer store={ToastStore} position={ToastContainer.POSITION.TOP_RIGHT} />
                 <div className='PopUp'>
+                    <h1>Account</h1>
+                    <hr />
                     <div className='ComponentBaseStyle'>
                         <form onSubmit={this.handleSubmit}>
                             <Grid fluid>
