@@ -41,7 +41,15 @@ export class Submit extends Component {
         'PrivateToken': Statics.GetToken()
       }, body: formData
     })
-      .then(res => res.status === 200 ? res.json() : console.error(res.status))
+      .then(response => {
+        if (response.status === 200) {
+          ToastStore.success('Files uploaded successfully.', 2000);
+          response.json()
+        }
+        else {
+          ToastStore.error('Something went wrong.', 2000);
+        }
+      })
       .then(data => this.setState({ imgPath: this.state.imgPath + ',' + data.data }))
       .catch(err => console.error(err));
   }
@@ -81,6 +89,13 @@ export class Submit extends Component {
         tx: r,
         metaDate: meta
       })
+    }).then(res => {
+      if (res.status === 201) {
+        alert('Changes saved successfully.');
+      }
+      else {
+        alert('Something went wrong.');
+      }
     })
       .catch(err => console.error(err));
   }

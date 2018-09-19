@@ -66,13 +66,13 @@ export class ViraCoinToken {
             else console.error(e);
         });
     }
-    static Issue(IV, Tok, Proud,callback,th,pr,reg,img,meta) {
+    static Issue(IV, Tok, Proud, callback, th, pr, reg, img, meta) {
         ViraCoinToken.ViraToken().IssueNewToken(IV, Tok, Proud,
             { value: NewTokenFee },
             (e, r) => {
                 if (!e) {
                     window.open(EtherScanBaseUrl + r, '_blank');
-                    callback(r,IV,th,pr,reg,img,meta)
+                    callback(r, IV, th, pr, reg, img, meta);
                 }
                 else console.error(e);
             });
