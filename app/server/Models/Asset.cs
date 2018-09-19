@@ -17,11 +17,18 @@ namespace server.Models
         [StringLength(100)]
         public string Data { get; set; }
 
-        public long I1 { get; set; }
-        public long I2 { get; set; }
-        public long I3 { get; set; }
-        public long I4 { get; set; }
+        public ulong I1 { get; set; }
+        public ulong I2 { get; set; }
+        public ulong I3 { get; set; }
+        public ulong I4 { get; set; }
 
+        public void ChunkData()
+        {
+            I1 = ulong.Parse(Token.Substring(0, 16));
+            I2 = ulong.Parse(Token.Substring(16, 16));
+            I3 = ulong.Parse(Token.Substring(32, 16));
+            I4 = ulong.Parse(Token.Substring(46, 16));
+        }
         public DateTime Production { get; set; }
 
         public DateTime Registration { get; set; }
@@ -65,6 +72,8 @@ namespace server.Models
         public string ImgPath7 { get; set; }
         [StringLength(45)]
         public string ImgPath8 { get; set; }
+ 
+        public Transaction CoinBaseTx { get; set; }
 
         public string MetaDate { get; set; }
 

@@ -9,8 +9,8 @@ using server.Models;
 namespace server.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20180916000506_init")]
-    partial class init
+    [Migration("20180917170901_ini")]
+    partial class ini
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,6 +83,14 @@ namespace server.Migrations
 
                     b.Property<bool>("ForSale");
 
+                    b.Property<ulong>("I1");
+
+                    b.Property<ulong>("I2");
+
+                    b.Property<ulong>("I3");
+
+                    b.Property<ulong>("I4");
+
                     b.Property<string>("ImgPath1")
                         .HasMaxLength(45);
 
@@ -129,6 +137,9 @@ namespace server.Migrations
                     b.HasIndex("OWnerID");
 
                     b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.HasIndex("I1", "I2", "I3", "I4")
                         .IsUnique();
 
                     b.ToTable("Assets");

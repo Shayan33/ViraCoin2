@@ -42,5 +42,6 @@ namespace server.Models
         public bool Fa { get; set; }
 
         public ICollection<Asset> Assets { get; set; }
+        public ICollection<Transaction> Transactions { get; set; }
     }
 }

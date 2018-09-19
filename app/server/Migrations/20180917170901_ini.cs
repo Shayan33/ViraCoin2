@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace server.Migrations
 {
-    public partial class init : Migration
+    public partial class ini : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,6 +35,10 @@ namespace server.Migrations
                     ID = table.Column<Guid>(nullable: false),
                     Token = table.Column<string>(maxLength: 100, nullable: true),
                     Data = table.Column<string>(maxLength: 100, nullable: true),
+                    I1 = table.Column<ulong>(nullable: false),
+                    I2 = table.Column<ulong>(nullable: false),
+                    I3 = table.Column<ulong>(nullable: false),
+                    I4 = table.Column<ulong>(nullable: false),
                     Production = table.Column<DateTime>(nullable: false),
                     Registration = table.Column<DateTime>(nullable: false),
                     CurrentOwner = table.Column<string>(maxLength: 100, nullable: true),
@@ -108,6 +112,12 @@ namespace server.Migrations
                 name: "IX_Assets_Token",
                 table: "Assets",
                 column: "Token",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Assets_I1_I2_I3_I4",
+                table: "Assets",
+                columns: new[] { "I1", "I2", "I3", "I4" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

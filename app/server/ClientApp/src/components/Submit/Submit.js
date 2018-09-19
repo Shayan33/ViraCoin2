@@ -13,7 +13,7 @@ export class Submit extends Component {
     var now = new Date();
     this.state = {
       token: '',
-      tokenHexData: '',
+      tokenHash: '',
       data: '',
       production: 0,
       registration: now.toISOString().slice(0, 10),
@@ -29,13 +29,15 @@ export class Submit extends Component {
       imgPath8: '',
       files: [],
       draged: false,
-      full: false
+      full: false,
+      tokenIsOk: true,
+      fileIndex: 0
     }
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     fetch('Guid').then(res => res.json())
       .then(data =>
-        this.setState({ token: data.Guid, tokenHexData: data.HexString })
+        this.setState({ token: data.Guid, tokenHash: data.HexString })
       ).catch(e => console.error(e));
   }
 
@@ -50,10 +52,22 @@ export class Submit extends Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    ViraCoinToken.Issue(this.state.tokenHexData
-      , this.state.tokenHexData,
-      1);
+    let data = Web3s.Hex(this.state.tokenHash);
+    if (this.state.files.length > 0) {
+      data = this.state.data;
+    }
+    ViraCoinToken.Issue(data
+      , this.state.tokenHash,
+      Math.round((new Date(this.state.production)).getTime() / 1000));
 
+  }
+  GetBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
   }
   onDrop = (files) => {
     if (this.state.files.length === 9) {
@@ -62,6 +76,8 @@ export class Submit extends Component {
     }
     files.forEach(f => {
       this.state.files.push(f);
+      this.GetBase64(f).then(x =>
+        this.setState({ data: Web3s.Sha3(this.state.data + x) }));
     });
     this.setState({ draged: true });
   }
@@ -89,7 +105,8 @@ export class Submit extends Component {
           </div>
             : <div></div>
         }
-      </div>
+      </div>;
+    let TokenClass = this.state.tokenIsOk ? "form-control Success" : "form-control Danger";
     return (
       <div >
         <ToastContainer store={ToastStore} position={ToastContainer.POSITION.TOP_RIGHT} />
@@ -102,12 +119,14 @@ export class Submit extends Component {
                     <div className="form-group">
                       <label className="control-label">
                         Token ID
+                        <Glyphicon glyph='refresh' style={{ paddingLeft: '5px', cursor: 'pointer' }}
+                          onClick={() => this.setState({ tokenIsOk: !this.state.tokenIsOk })} />
                       </label>
                       <br />
                       <input type="text"
                         style={{ cursor: 'not-allowed' }}
                         placeholder="Name" value={this.state.token}
-                        onChange={this.handleInputChange} name="token" className="form-control"
+                        onChange={this.handleInputChange} name="token" className={TokenClass}
                         readOnly
                       />
                     </div>

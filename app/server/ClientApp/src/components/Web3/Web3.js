@@ -6,6 +6,7 @@ const ViraCoinCartRopsNetAddress = '0xdc079ca42012a7b6bd3056ec0e3099da2658014';
 var NewTokenFee = 100000000000000000;
 var ShopFee = 1000000000000000;
 var Acc = "null";
+var EtherScanBaseUrl = 'https://ropsten.etherscan.io/tx/';
 export class Web3s {
     static CheckWeb3() {
         if (typeof window.web3 !== 'undefined') {
@@ -38,7 +39,7 @@ export class Web3s {
     static CheckWeb3Initaited() {
         return Web3s.CheckWeb3() && Web3s.CheckMainNet() && Web3s.CheckOnline() && (String(Web3s.GetAccount()) !== 'undefined');
     }
-    static Hex(Data){
+    static Hex(Data) {
         return window.web3.toHex(Data);
     }
     // static Sign() {
@@ -49,6 +50,9 @@ export class Web3s {
     //     });
     //     console.log(JSON.stringify(p));
     // }
+    static Sha3(data){
+        return window.web3.sha3(data);
+    }
 }
 export class ViraCoinToken {
     static ViraToken() {
@@ -58,16 +62,15 @@ export class ViraCoinToken {
     }
     static Fee() {
         ViraCoinToken.ViraToken().Fee((e, r) => {
-            if(!e)alert(r);
+            if (!e) alert(r);
             else console.error(e);
         });
     }
-    static Issue(IV,Tok,Proud){
-        alert(Tok);
-        ViraCoinToken.ViraToken().IssueNewToken(IV,Tok,Proud,
-            {value: 100000000000000000},
-            (e,r)=>{
-                if(!e) alert(r);
+    static Issue(IV, Tok, Proud) {
+        ViraCoinToken.ViraToken().IssueNewToken(IV, Tok, Proud,
+            { value: NewTokenFee },
+            (e, r) => {
+                if (!e) window.open(EtherScanBaseUrl + r, '_blank');
                 else console.error(e);
             });
     }

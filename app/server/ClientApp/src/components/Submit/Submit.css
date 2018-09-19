@@ -26,3 +26,11 @@
     text-align: center;
     background-color: rgba(50, 50, 50, 0.5)
 }
+.Success{
+    border: 1px solid rgb(40, 167, 69);
+    box-shadow: 0 0 4px  rgba(40, 167, 69, 0.4), 0 0 8px 0 rgba(40, 167, 69, 0.3);
+}
+.Danger{
+    border: 1px solid rgb(220, 53, 69);
+    box-shadow: 0 0px 4px 0 rgba(220, 53, 69, 0.4), 0 0px 8px 0 rgba(220, 53, 69, 0.3);
+}

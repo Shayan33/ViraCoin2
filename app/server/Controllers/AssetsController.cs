@@ -25,6 +25,26 @@ namespace server.Controllers
             _context = context;
             _hostingEnvironment = hostingEnvironment;
         }
+        [HttpGet("ISOK/{id}")]
+        public async Task<IActionResult> IsOk(string id)
+        {
+            var a = new Asset()
+            {
+                Token = id
+            };
+            try
+            {
+                a.ChunkData();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+            if (await _context.Assets.AnyAsync(x => x.I1 == a.I1 && x.I2 == a.I2 && x.I3 == a.I3 && x.I4 == a.I4))
+                return Ok();
+            return NotFound();
+        }
+
         [HttpGet("GetAssets/{id}")]
         public async Task<IActionResult> GetAssets([FromRoute] Guid id)
         {

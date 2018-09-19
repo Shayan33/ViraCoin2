@@ -81,13 +81,13 @@ namespace server.Migrations
 
                     b.Property<bool>("ForSale");
 
-                    b.Property<long>("I1");
+                    b.Property<ulong>("I1");
 
-                    b.Property<long>("I2");
+                    b.Property<ulong>("I2");
 
-                    b.Property<long>("I3");
+                    b.Property<ulong>("I3");
 
-                    b.Property<long>("I4");
+                    b.Property<ulong>("I4");
 
                     b.Property<string>("ImgPath1")
                         .HasMaxLength(45);
@@ -176,6 +176,34 @@ namespace server.Migrations
                     b.ToTable("ShopTokens");
                 });
 
+            modelBuilder.Entity("server.Models.Transaction", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("CoinBaseRelatedCoinID");
+
+                    b.Property<bool>("Confirmed");
+
+                    b.Property<string>("Function");
+
+                    b.Property<string>("LogData");
+
+                    b.Property<Guid>("SenderID");
+
+                    b.Property<string>("TxHash")
+                        .HasMaxLength(100);
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CoinBaseRelatedCoinID")
+                        .IsUnique();
+
+                    b.HasIndex("SenderID");
+
+                    b.ToTable("Transactions");
+                });
+
             modelBuilder.Entity("server.Models.Asset", b =>
                 {
                     b.HasOne("server.Models.Account", "Owner")
@@ -189,6 +217,18 @@ namespace server.Migrations
                     b.HasOne("server.Models.Asset", "Asset")
                         .WithOne("InShop")
                         .HasForeignKey("server.Models.ShopTokens", "AssetID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("server.Models.Transaction", b =>
+                {
+                    b.HasOne("server.Models.Asset", "CoinBaseRelatedCoin")
+                        .WithOne("CoinBaseTx")
+                        .HasForeignKey("server.Models.Transaction", "CoinBaseRelatedCoinID");
+
+                    b.HasOne("server.Models.Account", "Sender")
+                        .WithMany("Transactions")
+                        .HasForeignKey("SenderID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
