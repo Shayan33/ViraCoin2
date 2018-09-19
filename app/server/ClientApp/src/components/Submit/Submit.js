@@ -19,14 +19,7 @@ export class Submit extends Component {
       registration: now.toISOString().slice(0, 10),
       currentOwner: Web3s.GetAccount(),
       metaDate: '',
-      imgPath1: '',
-      imgPath2: '',
-      imgPath3: '',
-      imgPath4: '',
-      imgPath5: '',
-      imgPath6: '',
-      imgPath7: '',
-      imgPath8: '',
+      imgPath: '',
       files: [],
       draged: false,
       full: false,
@@ -40,7 +33,18 @@ export class Submit extends Component {
         this.setState({ token: data.Guid, tokenHash: data.HexString })
       ).catch(e => console.error(e));
   }
-
+  UploadFile(formData) {
+    fetch('api/api/Assets/Up', {
+      method: 'POST',
+      headers: {
+        'PubKey': Web3s.GetAccount(),
+        'PrivateToken': Statics.GetToken()
+      }, body: formData
+    })
+      .then(res => res.status === 200 ? res.json() : console.error(res.status))
+      .then(data => this.setState({ imgPath: this.state.imgPath + ',' + data.data }))
+      .catch(err => console.error(err));
+  }
   handleInputChange(event) {
     const target = event.target;
     const value = target.value;
@@ -74,11 +78,14 @@ export class Submit extends Component {
       this.setState({ full: true });
       return;
     }
+    let formData = new FormData();
     files.forEach(f => {
       this.state.files.push(f);
+      formData.append(this.state.files.length, f);
       this.GetBase64(f).then(x =>
         this.setState({ data: Web3s.Sha3(this.state.data + x) }));
     });
+    this.UploadFile(formData);
     this.setState({ draged: true });
   }
   render() {

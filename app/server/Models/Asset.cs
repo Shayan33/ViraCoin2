@@ -56,22 +56,7 @@ namespace server.Models
         public Guid OWnerID { get; set; }
         public Account Owner { get; set; }
 
-        [StringLength(45)]
-        public string ImgPath1 { get; set; }
-        [StringLength(45)]
-        public string ImgPath2 { get; set; }
-        [StringLength(45)]
-        public string ImgPath3 { get; set; }
-        [StringLength(45)]
-        public string ImgPath4 { get; set; }
-        [StringLength(45)]
-        public string ImgPath5 { get; set; }
-        [StringLength(45)]
-        public string ImgPath6 { get; set; }
-        [StringLength(45)]
-        public string ImgPath7 { get; set; }
-        [StringLength(45)]
-        public string ImgPath8 { get; set; }
+        public string ImgPath { get; set; }
  
         public Transaction CoinBaseTx { get; set; }
 

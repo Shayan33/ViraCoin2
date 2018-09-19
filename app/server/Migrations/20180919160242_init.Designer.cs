@@ -9,8 +9,8 @@ using server.Models;
 namespace server.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20180917170901_ini")]
-    partial class ini
+    [Migration("20180919160242_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -91,29 +91,7 @@ namespace server.Migrations
 
                     b.Property<ulong>("I4");
 
-                    b.Property<string>("ImgPath1")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath2")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath3")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath4")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath5")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath6")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath7")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath8")
-                        .HasMaxLength(45);
+                    b.Property<string>("ImgPath");
 
                     b.Property<string>("Issuer")
                         .HasMaxLength(100);
@@ -178,6 +156,34 @@ namespace server.Migrations
                     b.ToTable("ShopTokens");
                 });
 
+            modelBuilder.Entity("server.Models.Transaction", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("CoinBaseRelatedCoinID");
+
+                    b.Property<bool>("Confirmed");
+
+                    b.Property<string>("Function");
+
+                    b.Property<string>("LogData");
+
+                    b.Property<Guid>("SenderID");
+
+                    b.Property<string>("TxHash")
+                        .HasMaxLength(100);
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CoinBaseRelatedCoinID")
+                        .IsUnique();
+
+                    b.HasIndex("SenderID");
+
+                    b.ToTable("Transactions");
+                });
+
             modelBuilder.Entity("server.Models.Asset", b =>
                 {
                     b.HasOne("server.Models.Account", "Owner")
@@ -191,6 +197,18 @@ namespace server.Migrations
                     b.HasOne("server.Models.Asset", "Asset")
                         .WithOne("InShop")
                         .HasForeignKey("server.Models.ShopTokens", "AssetID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("server.Models.Transaction", b =>
+                {
+                    b.HasOne("server.Models.Asset", "CoinBaseRelatedCoin")
+                        .WithOne("CoinBaseTx")
+                        .HasForeignKey("server.Models.Transaction", "CoinBaseRelatedCoinID");
+
+                    b.HasOne("server.Models.Account", "Sender")
+                        .WithMany("Transactions")
+                        .HasForeignKey("SenderID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

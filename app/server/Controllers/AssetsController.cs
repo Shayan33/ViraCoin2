@@ -149,11 +149,11 @@ namespace server.Controllers
         }
 
         [HttpPost("Up"), DisableRequestSizeLimit]
-        public ActionResult UploadFile()
+        public IActionResult UploadFile()
         {
             try
             {
-                StringBuilder sb = new StringBuilder("{");
+                StringBuilder sb = new StringBuilder();
                 short index = 0;
                 foreach (var file in Request.Form.Files)
                 {
@@ -171,7 +171,7 @@ namespace server.Controllers
                     if (file.Length > 0 && file.Length < 2e6)
                     {
                         var Name = Guid.NewGuid().ToString();
-                        sb.Append($"\"{index}\":\"{Name}{fileFromat}\",");
+                        sb.Append($"{Name}{fileFromat},");
                         string fullPath = Path.Combine(newPath, $"{Name}{fileFromat}");
                         using (var stream = new FileStream(fullPath, FileMode.Create))
                         {
@@ -182,8 +182,10 @@ namespace server.Controllers
                     if (index == 8) break;
                 }
                 sb.Remove(sb.Length - 1, 1);
-                sb.Append("}");
-                return Ok(sb.ToString());
+                return Ok(new
+                {
+                    Data = sb.ToString()
+                });
             }
             catch (System.Exception ex)
             {

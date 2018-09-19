@@ -89,29 +89,7 @@ namespace server.Migrations
 
                     b.Property<ulong>("I4");
 
-                    b.Property<string>("ImgPath1")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath2")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath3")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath4")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath5")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath6")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath7")
-                        .HasMaxLength(45);
-
-                    b.Property<string>("ImgPath8")
-                        .HasMaxLength(45);
+                    b.Property<string>("ImgPath");
 
                     b.Property<string>("Issuer")
                         .HasMaxLength(100);
