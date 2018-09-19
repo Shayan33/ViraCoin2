@@ -26,9 +26,9 @@ namespace server.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_context.Assets
-                .Where(x => x.ForSale && x.ForSale)
-                .Select(x => new { x.ImgPath, x.Token }));
+            return Ok(_context.ShopTokens
+                .Include(x => x.Asset)
+                .Select(x => new { x.Asset.ImgPath, x.Asset.Token, x.Asset.Production, x.Price }));
         }
 
         [HttpGet("Down/{id}")]

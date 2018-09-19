@@ -15,14 +15,5 @@ namespace server.Models
         public Asset Asset { get; set; }
 
         public double Price { get; set; }
-
-        public bool Img1 { get; set; }
-        public bool Img2 { get; set; }
-        public bool Img3 { get; set; }
-        public bool Img4 { get; set; }
-        public bool Img5 { get; set; }
-        public bool Img6 { get; set; }
-        public bool Img7 { get; set; }
-        public bool Img8 { get; set; }
     }
 }
