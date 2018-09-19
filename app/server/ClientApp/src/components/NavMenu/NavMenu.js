@@ -28,7 +28,7 @@ export class NavMenu extends Component {
     this.setState({ IsLogin: Statics.NavMenueLogin() });
     history.push('/');
   }
-  UpdatePage(PageName){
+  UpdatePage(PageName) {
     this.setState({ IsLogin: Statics.NavMenueLogin() });
     history.push(PageName);
   }
@@ -92,11 +92,11 @@ export class NavMenu extends Component {
                 <Glyphicon glyph='home' /> Home
               </NavItem>
             </LinkContainer>
-            <LinkContainer to={'/Search'} exact onClick={() => history.push('/Search')}>
+            {/* <LinkContainer to={'/Search'} exact onClick={() => history.push('/Search')}>
               <NavItem>
                 <Glyphicon glyph='search' /> Search
               </NavItem>
-            </LinkContainer>
+            </LinkContainer> */}
             {DashBord1}
             {DashBord2}
             {DashBord3}

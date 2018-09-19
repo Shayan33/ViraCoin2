@@ -125,22 +125,6 @@ namespace server.Migrations
 
                     b.Property<Guid>("AssetID");
 
-                    b.Property<bool>("Img1");
-
-                    b.Property<bool>("Img2");
-
-                    b.Property<bool>("Img3");
-
-                    b.Property<bool>("Img4");
-
-                    b.Property<bool>("Img5");
-
-                    b.Property<bool>("Img6");
-
-                    b.Property<bool>("Img7");
-
-                    b.Property<bool>("Img8");
-
                     b.Property<double>("Price");
 
                     b.HasKey("ID");
@@ -163,6 +147,8 @@ namespace server.Migrations
                     b.Property<string>("Function");
 
                     b.Property<string>("LogData");
+
+                    b.Property<Guid?>("Recipient");
 
                     b.Property<Guid>("SenderID");
 

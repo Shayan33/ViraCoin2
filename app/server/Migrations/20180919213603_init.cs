@@ -69,15 +69,7 @@ namespace server.Migrations
                 {
                     ID = table.Column<Guid>(nullable: false),
                     AssetID = table.Column<Guid>(nullable: false),
-                    Price = table.Column<double>(nullable: false),
-                    Img1 = table.Column<bool>(nullable: false),
-                    Img2 = table.Column<bool>(nullable: false),
-                    Img3 = table.Column<bool>(nullable: false),
-                    Img4 = table.Column<bool>(nullable: false),
-                    Img5 = table.Column<bool>(nullable: false),
-                    Img6 = table.Column<bool>(nullable: false),
-                    Img7 = table.Column<bool>(nullable: false),
-                    Img8 = table.Column<bool>(nullable: false)
+                    Price = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,6 +88,7 @@ namespace server.Migrations
                 {
                     ID = table.Column<Guid>(nullable: false),
                     SenderID = table.Column<Guid>(nullable: false),
+                    Recipient = table.Column<Guid>(nullable: true),
                     CoinBaseRelatedCoinID = table.Column<Guid>(nullable: true),
                     TxHash = table.Column<string>(maxLength: 100, nullable: true),
                     Confirmed = table.Column<bool>(nullable: false),
