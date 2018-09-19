@@ -30,6 +30,8 @@ namespace server.Models
 
         public bool Confirmed { get; set; }
 
+        public TransactionType Type { get; set; }
+
         public string LogData { get; set; }
 
         public string Function { get; set; }

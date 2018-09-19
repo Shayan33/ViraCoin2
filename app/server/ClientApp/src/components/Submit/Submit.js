@@ -58,12 +58,31 @@ export class Submit extends Component {
     event.preventDefault();
     let data = Web3s.Hex(this.state.tokenHash);
     if (this.state.files.length > 0) {
-      data = this.state.data;
+      data = Web3s.Sha3(this.state.data);
     }
     ViraCoinToken.Issue(data
       , this.state.tokenHash,
-      Math.round((new Date(this.state.production)).getTime() / 1000));
-
+      Math.round((new Date(this.state.production)).getTime() / 1000), this.Upload,
+      this.state.tokenHash, this.state.production, this.state.registration, this.state.imgPath, this.state.metaDate);
+  }
+  Upload(r, IV, th, pr, reg, img, meta) {
+    fetch('api/api/Assets', {
+      method: 'POST',
+      headers: {
+        'PubKey': Web3s.GetAccount(),
+        'PrivateToken': Statics.GetToken(),
+        'Content-Type': 'application/json'
+      }, body: JSON.stringify({
+        token: Web3s.Hex(th),
+        data: IV,
+        production: pr,
+        registration: reg,
+        imgPath: img,
+        tx: r,
+        metaDate: meta
+      })
+    })
+      .catch(err => console.error(err));
   }
   GetBase64(file) {
     return new Promise((resolve, reject) => {

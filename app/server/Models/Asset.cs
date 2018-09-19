@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -54,14 +56,21 @@ namespace server.Models
         #endregion
 
         public Guid OWnerID { get; set; }
+
+        [JsonIgnore]
         public Account Owner { get; set; }
 
         public string ImgPath { get; set; }
- 
+
+        [JsonIgnore]
         public Transaction CoinBaseTx { get; set; }
+
+        [NotMapped]
+        public string Tx { get; set; }
 
         public string MetaDate { get; set; }
 
+        [JsonIgnore]
         public ShopTokens InShop { get; set; }
     }
 }

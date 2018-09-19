@@ -99,6 +99,7 @@ namespace server.Migrations
                     CoinBaseRelatedCoinID = table.Column<Guid>(nullable: true),
                     TxHash = table.Column<string>(maxLength: 100, nullable: true),
                     Confirmed = table.Column<bool>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
                     LogData = table.Column<string>(nullable: true),
                     Function = table.Column<string>(nullable: true)
                 },
@@ -134,12 +135,6 @@ namespace server.Migrations
                 name: "IX_Assets_Token",
                 table: "Assets",
                 column: "Token",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Assets_I1_I2_I3_I4",
-                table: "Assets",
-                columns: new[] { "I1", "I2", "I3", "I4" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

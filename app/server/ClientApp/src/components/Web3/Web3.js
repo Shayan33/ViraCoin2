@@ -50,7 +50,7 @@ export class Web3s {
     //     });
     //     console.log(JSON.stringify(p));
     // }
-    static Sha3(data){
+    static Sha3(data) {
         return window.web3.sha3(data);
     }
 }
@@ -66,11 +66,14 @@ export class ViraCoinToken {
             else console.error(e);
         });
     }
-    static Issue(IV, Tok, Proud) {
+    static Issue(IV, Tok, Proud,callback,th,pr,reg,img,meta) {
         ViraCoinToken.ViraToken().IssueNewToken(IV, Tok, Proud,
             { value: NewTokenFee },
             (e, r) => {
-                if (!e) window.open(EtherScanBaseUrl + r, '_blank');
+                if (!e) {
+                    window.open(EtherScanBaseUrl + r, '_blank');
+                    callback(r,IV,th,pr,reg,img,meta)
+                }
                 else console.error(e);
             });
     }

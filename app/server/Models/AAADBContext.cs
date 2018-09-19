@@ -35,11 +35,11 @@ namespace server.Models
                 e.Property(p => p.Data).IsUnicode();
             });
 
-            modelBuilder.Entity<Asset>(e =>
-           {
-               e.HasIndex(p => new { p.I1, p.I2, p.I3, p.I4 }).IsUnique();
+           // modelBuilder.Entity<Asset>(e =>
+           //{
+           //    e.HasIndex(p => new { p.I1, p.I2, p.I3, p.I4 }).IsUnique();
 
-           });
+           //});
         }
     }
 }

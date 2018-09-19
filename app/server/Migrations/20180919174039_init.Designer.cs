@@ -9,7 +9,7 @@ using server.Models;
 namespace server.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20180919160242_init")]
+    [Migration("20180919174039_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -117,9 +117,6 @@ namespace server.Migrations
                     b.HasIndex("Token")
                         .IsUnique();
 
-                    b.HasIndex("I1", "I2", "I3", "I4")
-                        .IsUnique();
-
                     b.ToTable("Assets");
                 });
 
@@ -173,6 +170,8 @@ namespace server.Migrations
 
                     b.Property<string>("TxHash")
                         .HasMaxLength(100);
+
+                    b.Property<int>("Type");
 
                     b.HasKey("ID");
 

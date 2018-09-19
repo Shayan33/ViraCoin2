@@ -121,6 +121,28 @@ namespace server.Controllers
                 return BadRequest(ModelState);
             }
 
+            asset.ID = Guid.NewGuid();
+            //asset.ChunkData();
+            asset.CurrentOwner = HttpContext.Request.Headers["PubKey"].ToString();
+            asset.PrevOwner = string.Empty;
+            asset.FirstOwner = HttpContext.Request.Headers["PubKey"].ToString();
+            asset.Issuer = HttpContext.Request.Headers["PubKey"].ToString();
+            asset.AttorneyOwner = string.Empty;
+            asset.ForSale = false;
+            asset.Available = false;
+            asset.Owner = null;
+            asset.OWnerID = Guid.Parse(HttpContext.Request.Headers["PrivateToken"].ToString());
+            var t = new Transaction()
+            {
+                ID = Guid.NewGuid(),
+                SenderID = asset.OWnerID,
+                CoinBaseRelatedCoinID = asset.ID,
+                TxHash = asset.Tx,
+                Confirmed = false,
+                Type = TransactionType.CoinBase,
+                Function = "Isuue"
+            };
+            _context.Transactions.Add(t);
             _context.Assets.Add(asset);
             await _context.SaveChangesAsync();
 

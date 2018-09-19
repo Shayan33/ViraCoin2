@@ -115,9 +115,6 @@ namespace server.Migrations
                     b.HasIndex("Token")
                         .IsUnique();
 
-                    b.HasIndex("I1", "I2", "I3", "I4")
-                        .IsUnique();
-
                     b.ToTable("Assets");
                 });
 
@@ -171,6 +168,8 @@ namespace server.Migrations
 
                     b.Property<string>("TxHash")
                         .HasMaxLength(100);
+
+                    b.Property<int>("Type");
 
                     b.HasKey("ID");
 
