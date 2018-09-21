@@ -3,6 +3,7 @@ import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
 import { Statics } from '../Statics';
 import { Web3s } from '../Web3/Web3';
 import './Inventory.css';
+import history from '../history';
 export class Inventory extends Component {
     displayName = Inventory.name
     constructor(props) {
@@ -30,7 +31,7 @@ export class Inventory extends Component {
                 <Row>
                     {
                         items.map(i =>
-                            <Col md={3} sm={4} xsm={6} className="InventoryItem">
+                            <Col md={3} sm={4} xsm={6} className="InventoryItem" onClick={() => history.push('/Item/' + String(i.id))}>
                                 <div className={i.available ? "AvailableItem" : "NotAvailableItem"}>
                                     <img src={!i.imgPath.includes(',') ? require('../../img/ethereum.png') : "papi/papi/Public/Down/" + i.imgPath.split(',')[1]} alt="img" className="InventoryImgStyle" />
                                     <div className="InventoryDetailes">
@@ -40,12 +41,11 @@ export class Inventory extends Component {
                                         <br />
                                         <div>
                                             <small style={{ float: 'left' }}>Production Date :</small>
-                                            <small style={{ float: 'right' }}
-                                            >{String(i.production).substr(0, 10)}</small>
+                                            <small style={{ float: 'right' }}>{String(i.production).substr(0, 10)}</small>
                                         </div>
                                         <br />
                                         <div>
-                                            <small style={{ float: 'left' }}>In Shop :</small>
+                                            <small style={{ float: 'left', marginTop: '10px' }}>In Shop :</small>
                                             <small style={{ float: 'right' }}
                                                 className={i.forSale ? 'text-danger' : 'text-success'}
                                             >{i.forSale ? "Yes" : "No"}</small>

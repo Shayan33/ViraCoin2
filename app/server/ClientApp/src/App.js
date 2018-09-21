@@ -11,6 +11,9 @@ import { Transactions } from './components/Transactions/Transactions';
 import { NoMatch } from './components/NoMatch/NoMatch';
 import { Admin } from './components/Admin/Admin';
 import history from './components/history';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 export default class App extends Component {
   displayName = App.name
 
@@ -25,7 +28,7 @@ export default class App extends Component {
                 <Route exact path={'/'} component={Home} />
                 <Route path={'/Account'} component={Account} />
                 <Route path={'/Inventory'} component={Inventory} />
-                <Route path={'/Item'} component={Item} />
+                <Route path={'/Item/:ID'} component={Item} />
                 <Route path={'/Search'} component={Search} />
                 <Route path={'/Submit'} component={Submit} />
                 <Route path={'/Transactions'} component={Transactions} />

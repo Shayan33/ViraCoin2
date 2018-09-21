@@ -51,11 +51,11 @@ namespace server.Controllers
             var Owner = await _context.Accounts
             .Include(x => x.Assets)
             .FirstOrDefaultAsync(x => x.ID == id);
-            if (Owner == null)
+            if (Owner is null)
             {
                 return NotFound();
             }
-            if ((Owner.Assets == null) || (Owner.Assets.Count <= 1)) return NoContent();
+            if ((Owner.Assets is null) || (Owner.Assets.Count < 1)) return NoContent();
             return Ok(Owner.Assets);
         }
         // GET: api/Assets/5

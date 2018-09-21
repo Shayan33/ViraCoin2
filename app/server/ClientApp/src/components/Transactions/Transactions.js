@@ -12,6 +12,10 @@ export class Transactions extends Component {
         return (
             <div className='PopUp'>
                 <h1>Transactions</h1>
+                <hr />
+                <div className='ComponentBaseStyle'>
+                    
+                </div>
             </div>
         );
     }
