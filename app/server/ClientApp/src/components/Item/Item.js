@@ -29,6 +29,44 @@ export class Item extends Component {
         this.handlePriceChange = this.handlePriceChange.bind(this);
         this.Transfer = this.Transfer.bind(this);
         this.Burn = this.Burn.bind(this);
+        this.SetAttorny = this.SetAttorny.bind(this);
+        this.ClearAttorny = this.ClearAttorny.bind(this);
+    }
+    SetAttorny() {
+        var address = prompt("Enter the recipient wallet address.");
+        if (String(address).toUpperCase() === String(Web3s.GetAccount()).toUpperCase()) {
+            alert("This asset is already Yours.")
+        } else {
+            if (Web3s.IsAddress(address)) {
+                ViraCoinToken.SetAttorny(this.state.token, address, this.AttornyServer, this.state.id);
+            } else {
+                alert('Wrong wallet address');
+            }
+        }
+    }
+    ClearAttorny() {
+        ViraCoinToken.ClearAttorny(this.state.token, this.AttornyServer, this.state.id);
+    }
+    AttornyServer(ID, Address) {
+        fetch('api/api/Assets/', {
+            method: 'PATCH',
+            headers: {
+                'PubKey': Web3s.GetAccount(),
+                'PrivateToken': Statics.GetToken(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                attorneyOwner: Address,
+                id: ID
+            })
+        }).then(res => {
+            if (res.status === 200) {
+                alert('Changes saved successfully.');
+            } else {
+                alert('Something went wrong.');
+            }
+        })
+            .catch(err => console.error(err));
     }
     Burn() {
         var res = prompt("Are you sure??!!\r\n type 'YES IM SURE.'");
@@ -260,17 +298,12 @@ export class Item extends Component {
                                         </Col>
                                         <Col md={2}>
                                             <center>
-                                                <input type="submit" className="btn btn-warning" value="Set Attorny" />
+                                                <input type="submit" className="btn btn-warning" value="Set Attorny" onClick={this.SetAttorny} />
                                             </center>
                                         </Col>
                                         <Col md={2}>
                                             <center>
-                                                <input type="submit" className="btn btn-warning" value="pass Attorny" />
-                                            </center>
-                                        </Col>
-                                        <Col md={2}>
-                                            <center>
-                                                <input type="submit" className="btn btn-info" value="clear Attorny" />
+                                                <input type="submit" className="btn btn-info" value="clear Attorny" onClick={this.ClearAttorny} />
                                             </center>
                                         </Col>
                                         <Col md={2}>

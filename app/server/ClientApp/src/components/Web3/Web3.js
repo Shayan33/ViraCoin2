@@ -92,6 +92,7 @@ export class ViraCoinToken {
     static Mine(Tok) {
         ViraCoinToken.ViraToken().GetData(Tok, (e, r) => {
             if (!e) {
+                //if correct slice it for conflict check
                 if (String(r).includes(Tok)) alert('Yours.');
                 else alert('Not Yours.');
             }
@@ -106,5 +107,23 @@ export class ViraCoinToken {
             }
             else console.error(e);
         })
+    }
+    static SetAttorny(Tok, Address, callback, ID) {
+        ViraCoinToken.ViraToken().SetAttorney(Tok, Address, (e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+                callback(ID, Address);
+            }
+            else console.error(e);
+        });
+    }
+    static ClearAttorny(Tok, callback, ID) {
+        ViraCoinToken.ViraToken().ClearAttorney(Tok, (e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+                callback(ID, 'Cls');
+            }
+            else console.error(e);
+        });
     }
 }
