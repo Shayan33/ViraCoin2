@@ -53,6 +53,9 @@ export class Web3s {
     static Sha3(data) {
         return window.web3.sha3(data);
     }
+    static IsAddress(address) {
+        return window.web3.isAddress(address);
+    }
 }
 export class ViraCoinToken {
     static ViraToken() {
@@ -76,5 +79,32 @@ export class ViraCoinToken {
                 }
                 else console.error(e);
             });
+    }
+    static Transfer(Address, Tok, callback, ID, from) {
+        ViraCoinToken.ViraToken().Transfer(Tok, Address, {}, (e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+                callback(ID, from, Address, r);
+            }
+            else console.error(e);
+        })
+    }
+    static Mine(Tok) {
+        ViraCoinToken.ViraToken().GetData(Tok, (e, r) => {
+            if (!e) {
+                if (String(r).includes(Tok)) alert('Yours.');
+                else alert('Not Yours.');
+            }
+            else console.error(e);
+        })
+    }
+    static Burn(Tok, callback, ID) {
+        ViraCoinToken.ViraToken().Burn(Tok, (e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+                callback(ID, r);
+            }
+            else console.error(e);
+        })
     }
 }

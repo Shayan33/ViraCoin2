@@ -67,30 +67,44 @@ namespace server.Controllers
                 return BadRequest(ModelState);
             }
 
-            var asset = await _context.Assets.FindAsync(id);
-
-            if (asset == null)
+            var asset = await _context
+                            .Assets
+                            .Include(x => x.InShop)
+                            .Include(x => x.Owner)
+                            .FirstOrDefaultAsync(x => x.ID == id);
+            if (asset is null)
             {
                 return NotFound();
             }
-
+            if (!asset.Owner.PubKey.Equals(HttpContext.Request.Headers["PubKey"].ToString()))
+                return BadRequest();
             return Ok(asset);
         }
 
         // PUT: api/Assets/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsset([FromRoute] Guid id, [FromBody] Asset asset)
+        public async Task<IActionResult> PutAsset([FromRoute] Guid id, [FromBody] Asset ass)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            if (id != asset.ID)
+            var asset = await _context.Assets.FindAsync(id);
+            var nextOwner = _context.Accounts.FirstOrDefault(x => x.PubKey.Equals(ass.CurrentOwner, StringComparison.OrdinalIgnoreCase));
+            if (asset.CurrentOwner != ass.PrevOwner) return BadRequest();
+            var t = new Transaction()
             {
-                return BadRequest();
-            }
-
+                ID = Guid.NewGuid(),
+                SenderID = asset.OWnerID,
+                Recipient = ass.CurrentOwner,
+                TxHash = ass.Tx,
+                Confirmed = false,
+                Type = TransactionType.Transfer,
+                Function = "Transfer"
+            };
+            if (!(nextOwner is null)) asset.Owner = nextOwner;
+            asset.CurrentOwner = ass.CurrentOwner;
+            asset.PrevOwner = ass.PrevOwner;
             _context.Entry(asset).State = EntityState.Modified;
 
             try
@@ -109,7 +123,7 @@ namespace server.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Assets
@@ -163,7 +177,17 @@ namespace server.Controllers
             {
                 return NotFound();
             }
-
+            var tx = HttpContext.Request.Headers["tx"].ToString();
+            var t = new Transaction()
+            {
+                ID = Guid.NewGuid(),
+                SenderID = asset.OWnerID,
+                TxHash = tx,
+                Confirmed = false,
+                Type = TransactionType.Burn,
+                Function = "Burn"
+            };
+            _context.Transactions.Add(t);
             _context.Assets.Remove(asset);
             await _context.SaveChangesAsync();
 

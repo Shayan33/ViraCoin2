@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -41,7 +42,9 @@ namespace server.Models
 
         public bool Fa { get; set; }
 
+        [JsonIgnore]
         public ICollection<Asset> Assets { get; set; }
+        [JsonIgnore]
         public ICollection<Transaction> Transactions { get; set; }
     }
 }

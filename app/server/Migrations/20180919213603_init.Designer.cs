@@ -150,7 +150,7 @@ namespace server.Migrations
 
                     b.Property<string>("LogData");
 
-                    b.Property<Guid?>("Recipient");
+                    b.Property<string>("Recipient");
 
                     b.Property<Guid>("SenderID");
 

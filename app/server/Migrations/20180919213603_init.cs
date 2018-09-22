@@ -88,7 +88,7 @@ namespace server.Migrations
                 {
                     ID = table.Column<Guid>(nullable: false),
                     SenderID = table.Column<Guid>(nullable: false),
-                    Recipient = table.Column<Guid>(nullable: true),
+                    Recipient = table.Column<string>(nullable: true),
                     CoinBaseRelatedCoinID = table.Column<Guid>(nullable: true),
                     TxHash = table.Column<string>(maxLength: 100, nullable: true),
                     Confirmed = table.Column<bool>(nullable: false),
@@ -104,7 +104,7 @@ namespace server.Migrations
                         column: x => x.CoinBaseRelatedCoinID,
                         principalTable: "Assets",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetDefault);
                     table.ForeignKey(
                         name: "FK_Transactions_Accounts_SenderID",
                         column: x => x.SenderID,

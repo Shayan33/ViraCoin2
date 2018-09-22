@@ -26,6 +26,14 @@ namespace server.Controllers
             return Ok(account);
         }
 
+        [HttpGet("pkg/{ID}")]
+        public IActionResult GetByPubKey([FromRoute] string ID)
+        {
+            var account = context.Accounts.FirstOrDefault(x => x.PubKey.Equals(ID, StringComparison.OrdinalIgnoreCase));
+            if (account == null) return NotFound();
+            return Ok(account);
+        }
+
         [HttpPost("{ID}")]
         public async Task<IActionResult> FillProfile([FromRoute] Guid ID, [FromBody] Account Acc)
         {

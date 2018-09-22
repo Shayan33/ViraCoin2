@@ -24,9 +24,10 @@ namespace server.Models
         [JsonIgnore]
         public Account Sender { get; set; }
 
-        public Guid? Recipient { get; set; }
+        public string Recipient { get; set; }
 
         public Guid? CoinBaseRelatedCoinID { get; set; }
+        [JsonIgnore]
         public Asset CoinBaseRelatedCoin { get; set; }
 
         [StringLength(100)]

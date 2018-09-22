@@ -57,12 +57,10 @@ namespace server.Models
 
         public Guid OWnerID { get; set; }
 
-        [JsonIgnore]
         public Account Owner { get; set; }
 
         public string ImgPath { get; set; }
 
-        [JsonIgnore]
         public Transaction CoinBaseTx { get; set; }
 
         [NotMapped]
@@ -70,7 +68,6 @@ namespace server.Models
 
         public string MetaDate { get; set; }
 
-        [JsonIgnore]
         public ShopTokens InShop { get; set; }
     }
 }
