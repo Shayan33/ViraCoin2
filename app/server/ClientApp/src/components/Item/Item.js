@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
 import { Statics } from '../Statics';
-import { Web3s, ViraCoinToken } from '../Web3/Web3';
+import { Web3s, ViraCoinToken, ViraCoinCart } from '../Web3/Web3';
 import history from '../history';
 import Slider from 'react-slick';
 import './Item.css';
@@ -23,7 +23,8 @@ export class Item extends Component {
             imgPath: '',
             metaDate: '',
             price: 0,
-            id: props.match.params.ID
+            id: props.match.params.ID,
+            puttinginshop: 0
         };
         this.FetchData(props.match.params.ID);
         this.handlePriceChange = this.handlePriceChange.bind(this);
@@ -31,6 +32,24 @@ export class Item extends Component {
         this.Burn = this.Burn.bind(this);
         this.SetAttorny = this.SetAttorny.bind(this);
         this.ClearAttorny = this.ClearAttorny.bind(this);
+        this.PutInShop = this.PutInShop.bind(this);
+    }
+    PutInShop() {
+        if (this.state.puttinginshop === 0) {
+            alert('first you need to set the shop as your asset attorny owner so it can transfer it instead of you...');
+            //          let c = confirm('set ' + ViraCoinCart.GetAddress() + ' as your token attorny??\r once transaction is confirmed in block chain use this button again in order to complete.');
+            // if (c) {
+            ViraCoinToken.SetAttorny(this.state.token, ViraCoinCart.GetAddress(), this.AttornyServer, this.state.id);
+            this.setState({ puttinginshop: 1 });
+            //} else {
+            //    alert('operation canceld');
+            // }
+        } else if (this.state.puttinginshop === 1) {
+            ViraCoinCart.NewAsset(this.state.token, this.state.data, this.state.price, this.shopserver, this.state.id);
+        }
+    }
+    shopserver() {
+
     }
     SetAttorny() {
         var address = prompt("Enter the recipient wallet address.");
@@ -309,7 +328,23 @@ export class Item extends Component {
                                         <Col md={2}>
                                             <center>
                                                 <input type="submit" className="btn btn-warning" value="Put in Shop"
-                                                    onClick={() => ViraCoinToken.Mine(this.state.token)} />
+                                                    onClick={this.PutInShop} />
+                                            </center>
+                                        </Col>
+                                        <Col md={2}>
+                                            <center>
+                                                <input type="submit" className="btn btn-success" value="Check"
+                                                    // onClick={() => ViraCoinToken.Mine(this.state.token)} 
+                                                    onClick={() => ViraCoinToken.AttorneyGet(this.state.token)}
+                                                />
+                                            </center>
+                                        </Col>
+                                        <Col md={2}>
+                                            <center>
+                                                <input type="submit" className="btn btn-success" value="Check"
+                                                    // onClick={() => ViraCoinToken.Mine(this.state.token)} 
+                                                    onClick={() => alert(ViraCoinCart.GetData())}
+                                                />
                                             </center>
                                         </Col>
                                     </div>

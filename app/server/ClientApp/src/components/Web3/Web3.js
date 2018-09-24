@@ -1,12 +1,14 @@
 import { Statics } from '../Statics';
 import { ViraCoinTokenABI } from './ViraCoinTokenABI';
+import { CartABI } from './ViraCoinCartABI';
 import history from '../history';
 const ViraCoinTokenRopsNetAddress = '0x11dfa93fb8d3c35c3472557d5ccbc76dbda289f3';
-const ViraCoinCartRopsNetAddress = '0xdc079ca42012a7b6bd3056ec0e3099da2658014';
+const ViraCoinCartRopsNetAddress = '0x07e8da9301fd94da8ed7b80f6f65e3189a5cc554';
 var NewTokenFee = 100000000000000000;
 var ShopFee = 1000000000000000;
 var Acc = "null";
 var EtherScanBaseUrl = 'https://ropsten.etherscan.io/tx/';
+var LatestTokenData = '';
 export class Web3s {
     static CheckWeb3() {
         if (typeof window.web3 !== 'undefined') {
@@ -41,6 +43,9 @@ export class Web3s {
     }
     static Hex(Data) {
         return window.web3.toHex(Data);
+    }
+    static Ascii(Data) {
+        return window.web3.toAscii(Data);
     }
     // static Sign() {
     //     var p = window.web3.eth.sign(Web3s.GetAccount(),"hamed", (err, res) => {
@@ -125,5 +130,33 @@ export class ViraCoinToken {
             }
             else console.error(e);
         });
+    }
+    static AttorneyGet(Tok) {
+        ViraCoinToken.ViraToken().AttorneyGet(Tok, (e, r) => {
+            if (!e) LatestTokenData = r;
+            else console.error(e);
+        });
+    }
+}
+export class ViraCoinCart {
+    static GetAddress() {
+        return ViraCoinCartRopsNetAddress;
+    }
+    static ViraCart() {
+        var ViraTokenContract = window.web3.eth.contract(CartABI);
+        var instance = ViraTokenContract.at(ViraCoinCartRopsNetAddress);
+        return instance;
+    }
+    static NewAsset(Tok, Data, Price, CallBack, ID) {
+        ViraCoinCart.ViraCart().NewAsset(Tok, Data, Price, { value: ShopFee }, (e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+                CallBack(r, ID);
+            }
+            else console.error(e);
+        })
+    }
+    static GetData() {
+        return LatestTokenData;
     }
 }
