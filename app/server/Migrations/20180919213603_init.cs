@@ -110,7 +110,7 @@ namespace server.Migrations
                         column: x => x.SenderID,
                         principalTable: "Accounts",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(

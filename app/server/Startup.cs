@@ -26,7 +26,7 @@ namespace server
         {
             services.AddDbContext<DBContext>(options =>
             {
-                options.UseSqlite("Data Source=TempDB.db");
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddSingleton<SessionProvider>();
