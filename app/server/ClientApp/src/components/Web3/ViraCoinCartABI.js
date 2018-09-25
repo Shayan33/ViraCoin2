@@ -36,6 +36,62 @@ export const CartABI = [
 		"type": "function"
 	},
 	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "TokenID",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"name": "To",
+				"type": "address"
+			}
+		],
+		"name": "EBuy",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "Withdrawer",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "EWithdrawFunds",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "TokenID",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"name": "Owner",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "Price",
+				"type": "uint256"
+			}
+		],
+		"name": "ENewAsset",
+		"type": "event"
+	},
+	{
 		"constant": false,
 		"inputs": [],
 		"name": "Kill",
@@ -49,10 +105,6 @@ export const CartABI = [
 		"inputs": [
 			{
 				"name": "TokenID",
-				"type": "bytes32"
-			},
-			{
-				"name": "Data",
 				"type": "bytes32"
 			},
 			{
@@ -81,6 +133,26 @@ export const CartABI = [
 		"type": "function"
 	},
 	{
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "fallback"
+	},
+	{
+		"inputs": [
+			{
+				"name": "fee",
+				"type": "uint256"
+			},
+			{
+				"name": "VCTA",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -93,67 +165,6 @@ export const CartABI = [
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "TokenID",
-				"type": "bytes32"
-			},
-			{
-				"indexed": false,
-				"name": "To",
-				"type": "address"
-			}
-		],
-		"name": "EBuy",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "TokenID",
-				"type": "bytes32"
-			},
-			{
-				"indexed": false,
-				"name": "Data",
-				"type": "bytes32"
-			},
-			{
-				"indexed": false,
-				"name": "Owner",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "Price",
-				"type": "uint256"
-			}
-		],
-		"name": "ENewAsset",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "Withdrawer",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "EWithdrawFunds",
-		"type": "event"
 	},
 	{
 		"constant": false,
@@ -190,26 +201,6 @@ export const CartABI = [
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"name": "fee",
-				"type": "uint256"
-			},
-			{
-				"name": "VCTA",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "fallback"
 	},
 	{
 		"constant": true,

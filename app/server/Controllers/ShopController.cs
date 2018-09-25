@@ -55,6 +55,8 @@ namespace server.Controllers
                 return BadRequest(ModelState);
             }
             shopTokens.ID = Guid.NewGuid();
+            var ass = await _context.Assets.FindAsync(shopTokens.AssetID);
+            ass.ForSale = true;
             shopTokens.Asset = null;
             var t = new Transaction()
             {
@@ -65,11 +67,12 @@ namespace server.Controllers
                 Type = TransactionType.PutInShop,
                 Function = "SetAttorny"
             };
+            _context.Entry(ass).State = EntityState.Modified;
             _context.Transactions.Add(t);
             _context.ShopTokens.Add(shopTokens);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetShopTokens", new { id = shopTokens.ID }, shopTokens);
+            return Ok();
         }
 
         // DELETE: api/Shop/5

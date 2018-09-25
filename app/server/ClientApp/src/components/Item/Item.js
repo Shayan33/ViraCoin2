@@ -35,6 +35,10 @@ export class Item extends Component {
         this.PutInShop = this.PutInShop.bind(this);
     }
     PutInShop() {
+        if (this.state.inShop) {
+            alert('alredy in shop!!!');
+            return;
+        }
         if (this.state.puttinginshop === 0) {
             alert('first you need to set the shop as your asset attorny owner so it can transfer it instead of you...');
             //          let c = confirm('set ' + ViraCoinCart.GetAddress() + ' as your token attorny??\r once transaction is confirmed in block chain use this button again in order to complete.');
@@ -44,12 +48,43 @@ export class Item extends Component {
             //} else {
             //    alert('operation canceld');
             // }
-        } else if (this.state.puttinginshop === 1) {
-            ViraCoinCart.NewAsset(this.state.token, this.state.data, this.state.price, this.shopserver, this.state.id);
+        }
+        //else if (this.state.puttinginshop === 1) {
+        //     ViraCoinToken.AttorneyGet(this.state.token);
+        //     this.setState({ puttinginshop: 2 });
+        // } else if (this.state.puttinginshop === 2) {
+        //     let p = String(ViraCoinCart.GetData());
+        //     if (p !== '' && !p.includes('0x08c379a')) {
+        //         this.setState({ puttinginshop: 2 });
+        //     } else alert('the shop is not attorny. w8!!!');
+        // }
+        else if (this.state.puttinginshop === 1) {
+            this.state.price = prompt('enter the price in eth');
+            ViraCoinCart.NewAsset(this.state.token, this.state.price, this.shopserver, this.state.id, Statics.GetToken());
         }
     }
-    shopserver() {
-
+    shopserver(ID, r, p, acc) {
+        fetch('api/api/Shop/', {
+            method: 'POST',
+            headers: {
+                'PubKey': Web3s.GetAccount(),
+                'PrivateToken': Statics.GetToken(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                price: p,
+                assetID: ID,
+                tx: r,
+                account: acc
+            })
+        }).then(res => {
+            if (res.status === 200) {
+                alert('Changes saved successfully.');
+            } else {
+                alert('Something went wrong.');
+            }
+        })
+            .catch(err => console.error(err));
     }
     SetAttorny() {
         var address = prompt("Enter the recipient wallet address.");
@@ -274,7 +309,11 @@ export class Item extends Component {
                                         Attorney Owner
                                     </label>
                                     <br />
-                                    <label className="form-control">{this.state.attorneyOwner.length > 0 ? this.state.attorneyOwner : 'No Attorney'}</label>
+                                    <label className="form-control">{this.state.attorneyOwner.length > 0 ?
+                                        this.state.attorneyOwner.includes(ViraCoinCart.GetAddress().substr(0, 8)) ?
+                                            'Shop' :
+                                            this.state.attorneyOwner
+                                        : 'No Attorney'}</label>
                                 </div>
                             </Col>
                             <Col md={12}>
@@ -329,22 +368,6 @@ export class Item extends Component {
                                             <center>
                                                 <input type="submit" className="btn btn-warning" value="Put in Shop"
                                                     onClick={this.PutInShop} />
-                                            </center>
-                                        </Col>
-                                        <Col md={2}>
-                                            <center>
-                                                <input type="submit" className="btn btn-success" value="Check"
-                                                    // onClick={() => ViraCoinToken.Mine(this.state.token)} 
-                                                    onClick={() => ViraCoinToken.AttorneyGet(this.state.token)}
-                                                />
-                                            </center>
-                                        </Col>
-                                        <Col md={2}>
-                                            <center>
-                                                <input type="submit" className="btn btn-success" value="Check"
-                                                    // onClick={() => ViraCoinToken.Mine(this.state.token)} 
-                                                    onClick={() => alert(ViraCoinCart.GetData())}
-                                                />
                                             </center>
                                         </Col>
                                     </div>

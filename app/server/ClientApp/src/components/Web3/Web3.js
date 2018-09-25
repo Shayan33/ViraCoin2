@@ -3,7 +3,7 @@ import { ViraCoinTokenABI } from './ViraCoinTokenABI';
 import { CartABI } from './ViraCoinCartABI';
 import history from '../history';
 const ViraCoinTokenRopsNetAddress = '0x11dfa93fb8d3c35c3472557d5ccbc76dbda289f3';
-const ViraCoinCartRopsNetAddress = '0x07e8da9301fd94da8ed7b80f6f65e3189a5cc554';
+const ViraCoinCartRopsNetAddress = '0xff20ca396e7fbafe06e879e3950eab5c5834f0e5';
 var NewTokenFee = 100000000000000000;
 var ShopFee = 1000000000000000;
 var Acc = "null";
@@ -46,6 +46,9 @@ export class Web3s {
     }
     static Ascii(Data) {
         return window.web3.toAscii(Data);
+    }
+    static Wei(Data) {
+        return window.web3.toWei(Data);
     }
     // static Sign() {
     //     var p = window.web3.eth.sign(Web3s.GetAccount(),"hamed", (err, res) => {
@@ -147,11 +150,11 @@ export class ViraCoinCart {
         var instance = ViraTokenContract.at(ViraCoinCartRopsNetAddress);
         return instance;
     }
-    static NewAsset(Tok, Data, Price, CallBack, ID) {
-        ViraCoinCart.ViraCart().NewAsset(Tok, Data, Price, { value: ShopFee }, (e, r) => {
+    static NewAsset(Tok, Price, CallBack, ID, acc) {
+        ViraCoinCart.ViraCart().NewAsset(Tok, Price, { value: ShopFee }, (e, r) => {
             if (!e) {
                 window.open(EtherScanBaseUrl + r, '_blank');
-                CallBack(r, ID);
+                CallBack(ID, r, Price, acc);
             }
             else console.error(e);
         })
