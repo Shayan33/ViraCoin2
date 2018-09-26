@@ -33,6 +33,7 @@ export class Item extends Component {
         this.SetAttorny = this.SetAttorny.bind(this);
         this.ClearAttorny = this.ClearAttorny.bind(this);
         this.PutInShop = this.PutInShop.bind(this);
+        this.UpdateFee = this.UpdateFee.bind(this);
     }
     PutInShop() {
         if (this.state.inShop) {
@@ -221,7 +222,7 @@ export class Item extends Component {
                     forSale: data.forSale,
                     imgPath: data.imgPath,
                     metaDate: data.metaDate,
-                    price: data.ForSale ? data.inShop.price : 0,
+                    price: data.forSale ? data.inShop.price : 0,
                 });
                 ViraCoinToken.Mine(this.state.token);
             })
@@ -232,8 +233,71 @@ export class Item extends Component {
             });
 
     }
+    ClearShop() {
+        this.ClearAttorny();
+        fetch('api/api/Shop/' + this.state.id, {
+            method: 'DELETE',
+            headers: {
+                'PubKey': Web3s.GetAccount(),
+                'PrivateToken': Statics.GetToken(),
+            }
+        }).then(res => {
+            if (res.status === 200) {
+                alert('Changes saved successfully.');
+            } else {
+                alert('Something went wrong.');
+            }
+        })
+            .catch(err => console.error(err));
+    }
+    UpdateFee() {
+        var value = prompt('enter new fee in eth');
+        ViraCoinCart.UpdatePrice(this.state.token, value, this.UpdateFeeServer, this.state.id)
+    }
+    UpdateFeeServer(ID, Price, r) {
+        fetch('api/api/Shop/', {
+            method: 'PATCH',
+            headers: {
+                'PubKey': Web3s.GetAccount(),
+                'PrivateToken': Statics.GetToken(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: ID,
+                tx: r,
+                price: Price
+            })
+        }).then(res => {
+            if (res.status === 200) {
+                alert('Changes saved successfully.');
+            } else {
+                alert('Something went wrong.');
+            }
+        })
+            .catch(err => console.error(err));
+    }
     RenderData() {
         let slider = this.RenderSlider(this.state.imgPath);
+        let Shop = this.state.forSale ?
+            <Col md={2}>
+                <center>
+                    <input type="submit" className="btn btn-success" value="Clear from shop"
+                        onClick={() => this.ClearShop()} />
+                </center>
+            </Col> :
+            <Col md={2}>
+                <center>
+                    <input type="submit" className="btn btn-warning" value="Put in Shop"
+                        onClick={this.PutInShop} />
+                </center>
+            </Col>;
+        let UpdateFee = this.state.forSale ?
+            <Col md={2}>
+                <center>
+                    <input type="submit" className="btn btn-warning" value="Put in Shop"
+                        onClick={this.UpdateFee} />
+                </center>
+            </Col> : <div></div>;
         return (
             <div>
                 {slider}
@@ -364,19 +428,15 @@ export class Item extends Component {
                                                 <input type="submit" className="btn btn-info" value="clear Attorny" onClick={this.ClearAttorny} />
                                             </center>
                                         </Col>
-                                        <Col md={2}>
-                                            <center>
-                                                <input type="submit" className="btn btn-warning" value="Put in Shop"
-                                                    onClick={this.PutInShop} />
-                                            </center>
-                                        </Col>
+                                        {Shop}
+                                        {UpdateFee}
                                     </div>
                                 </div>
                             </Col>
                         </Row>
                     </Grid>
                 </div>
-            </div>
+            </div >
         )
     }
     RenderSlider(value) {

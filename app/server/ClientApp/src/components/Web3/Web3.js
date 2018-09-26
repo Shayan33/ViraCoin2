@@ -159,6 +159,15 @@ export class ViraCoinCart {
             else console.error(e);
         })
     }
+    static UpdatePrice(Tok, Price, CallBack, ID) {
+        ViraCoinCart.ViraCart().UpdatePrice(Tok, Price, (e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+                CallBack(ID, Price, r);
+            }
+            else console.error(e);
+        })
+    }
     static GetData() {
         return LatestTokenData;
     }

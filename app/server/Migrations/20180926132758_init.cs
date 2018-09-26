@@ -35,10 +35,10 @@ namespace server.Migrations
                     ID = table.Column<Guid>(nullable: false),
                     Token = table.Column<string>(maxLength: 100, nullable: true),
                     Data = table.Column<string>(maxLength: 100, nullable: true),
-                    I1 = table.Column<ulong>(nullable: false),
-                    I2 = table.Column<ulong>(nullable: false),
-                    I3 = table.Column<ulong>(nullable: false),
-                    I4 = table.Column<ulong>(nullable: false),
+                    I1 = table.Column<decimal>(nullable: false),
+                    I2 = table.Column<decimal>(nullable: false),
+                    I3 = table.Column<decimal>(nullable: false),
+                    I4 = table.Column<decimal>(nullable: false),
                     Production = table.Column<DateTime>(nullable: false),
                     Registration = table.Column<DateTime>(nullable: false),
                     CurrentOwner = table.Column<string>(maxLength: 100, nullable: true),
@@ -104,7 +104,7 @@ namespace server.Migrations
                         column: x => x.CoinBaseRelatedCoinID,
                         principalTable: "Assets",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.SetDefault);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Transactions_Accounts_SenderID",
                         column: x => x.SenderID,
@@ -117,7 +117,8 @@ namespace server.Migrations
                 name: "IX_Accounts_PubKey",
                 table: "Accounts",
                 column: "PubKey",
-                unique: true);
+                unique: true,
+                filter: "[PubKey] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Assets_OWnerID",
@@ -128,7 +129,8 @@ namespace server.Migrations
                 name: "IX_Assets_Token",
                 table: "Assets",
                 column: "Token",
-                unique: true);
+                unique: true,
+                filter: "[Token] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ShopTokens_AssetID",
@@ -140,7 +142,8 @@ namespace server.Migrations
                 name: "IX_Transactions_CoinBaseRelatedCoinID",
                 table: "Transactions",
                 column: "CoinBaseRelatedCoinID",
-                unique: true);
+                unique: true,
+                filter: "[CoinBaseRelatedCoinID] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_SenderID",

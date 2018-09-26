@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using server.Models;
@@ -9,14 +10,16 @@ using server.Models;
 namespace server.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20180919213603_init")]
+    [Migration("20180926132758_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065");
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("server.Models.Account", b =>
                 {
@@ -56,7 +59,8 @@ namespace server.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("PubKey")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[PubKey] IS NOT NULL");
 
                     b.ToTable("Accounts");
                 });
@@ -83,13 +87,17 @@ namespace server.Migrations
 
                     b.Property<bool>("ForSale");
 
-                    b.Property<ulong>("I1");
+                    b.Property<decimal>("I1")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 20, scale: 0)));
 
-                    b.Property<ulong>("I2");
+                    b.Property<decimal>("I2")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 20, scale: 0)));
 
-                    b.Property<ulong>("I3");
+                    b.Property<decimal>("I3")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 20, scale: 0)));
 
-                    b.Property<ulong>("I4");
+                    b.Property<decimal>("I4")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 20, scale: 0)));
 
                     b.Property<string>("ImgPath");
 
@@ -115,7 +123,8 @@ namespace server.Migrations
                     b.HasIndex("OWnerID");
 
                     b.HasIndex("Token")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Token] IS NOT NULL");
 
                     b.ToTable("Assets");
                 });
@@ -162,7 +171,8 @@ namespace server.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("CoinBaseRelatedCoinID")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[CoinBaseRelatedCoinID] IS NOT NULL");
 
                     b.HasIndex("SenderID");
 

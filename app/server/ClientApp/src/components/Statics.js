@@ -6,8 +6,21 @@ var MainNetID = "3";
 export class Statics {
     static IsLogin() {
         var res = Statics.CheckCookie(SignInCookieName, Token);
-        if (!res) history.push('/');
-        return res;
+        if (!res) {
+            history.push('/');
+            return res;
+        } else {
+            fetch('api/api/Account/Login', {
+                method: 'GET',
+                headers: {
+                    'PubKey': Web3s.GetAccount(),
+                    'PrivateToken': Statics.GetToken(),
+                }
+            })
+                .then(r => r.status === 200 ? {} : history.push('/'))
+            //.then(s => alert(s.status));
+            return res;
+        }
     }
     static NavMenueLogin() {
         return Statics.CheckCookie(SignInCookieName, Token);
@@ -35,8 +48,8 @@ export class Statics {
                 }
             }).then(res => {
                 if (res.status === 200) {
-                    Token=res.headers.get('Session');
-                    SignInCookieName=res.headers.get('Cookie');
+                    Token = res.headers.get('Session');
+                    SignInCookieName = res.headers.get('Cookie');
                     Statics.SetCookie(SignInCookieName, Token, 10);
                     setTimeout(
                         function () {
@@ -47,8 +60,8 @@ export class Statics {
                     );
                 }
                 else if (res.status === 201) {
-                    Token=res.headers.get('Session');
-                    SignInCookieName=res.headers.get('Cookie');
+                    Token = res.headers.get('Session');
+                    SignInCookieName = res.headers.get('Cookie');
                     Statics.SetCookie(SignInCookieName, Token, 10);
                     setTimeout(
                         function () {

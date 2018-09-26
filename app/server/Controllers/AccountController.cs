@@ -17,7 +17,11 @@ namespace server.Controllers
         {
             context = _context;
         }
-
+        [HttpGet("Login")]
+        public IActionResult Login()
+        {
+            return Ok();
+        }
         [HttpGet("{ID}")]
         public IActionResult Get([FromRoute]Guid ID)
         {

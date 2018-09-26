@@ -20,10 +20,11 @@ namespace server.Sessions
                   lock (_lock)
                   {
                       var Now = DateTime.Now;
-                      var Temps = _sessions.Where(x => x.Value.Time < Now.AddMinutes(-5));
-                      foreach (var item in Temps)
+                      var Temps = _sessions.Where(x => x.Value.Time < Now.AddMinutes(-5)).ToArray();
+                      for (int i = 0; i < Temps.Length; i++)
                       {
-                          _sessions.Remove(item.Key);
+                          _sessions.Remove(Temps[i].Key);
+                          //Console.WriteLine(Temps[i]);
                       }
                   }
               }, null, TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5));
@@ -70,6 +71,10 @@ namespace server.Sessions
             }
             public string PubKey { get; set; }
             public DateTime Time { get; set; }
+            public override string ToString()
+            {
+                return $"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA{PubKey}-{Time}";
+            }
         }
     }
 }
