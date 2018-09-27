@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
+import history from '../history';
+import { Statics } from '../Statics';
 import './Home.css';
 export class Home extends Component {
   displayName = Home.name
@@ -20,7 +22,10 @@ export class Home extends Component {
         <Row>
           {
             items.map(i =>
-              <Col md={3} sm={4} xsm={6} className="InventoryItem">
+              <Col md={3} sm={4} xsm={6} className="InventoryItem" onClick={() => {
+                Statics.SetShopToken(i);
+                history.push('/Token')
+              }}>
                 <div className={i.available ? "AvailableItem" : "NotAvailableItem"}>
                   <img src={!i.imgPath.includes(',') ? require('../../img/ethereum.png') : "papi/papi/Public/Down/" + i.imgPath.split(',')[1]} alt="img" className="InventoryImgStyle" />
                   <div className="InventoryDetailes">

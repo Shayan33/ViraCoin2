@@ -3,7 +3,15 @@ import history from './history';
 var Token = 'Null';
 var SignInCookieName = 'a';
 var MainNetID = "3";
+
+var ShopToken = '';
 export class Statics {
+    static SetShopToken(Data) {
+        ShopToken = Data;
+    }
+    static GetShopToken() {
+        return ShopToken;
+    }
     static IsLogin() {
         var res = Statics.CheckCookie(SignInCookieName, Token);
         if (!res) {

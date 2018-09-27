@@ -171,4 +171,13 @@ export class ViraCoinCart {
     static GetData() {
         return LatestTokenData;
     }
+    static Buy(Tok, Price, CallBack, ID, NewOwner) {
+        ViraCoinCart.ViraCart().Buy(Tok, { value: Web3s.Wei(Price) }, (e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+                CallBack(ID, NewOwner, r);
+            }
+            else console.error(e);
+        })
+    }
 }

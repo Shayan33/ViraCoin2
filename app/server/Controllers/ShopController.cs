@@ -132,7 +132,43 @@ namespace server.Controllers
 
             return Ok();
         }
-
+        [HttpPut]
+        public async Task<IActionResult> Buy([FromBody] ShopTokens st)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var sh = await _context.ShopTokens
+                .Include(x => x.Asset)
+                    .ThenInclude(y => y.Owner)
+               .FirstOrDefaultAsync(x => x.ID == st.ID);
+            var ow = await _context.Accounts.FindAsync(st.Account);
+            if (sh is null) return NotFound();
+            var t = new Transaction()
+            {
+                ID = Guid.NewGuid(),
+                SenderID = st.Account,
+                TxHash = st.Tx,
+                Confirmed = false,
+                Type = TransactionType.Transfer,
+                Function = "Buy"
+            };
+            _context.Transactions.Add(t);
+            var ass = sh.Asset;
+            ass.PrevOwner = ass.Owner.PubKey;
+            ass.Owner = null;
+            ass.OWnerID = st.Account;
+            ass.ForSale = false;
+            ass.AttorneyOwner = string.Empty;
+            ass.CurrentOwner = ow.PubKey;
+            _context.Entry(ass).State = EntityState.Modified;
+            _context.Assets.Update(ass);
+            _context.Entry(sh).State = EntityState.Deleted;
+            _context.ShopTokens.Remove(sh);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
         private bool ShopTokensExists(Guid id)
         {
             return _context.ShopTokens.Any(e => e.ID == id);

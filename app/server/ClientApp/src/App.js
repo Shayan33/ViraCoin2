@@ -10,6 +10,7 @@ import { Submit } from './components/Submit/Submit';
 import { Transactions } from './components/Transactions/Transactions';
 import { NoMatch } from './components/NoMatch/NoMatch';
 import { Admin } from './components/Admin/Admin';
+import { ShopToken } from './components/ShopToken/ShopToken';
 import history from './components/history';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -33,6 +34,7 @@ export default class App extends Component {
                 <Route path={'/Submit'} component={Submit} />
                 <Route path={'/Transactions'} component={Transactions} />
                 <Route path={'/Admin'} component={Admin} />
+                <Route path={'/Token'} component={ShopToken} />
                 <Route component={NoMatch} />
               </Switch>
             </Router>

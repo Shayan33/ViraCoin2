@@ -294,7 +294,7 @@ export class Item extends Component {
         let UpdateFee = this.state.forSale ?
             <Col md={2}>
                 <center>
-                    <input type="submit" className="btn btn-warning" value="Put in Shop"
+                    <input type="submit" className="btn btn-warning" value="Update Price"
                         onClick={this.UpdateFee} />
                 </center>
             </Col> : <div></div>;

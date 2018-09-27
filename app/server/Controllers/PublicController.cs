@@ -28,9 +28,18 @@ namespace server.Controllers
         {
             return Ok(_context.ShopTokens
                 .Include(x => x.Asset)
-                .Select(x => new { x.Asset.ImgPath, x.Asset.Token, x.Asset.Production, x.Price }));
+                .Select(x => new { x.Asset.ImgPath, x.Asset.Token, x.Asset.Production, x.Price, x.ID }));
         }
-
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetToken([FromRoute]Guid id)
+        {
+            var sh = await _context.ShopTokens
+                .Include(x => x.Asset)
+                .Select(x => new { x.Asset.ImgPath, x.Asset.Token, x.Asset.Production, x.Price, x.ID })
+                .FirstOrDefaultAsync(x => x.ID == id);
+            if (sh is null) return NoContent();
+            return Ok(sh);
+        }
         [HttpGet("Down/{id}")]
         public async Task<IActionResult> File(string id)
         {
