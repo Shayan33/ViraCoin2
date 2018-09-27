@@ -1,4 +1,4 @@
-export const ViraCoinTokenABI=[
+export const ViraCoinTokenABI = [
 	{
 		"constant": true,
 		"inputs": [
@@ -278,6 +278,20 @@ export const ViraCoinTokenABI=[
 			{
 				"name": "",
 				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "Owner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
 			}
 		],
 		"payable": false,
