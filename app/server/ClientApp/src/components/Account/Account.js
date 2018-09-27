@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
 import { ToastContainer, ToastStore } from 'react-toasts';
 import { Statics } from '../Statics';
-import { Web3s } from '../Web3/Web3';
+import { Web3s, ViraCoinCart } from '../Web3/Web3';
 import './Account.css';
 export class Account extends Component {
     displayName = Account.name
@@ -88,7 +88,12 @@ export class Account extends Component {
             <div >
                 <ToastContainer store={ToastStore} position={ToastContainer.POSITION.TOP_RIGHT} />
                 <div className='PopUp'>
-                    <h1>Account</h1>
+                    <h1>
+                        <text style={{ float: 'left' }}>Account</text>
+                        <input type='submit' style={{ float: 'right' }} value='Withdraw Funds' className='btn btn-primary'
+                            onClick={() => ViraCoinCart.WithdrawFunds()} />
+                    </h1>
+                    <br />
                     <hr />
                     <div className='ComponentBaseStyle'>
                         <form onSubmit={this.handleSubmit}>

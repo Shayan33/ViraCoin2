@@ -40,7 +40,7 @@ export class Home extends Component {
                     </div>
                     <br />
                     <div>
-                      <small style={{ float: 'left' }}>Production Date :</small>
+                      <small style={{ float: 'left' }}>Price :</small>
                       <small style={{ float: 'right' }}
                       >{String(i.price)}</small>
                     </div>

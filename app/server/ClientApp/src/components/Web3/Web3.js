@@ -151,7 +151,7 @@ export class ViraCoinCart {
         return instance;
     }
     static NewAsset(Tok, Price, CallBack, ID, acc) {
-        ViraCoinCart.ViraCart().NewAsset(Tok, Price, { value: ShopFee }, (e, r) => {
+        ViraCoinCart.ViraCart().NewAsset(Tok, Web3s.Wei(Price), { value: ShopFee }, (e, r) => {
             if (!e) {
                 window.open(EtherScanBaseUrl + r, '_blank');
                 CallBack(ID, r, Price, acc);
@@ -160,7 +160,7 @@ export class ViraCoinCart {
         })
     }
     static UpdatePrice(Tok, Price, CallBack, ID) {
-        ViraCoinCart.ViraCart().UpdatePrice(Tok, Price, (e, r) => {
+        ViraCoinCart.ViraCart().UpdatePrice(Tok, Web3s.Wei(Price), (e, r) => {
             if (!e) {
                 window.open(EtherScanBaseUrl + r, '_blank');
                 CallBack(ID, Price, r);
@@ -176,6 +176,14 @@ export class ViraCoinCart {
             if (!e) {
                 window.open(EtherScanBaseUrl + r, '_blank');
                 CallBack(ID, NewOwner, r);
+            }
+            else console.error(e);
+        })
+    }
+    static WithdrawFunds() {
+        ViraCoinCart.ViraCart().WithdrawFunds((e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
             }
             else console.error(e);
         })
