@@ -1,0 +1,8 @@
+.AdminItem {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.AdminCol {
+    padding: 5px;
+}
