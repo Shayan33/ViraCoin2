@@ -1,6 +1,12 @@
 footer {
-    background-image: linear-gradient(rgb(57,57,57), rgb(36,36,36));
+    background-image: linear-gradient(rgb(57, 57, 57), rgb(36, 36, 36));
     background-color: #fff;
     color: #fff;
     padding: 10px 20px
+}
+
+.logos {
+    width: 30px;
+    height: 30px;
+    margin-left: 20px;
 }

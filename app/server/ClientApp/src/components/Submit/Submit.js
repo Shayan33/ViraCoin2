@@ -265,7 +265,7 @@ export class Submit extends Component {
                   <Col md={12}>
                     <div className="form-group" style={{ float: 'right' }}>
                       <input type="submit" value="Submit" className="form-control"
-                        className="btn btn-primary"
+                        className="btn btn-primary btnnnn"
                       />
                     </div>
                   </Col>

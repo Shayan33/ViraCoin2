@@ -108,11 +108,13 @@ export class ShopToken extends Component {
                                     </div>
                                 </Col>
                                 <Col md={12}>
-                                    <input type="submit" className="btn btn-primary" value="buy" onClick={() => {
-                                        Statics.IsLogin() ?
-                                            ViraCoinCart.Buy(this.state.token, this.state.price, this.CallBack, this.state.id, Statics.GetToken())
-                                            : alert('you should login to buy!!!')
-                                    }} />
+                                    <input type="submit" className="btn btn-primary btnnnn" value="buy"
+                                        style={{ float: 'right' }}
+                                        onClick={() => {
+                                            Statics.IsLogin() ?
+                                                ViraCoinCart.Buy(this.state.token, this.state.price, this.CallBack, this.state.id, Statics.GetToken())
+                                                : alert('you should login to buy!!!')
+                                        }} />
                                 </Col>
                             </Row>
                         </Grid>
