@@ -63,8 +63,10 @@ contract ViraCoinCart {
             Fee=NewFee;
         }
         
-        function Owner() public view ContractOwner returns(bool){
+        function Owner() public view returns(bool){
+            if(msg.sender == CurrentOwner)
             return true;
+            else return false;
         }
         
         event ENewAsset(bytes32 TokenID,address Owner,uint256 Price);
