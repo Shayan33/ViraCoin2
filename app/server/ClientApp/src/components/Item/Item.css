@@ -3,6 +3,15 @@
     height: 400px;
 }
 
-.AdressLabels{
+.AdressLabels {
     cursor: pointer;
+}
+
+.Btnnn {
+    width: 120px;
+    margin-bottom: 60px;
+}
+
+.BtnContainer {
+    height: 618px;
 }

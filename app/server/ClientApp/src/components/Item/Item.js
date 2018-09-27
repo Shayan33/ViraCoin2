@@ -279,156 +279,164 @@ export class Item extends Component {
     RenderData() {
         let slider = this.RenderSlider(this.state.imgPath);
         let Shop = this.state.forSale ?
-            <Col md={2}>
-                <center>
-                    <input type="submit" className="btn btn-success" value="Clear from shop"
-                        onClick={() => this.ClearShop()} />
-                </center>
-            </Col> :
-            <Col md={2}>
-                <center>
-                    <input type="submit" className="btn btn-warning" value="Put in Shop"
-                        onClick={this.PutInShop} />
-                </center>
-            </Col>;
+            // <Col md={2}>
+            <center>
+                <input type="submit" className="btn btn-success Btnnn" value="Clear from shop"
+                    onClick={() => this.ClearShop()} />
+            </center>
+            // </Col> 
+            :
+            // <Col md={2}>
+            <center>
+                <input type="submit" className="btn btn-warning Btnnn" value="Put in Shop"
+                    onClick={this.PutInShop} />
+            </center>
+            // </Col>
+            ;
         let UpdateFee = this.state.forSale ?
-            <Col md={2}>
-                <center>
-                    <input type="submit" className="btn btn-warning" value="Update Price"
-                        onClick={this.UpdateFee} />
-                </center>
-            </Col> : <div></div>;
+            // <Col md={2}>
+            <center>
+                <input type="submit" className="btn btn-warning Btnnn" value="Update Price"
+                    onClick={this.UpdateFee} />
+            </center>
+            // </Col>
+            :
+            <div></div>
+            ;
         return (
             <div>
                 {slider}
                 <div className='ComponentBaseStyle'>
                     <Grid fluid>
                         <Row>
-                            <Col md={12}>
-                                <div className="form-group">
-                                    <label className="control-label">
-                                        Token
+                            <Col md={10}>
+                                <Col md={12}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Token
                       </label>
-                                    <br />
-                                    <label className="form-control">{this.state.token}</label>
-                                </div>
-                            </Col>
-                            <Col md={12}>
-                                <div className="form-group">
-                                    <label className="control-label">
-                                        Data
+                                        <br />
+                                        <label className="form-control">{this.state.token}</label>
+                                    </div>
+                                </Col>
+                                <Col md={12}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Data
                       </label>
-                                    <br />
-                                    <label className="form-control">{this.state.data}</label>
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="form-group">
-                                    <label className="control-label">
-                                        Production Date
+                                        <br />
+                                        <label className="form-control">{this.state.data}</label>
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Production Date
                       </label>
-                                    <br />
-                                    <label className="form-control">{String(this.state.production).substr(0, 10)}</label>
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="form-group">
-                                    <label className="control-label">
-                                        Registration Date
+                                        <br />
+                                        <label className="form-control">{String(this.state.production).substr(0, 10)}</label>
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Registration Date
                       </label>
-                                    <br />
-                                    <label className="form-control">{String(this.state.registration).substr(0, 10)}</label>
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="form-group">
-                                    <label className="control-label">
-                                        Issuer
+                                        <br />
+                                        <label className="form-control">{String(this.state.registration).substr(0, 10)}</label>
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Issuer
                                     </label>
-                                    <br />
-                                    <label className="form-control">{this.state.issuer}</label>
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="form-group">
-                                    <label className="control-label">
-                                        Pervious Owner
+                                        <br />
+                                        <label className="form-control">{this.state.issuer}</label>
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Pervious Owner
                                     </label>
-                                    <br />
-                                    <label className="form-control">{this.state.prevOwner.length > 0 ? this.state.prevOwner : 'No Pervious Owner'}</label>
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="form-group">
-                                    <label className="control-label">
-                                        Initail Owner
+                                        <br />
+                                        <label className="form-control">{this.state.prevOwner.length > 0 ? this.state.prevOwner : 'No Pervious Owner'}</label>
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Initail Owner
                                     </label>
-                                    <br />
-                                    <label className="form-control">{this.state.firstOwner}</label>
-                                </div>
-                            </Col>
-                            <Col md={6}>
-                                <div className="form-group">
-                                    <label className="control-label">
-                                        Attorney Owner
+                                        <br />
+                                        <label className="form-control">{this.state.firstOwner}</label>
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Attorney Owner
                                     </label>
-                                    <br />
-                                    <label className="form-control">{this.state.attorneyOwner.length > 0 ?
-                                        this.state.attorneyOwner.includes(ViraCoinCart.GetAddress().substr(0, 8)) ?
-                                            'Shop' :
-                                            this.state.attorneyOwner
-                                        : 'No Attorney'}</label>
-                                </div>
-                            </Col>
-                            <Col md={12}>
-                                <div className="form-group">
-                                    <label className="control-label">
-                                        Information
+                                        <br />
+                                        <label className="form-control">{this.state.attorneyOwner.length > 0 ?
+                                            this.state.attorneyOwner.includes(ViraCoinCart.GetAddress().substr(0, 8)) ?
+                                                'Shop' :
+                                                this.state.attorneyOwner
+                                            : 'No Attorney'}</label>
+                                    </div>
+                                </Col>
+                                <Col md={12}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Information
                                     </label>
-                                    <br />
-                                    <textarea value={this.state.metaDate} className="form-control"
-                                        rows={8}
-                                        readOnly
-                                    />
-                                </div>
-                            </Col>
-                            <Col md={12}>
-                                <div className="form-group">
-                                    <label className="control-label">
-                                        Price In Shop
+                                        <br />
+                                        <textarea value={this.state.metaDate} className="form-control"
+                                            rows={8}
+                                            readOnly
+                                        />
+                                    </div>
+                                </Col>
+                                <Col md={12}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Price In Shop
                                         </label>
-                                    <br />
-                                    <label className="form-control">{this.state.price}</label>
-                                </div>
+                                        <br />
+                                        <label className="form-control">{this.state.price}</label>
+                                    </div>
+                                </Col>
                             </Col>
-                            <Col md={12}>
+                            <Col md={2}>
                                 <div className="form-group">
                                     <label className="control-label">
                                         Control Panel
                                         </label>
                                     <br />
-                                    <div className="form-control" style={{ height: '47px' }}>
-                                        <Col md={2}>
-                                            <center>
-                                                <input type="submit" className="btn btn-danger" value="Transfer" onClick={this.Transfer} />
-                                            </center>
-                                        </Col>
-                                        <Col md={2}>
-                                            <center>
-                                                <input type="submit" className="btn btn-danger" value="Destroy" onClick={this.Burn} />
-                                            </center>
-                                        </Col>
-                                        <Col md={2}>
-                                            <center>
-                                                <input type="submit" className="btn btn-warning" value="Set Attorny" onClick={this.SetAttorny} />
-                                            </center>
-                                        </Col>
-                                        <Col md={2}>
-                                            <center>
-                                                <input type="submit" className="btn btn-info" value="clear Attorny" onClick={this.ClearAttorny} />
-                                            </center>
-                                        </Col>
+                                    <div className="form-control BtnContainer">
+                                        {/* <Col md={2}> */}
+                                        <center>
+                                            <input type="submit" className="btn btn-danger Btnnn" value="Transfer" onClick={this.Transfer} />
+                                        </center>
+                                        <br />
+                                        {/* <Col md={2}> */}
+                                        <center>
+                                            <input type="submit" className="btn btn-danger Btnnn" value="Destroy" onClick={this.Burn} />
+                                        </center>
+                                        <br />
+                                        {/* <Col md={2}> */}
+                                        <center>
+                                            <input type="submit" className="btn btn-warning Btnnn" value="Set Attorny" onClick={this.SetAttorny} />
+                                        </center>
+                                        <br />
+                                        {/* <Col md={2}> */}
+                                        <center>
+                                            <input type="submit" className="btn btn-info Btnnn" value="clear Attorny" onClick={this.ClearAttorny} />
+                                        </center>
+                                        <br />
                                         {Shop}
+                                        <br />
                                         {UpdateFee}
                                     </div>
                                 </div>
