@@ -65,9 +65,11 @@ contract ViraCoinToken {
         CurrentOwner=newOwner;
     }
     
-     function Owner() public view ContractOwner returns(bool){
+       function Owner() public view returns(bool){
+            if(msg.sender == CurrentOwner)
             return true;
-     }
+            else return false;
+        }
     
     event EIssueNewToken(address Issuer,address Owner,bytes32 ID,bytes32 Data);
     
