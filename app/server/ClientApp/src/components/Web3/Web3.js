@@ -140,6 +140,49 @@ export class ViraCoinToken {
             else console.error(e);
         });
     }
+    static Owner() {
+        ViraCoinToken.ViraToken().Owner((e, r) => {
+            if (!e) {
+                if (String(r) !== 'true') {
+                    alert('only admin');
+                    history.push('/');
+                }
+            }
+            else console.error(e);
+        });
+    }
+    static Withdraw() {
+        ViraCoinToken.ViraToken().Withdraw((e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+            }
+            else console.error(e);
+        })
+    }
+    static GetFunds() {
+        ViraCoinToken.ViraToken().GetFunds((e, r) => {
+            if (!e) {
+                alert(r);
+            }
+            else console.error(e);
+        })
+    }
+    static UpdateFee(value) {
+        ViraCoinToken.ViraToken().UpdateFee(Web3s.Wei(value), (e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+            }
+            else console.error(e);
+        })
+    }
+    static Kill() {
+        ViraCoinToken.ViraToken().Kill((e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+            }
+            else console.error(e);
+        })
+    }
 }
 export class ViraCoinCart {
     static GetAddress() {
@@ -182,6 +225,38 @@ export class ViraCoinCart {
     }
     static WithdrawFunds() {
         ViraCoinCart.ViraCart().WithdrawFunds((e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+            }
+            else console.error(e);
+        })
+    }
+    static Withdraw() {
+        ViraCoinCart.ViraCart().Withdraw((e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+            }
+            else console.error(e);
+        })
+    }
+    static GetFunds() {
+        ViraCoinCart.ViraCart().GetFunds((e, r) => {
+            if (!e) {
+                alert(r);
+            }
+            else console.error(e);
+        })
+    }
+    static UpdateFee(value) {
+        ViraCoinCart.ViraCart().UpdateFee(Web3s.Wei(value), (e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+            }
+            else console.error(e);
+        })
+    }
+    static Kill() {
+        ViraCoinCart.ViraCart().Kill((e, r) => {
             if (!e) {
                 window.open(EtherScanBaseUrl + r, '_blank');
             }

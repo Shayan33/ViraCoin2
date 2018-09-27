@@ -8,7 +8,32 @@ export class Admin extends Component {
     displayName = Admin.name
     constructor(props) {
         super(props);
-        Statics.IsLogin();
+        ViraCoinToken.Owner();
+
+    }
+    CartUpdateFee() {
+        var newValue = prompt('enter new fund in wei');
+        ViraCoinCart.UpdateFee(newValue);
+    }
+    CartKill() {
+        var res = prompt("Are you sure??!!\r\n type 'YES IM SURE.'");
+        if (String(res) === 'YES IM SURE.') {
+            ViraCoinCart.Kill();
+        } else {
+            alert(res + ' is not correct.');
+        }
+    }
+    TTokenUpdateFee() {
+        var newValue = prompt('enter new fund in wei');
+        ViraCoinToken.UpdateFee(newValue);
+    }
+    TokenKill() {
+        var res = prompt("Are you sure??!!\r\n type 'YES IM SURE.'");
+        if (String(res) === 'YES IM SURE.') {
+            ViraCoinToken.Kill();
+        } else {
+            alert(res + ' is not correct.');
+        }
     }
     render() {
         return (
@@ -22,6 +47,25 @@ export class Admin extends Component {
                                         Vira Token
                                 </h3>
                                     <hr />
+                                    <center>
+                                        <input type='submit' className='btn btn-primary Btnn' value='Withdraw'
+                                            onClick={() => ViraCoinToken.Withdraw()} />
+                                    </center>
+                                    <br />
+                                    <center>
+                                        <input type='submit' className='btn btn-primary Btnn' value='GetFunds'
+                                            onClick={() => ViraCoinToken.GetFunds()} />
+                                    </center>
+                                    <br />
+                                    <center>
+                                        <input type='submit' className='btn btn-warning Btnn' value='UpdateFee'
+                                            onClick={() => this.TTokenUpdateFee()} />
+                                    </center>
+                                    <br />
+                                    <center>
+                                        <input type='submit' className='btn btn-danger Btnn' value='Kill'
+                                            onClick={() => this.TokenKill()} />
+                                    </center>
                                 </div>
                             </Col>
                             <Col md={6} className="AdminCol">
@@ -30,6 +74,25 @@ export class Admin extends Component {
                                         Vira Cart
                                 </h3>
                                     <hr />
+                                    <center>
+                                        <input type='submit' className='btn btn-primary Btnn' value='Withdraw'
+                                            onClick={() => ViraCoinCart.GetFunds()} />
+                                    </center>
+                                    <br />
+                                    <center>
+                                        <input type='submit' className='btn btn-primary Btnn' value='GetFunds'
+                                            onClick={() => ViraCoinCart.GetFunds()} />
+                                    </center>
+                                    <br />
+                                    <center>
+                                        <input type='submit' className='btn btn-warning Btnn' value='UpdateFee'
+                                            onClick={() => this.CartUpdateFee()} />
+                                    </center>
+                                    <br />
+                                    <center>
+                                        <input type='submit' className='btn btn-danger Btnn' value='Kill'
+                                            onClick={() => this.CartKill()} />
+                                    </center>
                                 </div>
                             </Col>
                         </Row>

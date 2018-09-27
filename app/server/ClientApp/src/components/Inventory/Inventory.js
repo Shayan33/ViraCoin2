@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
 import { Statics } from '../Statics';
-import { Web3s } from '../Web3/Web3';
+import { Web3s, ViraCoinToken } from '../Web3/Web3';
 import './Inventory.css';
 import history from '../history';
 export class Inventory extends Component {
