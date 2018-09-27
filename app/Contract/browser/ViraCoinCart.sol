@@ -63,19 +63,23 @@ contract ViraCoinCart {
             Fee=NewFee;
         }
         
-        event ENewAsset(bytes32 TokenID,bytes32 Data,address Owner,uint256 Price);
-        function NewAsset(bytes32 TokenID,bytes32 Data,uint256 Price) public payable CanAdd{
+        function Owner() public view returns(bool){
+            if(msg.sender == CurrentOwner)
+            return true;
+            else return false;
+        }
+        
+        event ENewAsset(bytes32 TokenID,address Owner,uint256 Price);
+        function NewAsset(bytes32 TokenID,uint256 Price) public payable CanAdd{
             require(!Tokens[TokenID].ForSale,"Already In Shop.");
             require(VCT.ApproveAttorney(TokenID),"First set Shop as your asset attorny.");
             require(VCT.GetTokenOwner(TokenID)==msg.sender,"Only Token Owner.");
-            require(VCT.AttorneyGet(TokenID)==Data,"Wrong Data.");
             Tokens[TokenID].TokenID=TokenID;
-            Tokens[TokenID].Data=Data;
             Tokens[TokenID].Owner=msg.sender;
             Tokens[TokenID].Price=Price;
             Tokens[TokenID].Available=true;
             Tokens[TokenID].ForSale=true;
-            emit ENewAsset(TokenID,Data,msg.sender,Price);
+            emit ENewAsset(TokenID,msg.sender,Price);
         }
                 
         function Add(uint256 _a,uint256 _b)internal pure returns(uint256){

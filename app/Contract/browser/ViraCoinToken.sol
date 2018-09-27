@@ -65,6 +65,12 @@ contract ViraCoinToken {
         CurrentOwner=newOwner;
     }
     
+       function Owner() public view returns(bool){
+            if(msg.sender == CurrentOwner)
+            return true;
+            else return false;
+        }
+    
     event EIssueNewToken(address Issuer,address Owner,bytes32 ID,bytes32 Data);
     
     function IssueNewToken(bytes initVector,bytes32 tok,uint256 production/*,uint256 price*/) public  payable CanRegister returns (bytes32){
@@ -249,4 +255,3 @@ contract ViraCoinToken {
         return Tokens[Tok].Data;
     }
 }
-
