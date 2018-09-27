@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
 import './Admin.css';
-import { CartAdmin } from './Cart/CartAdmin';
-import { TokenAdmin } from './Token/TokenAdmin';
 export class Admin extends Component {
     displayName = Admin.name
     constructor(props) {
