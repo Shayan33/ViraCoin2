@@ -35,7 +35,7 @@ export class Home extends Component {
                     <small className="OverFlowwText">{String(i.token).substr(0, 16)}...</small>
                     <br />
                     <div>
-                      <small style={{ float: 'left' }}>Production Date :</small>
+                      <small style={{ float: 'left' }}>Prod:</small>
                       <small style={{ float: 'right' }}
                       >{String(i.production).substr(0, 10)}</small>
                     </div>
