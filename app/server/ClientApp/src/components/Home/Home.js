@@ -3,6 +3,7 @@ import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
 import history from '../history';
 import { Statics } from '../Statics';
 import './Home.css';
+import Slider from 'react-slick';
 export class Home extends Component {
   displayName = Home.name
   constructor(props) {
@@ -27,7 +28,7 @@ export class Home extends Component {
                 history.push('/Token')
               }}>
                 <div className={i.available ? "AvailableItem" : "NotAvailableItem"}>
-                  <img src={!i.imgPath.includes(',') ? require('../../img/ethereum.png') : "papi/papi/Public/Down/" + i.imgPath.split(',')[1]} alt="img" className="InventoryImgStyle" />
+                  <img src={!i.imgPath.includes(',') ? require('../../img/noimg.png') : "papi/papi/Public/Down/" + i.imgPath.split(',')[1]} alt="img" className="InventoryImgStyle" />
                   <div className="InventoryDetailes">
                     <small>Token ID:</small>
                     <br />
@@ -53,12 +54,30 @@ export class Home extends Component {
     );
   }
   render() {
+    let settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      accessibility: true,
+      adaptiveHeight: true,
+      autoplay: true,
+      pauseOnDotsHover: true,
+      pauseOnFocus: true
+    };
     let content = this.renderData(this.state.items);
     return (
       <div className="PopUp">
-        <h1>Home</h1>
-        <hr />
-        <div className='ComponentBaseStyle'>
+        <Slider {...settings}>
+          <div>
+            <img src={require('../../img/back.jpg')} className="ImageClass" />
+          </div>
+          <div>
+            <img src={require('../../img/png.png')} className="ImageClass" />
+          </div>
+        </Slider>
+        <div className="ComponentBaseStyle">
           {content}
         </div>
       </div>

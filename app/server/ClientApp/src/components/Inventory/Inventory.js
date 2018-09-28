@@ -33,7 +33,7 @@ export class Inventory extends Component {
                         items.map(i =>
                             <Col md={3} sm={4} xsm={6} className="InventoryItem" onClick={() => history.push('/Item/' + String(i.id))}>
                                 <div className={i.available ? "AvailableItem" : "NotAvailableItem"}>
-                                    <img src={!i.imgPath.includes(',') ? require('../../img/ethereum.png') : "papi/papi/Public/Down/" + i.imgPath.split(',')[1]} alt="img" className="InventoryImgStyle" />
+                                    <img src={!i.imgPath.includes(',') ? require('../../img/noimg.png') : "papi/papi/Public/Down/" + i.imgPath.split(',')[1]} alt="img" className="InventoryImgStyle" />
                                     <div className="InventoryDetailes">
                                         <small>Token ID:</small>
                                         <br />

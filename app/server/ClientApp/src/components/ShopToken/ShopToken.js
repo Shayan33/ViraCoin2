@@ -33,9 +33,9 @@ export class ShopToken extends Component {
             pauseOnFocus: true
         };
         if (value === undefined) return (
-            <img src={require('../../img/ethereum.png')} className="ImageClass" />);
+            <img src={require('../../img/noimg2.png')} className="ImageClass" />);
         else if (!value.includes(',')) return (
-            <img src={require('../../img/ethereum.png')} className="ImageClass" />);
+            <img src={require('../../img/noimg2.png')} className="ImageClass" />);
         else {
             var p = value.split(',');
             p.shift();
