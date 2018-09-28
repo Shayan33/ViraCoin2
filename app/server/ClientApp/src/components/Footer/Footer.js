@@ -37,8 +37,12 @@ export class Footer extends Component {
                                     <h3>Follow US</h3>
                                     <hr />
                                     <div style={{ float: 'right' }}>
-                                        <img src={require('../../img/twitter.svg')} alt='twitter' className="logos" />
-                                        <img src={require('../../img/telegram.svg')} alt='telegram' className="logos" />
+                                        <img src={require('../../img/twitter.svg')} alt='twitter' className="logos"
+                                            onClick={() => window.location.href = 'google.com'}
+                                        />
+                                        <img src={require('../../img/telegram.svg')} alt='telegram' className="logos"
+                                            onClick={() => window.location.href = 'google.com'}
+                                        />
                                     </div>
                                 </Col>
                             </Row>
