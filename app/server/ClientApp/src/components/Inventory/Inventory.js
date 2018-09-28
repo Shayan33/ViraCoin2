@@ -44,8 +44,8 @@ export class Inventory extends Component {
                                             <small style={{ float: 'right' }}>{String(i.production).substr(0, 10)}</small>
                                         </div>
                                         <br />
-                                        <div>
-                                            <small style={{ float: 'left', marginTop: '10px' }}>In Shop :</small>
+                                        <div style={{ marginTop: '10px' }}>
+                                            <small style={{ float: 'left' }}>In Shop :</small>
                                             <small style={{ float: 'right' }}
                                                 className={i.forSale ? 'text-danger' : 'text-success'}
                                             >{i.forSale ? "Yes" : "No"}</small>

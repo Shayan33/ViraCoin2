@@ -40,10 +40,9 @@ export class Home extends Component {
                       >{String(i.production).substr(0, 10)}</small>
                     </div>
                     <br />
-                    <div>
+                    <div style={{ marginTop: '10px' }}>
                       <small style={{ float: 'left' }}>Price :</small>
-                      <small style={{ float: 'right' }}
-                      >{String(i.price)}</small>
+                      <small style={{ float: 'right' }}>{String(i.price)} Eth</small>
                     </div>
                   </div>
                 </div>
@@ -55,7 +54,7 @@ export class Home extends Component {
   }
   render() {
     let settings = {
-      dots: true,
+      dots: false,
       infinite: true,
       speed: 500,
       slidesToShow: 1,

@@ -404,7 +404,7 @@ export class Item extends Component {
                                             Price In Shop
                                         </label>
                                         <br />
-                                        <label className="form-control">{this.state.price}</label>
+                                        <label className="form-control">{this.state.price} Eth</label>
                                     </div>
                                 </Col>
                             </Col>
