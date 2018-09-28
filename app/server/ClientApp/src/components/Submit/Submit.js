@@ -43,6 +43,9 @@ export class Submit extends Component {
     }
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.GetGuid();
+  }
+  GetGuid() {
     fetch('Guid').then(res => res.json())
       .then(data =>
         this.setState({
@@ -50,6 +53,33 @@ export class Submit extends Component {
           tokenHash: data.HexString
         })
       ).catch(e => console.error(e));
+    setTimeout(
+      function () {
+        this.CheckGuid();
+      }
+        .bind(this),
+      500
+    );
+  }
+  CheckGuid() {
+    fetch('CheckGuid',
+      {
+        method: 'GET',
+        headers: {
+          'data': this.state.token
+        }
+      })
+      .then(res => res.json())
+      .then(d => d.status === "Ok" ?
+        this.setState({
+          tokenHash: d.HexString,
+          tokenIsOk: true
+        }) :
+        this.setState({
+          tokenIsOk: false
+        }))
+      //.then(d => alert(d.status))
+      .catch(e => console.error(e));
   }
   UploadFile(formData) {
     fetch('api/api/Assets/Up', {
@@ -59,7 +89,13 @@ export class Submit extends Component {
         'PrivateToken': Statics.GetToken()
       },
       body: formData
-    }).then(r => r.json())
+    })
+      .then(r => r.json())
+      // .then(r => {
+      //   r.json();
+      //   r.status === 200 ? ToastStore.success('Files uploaded successfully.', 2000)
+      //     : ToastStore.error('Something went wrong.', 2000);
+      // })
       // .then(response => {
       //   if (response.status === 200) {
       //     ToastStore.success('Files uploaded successfully.', 2000);
@@ -78,20 +114,29 @@ export class Submit extends Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-
+    if (String(name)) setTimeout(
+      function () {
+        this.CheckGuid();
+      }
+        .bind(this),
+      500
+    );
     this.setState({
       [name]: value
     });
   }
   handleSubmit(event) {
     event.preventDefault();
-    let data = Web3s.Hex(this.state.tokenHash);
-    if (this.state.files.length > 0) {
-      data = Web3s.Sha3(this.state.data);
+    if (this.state.tokenIsOk) {
+      let data = Web3s.Hex(this.state.tokenHash);
+      if (this.state.files.length > 0) {
+        data = Web3s.Sha3(this.state.data);
+      }
+      ViraCoinToken.Issue(data, this.state.tokenHash,
+        Math.round((new Date(this.state.production)).getTime() / 1000), this.Upload,
+        this.state.tokenHash, this.state.production, this.state.registration, this.state.imgPath, this.state.metaDate);
     }
-    ViraCoinToken.Issue(data, this.state.tokenHash,
-      Math.round((new Date(this.state.production)).getTime() / 1000), this.Upload,
-      this.state.tokenHash, this.state.production, this.state.registration, this.state.imgPath, this.state.metaDate);
+    else alert('Wrong Token ID.');
   }
   Upload(r, IV, th, pr, reg, img, meta) {
     fetch('api/api/Assets', {
@@ -189,14 +234,13 @@ export class Submit extends Component {
                       <label className="control-label">
                         Token ID
                         <Glyphicon glyph='refresh' style={{ paddingLeft: '5px', cursor: 'pointer' }}
-                          onClick={() => this.setState({ tokenIsOk: !this.state.tokenIsOk })} />
+                          onClick={() => this.GetGuid()} />
                       </label>
                       <br />
                       <input type="text"
-                        style={{ cursor: 'not-allowed' }}
                         placeholder="Name" value={this.state.token}
                         onChange={this.handleInputChange} name="token" className={TokenClass}
-                        readOnly
+
                       />
                     </div>
                     <div className="form-group">

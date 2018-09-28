@@ -70,6 +70,56 @@ namespace server
                     }));
                 });
             });
+            app.Map("/CheckGuid", app2 =>
+            {
+                app2.Run(async c =>
+                {
+                    if (c.Request.Headers.ContainsKey("data"))
+                    {
+                        var data = c.Request.Headers["data"].ToString();
+                        if (System.Guid.TryParse(data, out var g))
+                        {
+                            var db = c.RequestServices.GetRequiredService<DBContext>();
+                            var p = await db.Assets.FindAsync(g);
+                            if (p is null)
+                            {
+                                c.Response.StatusCode = 200;
+                                await c.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                                {
+                                    status = "Ok",
+                                    HexString = ToHexString(g.ToByteArray())
+                                }));
+                            }
+                            else
+                            {
+                                c.Response.StatusCode = 400;
+                                await c.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                                {
+                                    status = "Bad",
+                                    HexString = ToHexString(g.ToByteArray())
+                                }));
+                            }
+                        }
+                        else
+                        {
+                            c.Response.StatusCode = 400;
+                            await c.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                            {
+                                status = "Bad",
+                                HexString = ToHexString(g.ToByteArray())
+                            }));
+                        }
+                    }
+                    else
+                    {
+                        c.Response.StatusCode = 400;
+                        await c.Response.WriteAsync(Newtonsoft.Json.JsonConvert.SerializeObject(new
+                        {
+                            status = "Bad"
+                        }));
+                    }
+                });
+            });
             app.Map("/papi", app2 => app2.UseMvc());
             app.UseMySessions();
 
