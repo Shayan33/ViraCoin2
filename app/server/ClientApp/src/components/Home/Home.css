@@ -1,0 +1,100 @@
+canvas {
+    display: block;
+    vertical-align: bottom;
+}
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+/* background-color: #116466; */
+
+.HomeBack {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.NavBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: 10000;
+}
+
+.NavBar2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 50px;
+    background-color: rgb(17, 100, 102);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index: 10000;
+}
+
+.NavItems1 {
+    margin-top: 20px;
+    font-size: 15px;
+}
+
+.NavItems2 {
+    margin-top: 18px;
+    font-size: 13px;
+}
+
+.NavItem {
+    color: white;
+    margin: 20px;
+}
+
+.NavItem:hover {
+    cursor: pointer;
+    color: whitesmoke;
+    text-decoration: unset;
+    padding-bottom: 3px;
+}
+
+.Seperator {
+    margin-top: 100vh;
+}
+
+.BaseComponentClass {
+    padding-top: 60px;
+    height: 100vh;
+}
+
+.LogoText {
+    margin-right: 60px;
+    font-weight: bold;
+    color: white;
+    font-size: 20px;
+}
+
+.Logo {
+    margin-top: -20px;
+    width: 50px;
+    height: 45px;
+    margin-right: 5px;
+}
+
+.SendAndFunds {
+    margin-top: 5px;
+    color: white;
+    text-align: right;
+    float: right;
+}

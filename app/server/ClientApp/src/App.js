@@ -13,17 +13,14 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <div className='BackgroundImage'></div>
-        <div className='Content'>
-          <Layout>
-            <Router history={history}>
-              <Switch>
-                <Route exact path={'/'} component={Home} />
-                <Route component={NoMatch} />
-              </Switch>
-            </Router>
-          </Layout>
-        </div>
+        <Layout>
+          <Router history={history}>
+            <Switch>
+              <Route exact path={'/'} component={Home} />
+              <Route component={NoMatch} />
+            </Switch>
+          </Router>
+        </Layout>
       </div>
     );
   }

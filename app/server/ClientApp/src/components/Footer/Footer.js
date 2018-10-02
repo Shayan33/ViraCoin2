@@ -6,6 +6,8 @@ export class Footer extends Component {
     render() {
         return (
             <div>
+
+
                 <footer>
                     <div style={{ padding: '5px' }}>
                         <Grid fluid>
