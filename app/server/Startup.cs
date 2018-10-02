@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using server.Models;
-using server.Sessions;
+
 
 namespace server
 {
@@ -117,6 +117,8 @@ namespace server
                     }
                 });
             });
+
+            app.UseMvc();
 
             app.UseSpa(spa =>
             {
