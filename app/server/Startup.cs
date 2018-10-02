@@ -29,7 +29,6 @@ namespace server
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddSingleton<SessionProvider>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -50,10 +49,8 @@ namespace server
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -120,8 +117,6 @@ namespace server
                     }
                 });
             });
-            app.Map("/papi", app2 => app2.UseMvc());
-            app.UseMySessions();
 
             app.UseSpa(spa =>
             {
