@@ -15,7 +15,6 @@ contract ViraTokens {
     bool InitatingPhase;    
     
     mapping(address => uint)  Balances;
-    mapping(address=>bool) IsSharedOwner;
     
         
     string public constant name= "Vira Coin";
@@ -135,7 +134,6 @@ contract ViraTokens {
     function transfer(address _to,uint256 value)public Initiated {
         require(value>0,"no negetive coins allowed.");
         require(Balances[msg.sender]>=value,"insufficient funds.");
-        require(IsSharedOwner[_to],"You cant transfer any token to this account.");
         Balances[msg.sender]=Sub(Balances[msg.sender],value);
         Balances[_to]=Add(Balances[_to],value);
     }
@@ -143,19 +141,15 @@ contract ViraTokens {
     function ICO(address recipient,uint256 value)public ContractOwner Initiated {
         require(Add(SpentSupply,value)<=totalSupply,"insufficient funds.");
         require(value>0,"no negetive coins allowed.");
-        require(!IsSharedOwner[recipient],"already exists.");
         SpentSupply=Add(SpentSupply,value);
-        IsSharedOwner[recipient]=true;
         Balances[recipient]=value;
     }
     
     function ICOAdd(address recipient,uint256 value)public ContractOwner Initiated{
         require(Add(SpentSupply,value)<=totalSupply,"insufficient funds.");
         require(value>0,"no negetive coins allowed.");
-        require(IsSharedOwner[recipient],"You cant transfer any token to this account.");
         SpentSupply=Add(SpentSupply,value);
         Balances[recipient]=Add(Balances[recipient],value);
-        
     }
 
 }
