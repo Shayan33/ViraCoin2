@@ -15,6 +15,7 @@
     "react-toasts": "^2.0.13",
     "react-tooltip": "^3.8.2",
     "rimraf": "^2.6.2",
+    "react-scroll": "^1.7.10",
     "slick-carousel": "^1.8.1"
   },
   "scripts": {

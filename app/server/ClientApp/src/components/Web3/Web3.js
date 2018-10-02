@@ -154,7 +154,7 @@ export class ViraICO {
         })
     }
     static InitiatingIsOver(CallBack) {
-        ViraICO.ViraICO().InitiatingIsOver(no, (e, r) => {
+        ViraICO.ViraICO().InitiatingIsOver((e, r) => {
             if (!e) {
                 window.open(EtherScanBaseUrl + r, '_blank');
                 CallBack();
@@ -218,7 +218,7 @@ export class ViraICO {
                     CallBack(r);
                 }
                 else console.error(e);
-        });
+            });
     }
     //#endregion
 }

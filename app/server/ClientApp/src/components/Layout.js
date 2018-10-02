@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { NavMenu } from './NavMenu/NavMenu';
 import { Glyphicon } from 'react-bootstrap';
 import { Footer } from './Footer/Footer';
-import { Header } from './Header/Header';
 import { Web3s } from './Web3/Web3';
 export class Layout extends Component {
   displayName = Layout.name
@@ -70,7 +69,6 @@ export class Layout extends Component {
     return (
       <div>
         <NavMenu />
-        <Header />
         {Content}
         <Footer />
       </div>
