@@ -38,13 +38,13 @@ namespace server.Models
         [StringLength(30)]
         public string OfficeNumber { get; set; }
 
+        [StringLength(399)]
         public string Address { get; set; }
 
-        public bool Fa { get; set; }
+        [StringLength(20)]
+        public string PersonalID { get; set; }
 
-        [JsonIgnore]
-        public ICollection<Asset> Assets { get; set; }
-        [JsonIgnore]
-        public ICollection<Transaction> Transactions { get; set; }
+        [StringLength(10)]
+        public string IDPic { get; set; }
     }
 }

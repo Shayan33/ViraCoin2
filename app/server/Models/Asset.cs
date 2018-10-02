@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace server.Models
 {
@@ -33,31 +29,11 @@ namespace server.Models
         }
         public DateTime Production { get; set; }
 
-        public DateTime Registration { get; set; }
-
-        [StringLength(100)]
-        public string CurrentOwner { get; set; }
-
-        [StringLength(100)]
-        public string PrevOwner { get; set; }
-
-        [StringLength(100)]
-        public string FirstOwner { get; set; }
-
-        [StringLength(100)]
-        public string Issuer { get; set; }
-
-        [StringLength(100)]
-        public string AttorneyOwner { get; set; }
+        public int No { get; set; }
 
         public bool Available { get; set; }
 
-        public bool ForSale { get; set; }
         #endregion
-
-        public Guid OWnerID { get; set; }
-
-        public Account Owner { get; set; }
 
         public string ImgPath { get; set; }
 
@@ -68,6 +44,5 @@ namespace server.Models
 
         public string MetaDate { get; set; }
 
-        public ShopTokens InShop { get; set; }
     }
 }

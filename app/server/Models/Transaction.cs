@@ -11,20 +11,18 @@ namespace server.Models
     {
         CoinBase,
         Transfer,
-        Burn,
-        PutInShop,
-        RemoveFromShop
+        ICO
     }
     public class Transaction
     {
         [Key]
         public Guid ID { get; set; }
 
-        public Guid SenderID { get; set; }
-        [JsonIgnore]
-        public Account Sender { get; set; }
+        [StringLength(50)]
+        public string SenderPubKey { get; set; }
 
-        public string Recipient { get; set; }
+        [StringLength(50)]
+        public string RecipientPubKey { get; set; }
 
         public Guid? CoinBaseRelatedCoinID { get; set; }
         [JsonIgnore]
@@ -36,9 +34,5 @@ namespace server.Models
         public bool Confirmed { get; set; }
 
         public TransactionType Type { get; set; }
-
-        public string LogData { get; set; }
-
-        public string Function { get; set; }
     }
 }
