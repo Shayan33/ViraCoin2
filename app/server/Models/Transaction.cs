@@ -31,8 +31,7 @@ namespace server.Models
         [StringLength(100)]
         public string TxHash { get; set; }
 
-        public bool Confirmed { get; set; }
-
         public TransactionType Type { get; set; }
+
     }
 }

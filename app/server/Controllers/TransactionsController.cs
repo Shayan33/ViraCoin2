@@ -27,99 +27,25 @@ namespace server.Controllers
             return _context.Transactions;
         }
 
-        // GET: api/Transactions/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetTransaction([FromRoute] Guid id)
+        public async Task<IActionResult> GetByPubKey(string id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var transaction = await _context.Transactions.FindAsync(id);
-
-            if (transaction == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(transaction);
+            var TXs = await _context.Transactions
+                .Where(x => x.SenderPubKey == id || x.RecipientPubKey == id)
+                .ToListAsync();
+            if (TXs is null) return NotFound();
+            return Ok(TXs);
         }
 
-        // PUT: api/Transactions/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTransaction([FromRoute] Guid id, [FromBody] Transaction transaction)
+        [HttpGet("CoinBases")]
+        public async Task<IActionResult> GetByPubKey()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != transaction.ID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(transaction).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TransactionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var TXs = await _context.Transactions
+                .Where(x => x.Type == TransactionType.CoinBase)
+                .ToListAsync();
+            if (TXs is null) return NotFound();
+            return Ok(TXs);
         }
 
-        // POST: api/Transactions
-        [HttpPost]
-        public async Task<IActionResult> PostTransaction([FromBody] Transaction transaction)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _context.Transactions.Add(transaction);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetTransaction", new { id = transaction.ID }, transaction);
-        }
-
-        // DELETE: api/Transactions/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTransaction([FromRoute] Guid id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var transaction = await _context.Transactions.FindAsync(id);
-            if (transaction == null)
-            {
-                return NotFound();
-            }
-
-            _context.Transactions.Remove(transaction);
-            await _context.SaveChangesAsync();
-
-            return Ok(transaction);
-        }
-
-        private bool TransactionExists(Guid id)
-        {
-            return _context.Transactions.Any(e => e.ID == id);
-        }
     }
 }

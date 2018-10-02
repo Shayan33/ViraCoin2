@@ -83,7 +83,6 @@ namespace server.Controllers
                 RecipientPubKey=string.Empty,
                 CoinBaseRelatedCoinID = asset.ID,
                 TxHash = asset.Tx,
-                Confirmed = false,
                 Type = TransactionType.CoinBase,
             };
             _context.Transactions.Add(t);
