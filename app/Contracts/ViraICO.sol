@@ -125,9 +125,9 @@ contract ViraTokens {
         CurrentOwner=msg.sender;
     }
     
-    function balanceOf(address _tokenHolder) public view returns (uint256) { 
-        return Balances[_tokenHolder]; 
-    }
+    // function balanceOf(address _tokenHolder) public view returns (uint256) { 
+    //     return Balances[_tokenHolder]; 
+    // }
     
     function myBalance() public view returns (uint256){
         return Balances[msg.sender];
