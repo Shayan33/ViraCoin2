@@ -1,11 +1,7 @@
 import { Statics } from '../Statics';
-import { ViraCoinTokenABI } from './ViraCoinTokenABI';
-import { CartABI } from './ViraCoinCartABI';
+import { ViraICOABI } from './ViraICOABI';
 import history from '../history';
-const ViraCoinTokenRopsNetAddress = '0x6575f2dcd5fcba369c010e0ab31b3cdb79726b1c';
-const ViraCoinCartRopsNetAddress = '0xf25d1066d629f81f0186675b52fbc96882e8d8b0';
-var NewTokenFee = 100000000000000000;
-var ShopFee = 1000000000000000;
+const ViraICoRopstenAddress = '0xa0d824c54d270b4c11eccaf6048b60da3a4c6f6b';
 var Acc = "null";
 var EtherScanBaseUrl = 'https://ropsten.etherscan.io/tx/';
 var LatestTokenData = '';
@@ -65,83 +61,16 @@ export class Web3s {
         return window.web3.isAddress(address);
     }
 }
-export class ViraCoinToken {
-    static ViraToken() {
-        var ViraTokenContract = window.web3.eth.contract(ViraCoinTokenABI);
-        var instance = ViraTokenContract.at(ViraCoinTokenRopsNetAddress);
+export class ViraICO {
+    static ViraICO() {
+        var ViraICOContract = window.web3.eth.contract(ViraICOABI);
+        var instance = ViraICOContract.at(ViraICoRopstenAddress);
         return instance;
     }
-    static Fee() {
-        ViraCoinToken.ViraToken().Fee((e, r) => {
-            if (!e) alert(r);
-            else console.error(e);
-        });
-    }
-    static Issue(IV, Tok, Proud, callback, th, pr, reg, img, meta) {
-        ViraCoinToken.ViraToken().IssueNewToken(IV, Tok, Proud,
-            { value: NewTokenFee },
-            (e, r) => {
-                if (!e) {
-                    window.open(EtherScanBaseUrl + r, '_blank');
-                    callback(r, IV, th, pr, reg, img, meta);
-                }
-                else console.error(e);
-            });
-    }
-    static Transfer(Address, Tok, callback, ID, from) {
-        ViraCoinToken.ViraToken().Transfer(Tok, Address, {}, (e, r) => {
-            if (!e) {
-                window.open(EtherScanBaseUrl + r, '_blank');
-                callback(ID, from, Address, r);
-            }
-            else console.error(e);
-        })
-    }
-    static Mine(Tok) {
-        ViraCoinToken.ViraToken().GetData(Tok, (e, r) => {
-            if (!e) {
-                //if correct slice it for conflict check
-                if (String(r).includes(Tok)) alert('Yours.');
-                else alert('Not Yours.');
-            }
-            else console.error(e);
-        })
-    }
-    static Burn(Tok, callback, ID) {
-        ViraCoinToken.ViraToken().Burn(Tok, (e, r) => {
-            if (!e) {
-                window.open(EtherScanBaseUrl + r, '_blank');
-                callback(ID, r);
-            }
-            else console.error(e);
-        })
-    }
-    static SetAttorny(Tok, Address, callback, ID) {
-        ViraCoinToken.ViraToken().SetAttorney(Tok, Address, (e, r) => {
-            if (!e) {
-                window.open(EtherScanBaseUrl + r, '_blank');
-                callback(ID, Address);
-            }
-            else console.error(e);
-        });
-    }
-    static ClearAttorny(Tok, callback, ID) {
-        ViraCoinToken.ViraToken().ClearAttorney(Tok, (e, r) => {
-            if (!e) {
-                window.open(EtherScanBaseUrl + r, '_blank');
-                callback(ID, 'Cls');
-            }
-            else console.error(e);
-        });
-    }
-    static AttorneyGet(Tok) {
-        ViraCoinToken.ViraToken().AttorneyGet(Tok, (e, r) => {
-            if (!e) LatestTokenData = r;
-            else console.error(e);
-        });
-    }
+    //#region  Admin
+
     static Owner() {
-        ViraCoinToken.ViraToken().Owner((e, r) => {
+        ViraICO.ViraICO().Owner((e, r) => {
             if (!e) {
                 if (String(r) !== 'true') {
                     alert('only admin');
@@ -152,115 +81,144 @@ export class ViraCoinToken {
         });
     }
     static Withdraw() {
-        ViraCoinToken.ViraToken().Withdraw((e, r) => {
+        ViraICO.ViraICO().Withdraw((e, r) => {
             if (!e) {
                 window.open(EtherScanBaseUrl + r, '_blank');
             }
             else console.error(e);
         })
     }
-    static GetFunds() {
-        ViraCoinToken.ViraToken().GetFunds((e, r) => {
+    static GetFunds(CallBack) {
+        ViraICO.ViraICO().GetFunds((e, r) => {
             if (!e) {
-                alert(r);
-            }
-            else console.error(e);
-        })
-    }
-    static UpdateFee(value) {
-        ViraCoinToken.ViraToken().UpdateFee(Web3s.Wei(value), (e, r) => {
-            if (!e) {
-                window.open(EtherScanBaseUrl + r, '_blank');
+                CallBack(r);
             }
             else console.error(e);
         })
     }
     static Kill() {
-        ViraCoinToken.ViraToken().Kill((e, r) => {
+        ViraICO.ViraICO().Kill((e, r) => {
             if (!e) {
                 window.open(EtherScanBaseUrl + r, '_blank');
             }
             else console.error(e);
         })
     }
-}
-export class ViraCoinCart {
-    static GetAddress() {
-        return ViraCoinCartRopsNetAddress;
+    static TotallSupply(CallBack) {
+        ViraICO.ViraICO().totalSupply((e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
     }
-    static ViraCart() {
-        var ViraTokenContract = window.web3.eth.contract(CartABI);
-        var instance = ViraTokenContract.at(ViraCoinCartRopsNetAddress);
-        return instance;
+
+    static SpentSupply(CallBack) {
+        ViraICO.ViraICO().SpentSupply((e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
     }
-    static NewAsset(Tok, Price, CallBack, ID, acc) {
-        ViraCoinCart.ViraCart().NewAsset(Tok, Web3s.Wei(Price), { value: ShopFee }, (e, r) => {
+    //#endregion
+
+    //#region  Carpet
+
+    static AddCarpet(IV, Tok, Proud, callback, pr, reg, img, meta) {
+        ViraICO.ViraICO().AddCarpet(IV, Tok, Proud,
+            (e, r) => {
+                if (!e) {
+                    window.open(EtherScanBaseUrl + r, '_blank');
+                    callback(r, IV, Tok, pr, reg, img, meta);
+                }
+                else console.error(e);
+            });
+    }
+
+    static GetCount(CallBack) {
+        ViraICO.ViraICO().GetCount((e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+
+    static Exist(no, CallBack) {
+        ViraICO.ViraICO().Existe(no, (e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+    static InitiatingIsOver(CallBack) {
+        ViraICO.ViraICO().InitiatingIsOver(no, (e, r) => {
             if (!e) {
                 window.open(EtherScanBaseUrl + r, '_blank');
-                CallBack(ID, r, Price, acc);
+                CallBack();
             }
             else console.error(e);
         })
     }
-    static UpdatePrice(Tok, Price, CallBack, ID) {
-        ViraCoinCart.ViraCart().UpdatePrice(Tok, Web3s.Wei(Price), (e, r) => {
+
+    static GetCarpet(CallBack, no) {
+        ViraICO.ViraICO().GetCarpet(no, (e, r) => {
             if (!e) {
-                window.open(EtherScanBaseUrl + r, '_blank');
-                CallBack(ID, Price, r);
+                CallBack(r);
             }
             else console.error(e);
         })
     }
-    static GetData() {
-        return LatestTokenData;
-    }
-    static Buy(Tok, Price, CallBack, ID, NewOwner) {
-        ViraCoinCart.ViraCart().Buy(Tok, { value: Web3s.Wei(Price) }, (e, r) => {
+    //#endregion
+
+    //#region Tokens
+
+    static GetMyBalance(CallBack) {
+        ViraICO.ViraICO().myBalance((e, r) => {
             if (!e) {
-                window.open(EtherScanBaseUrl + r, '_blank');
-                CallBack(ID, NewOwner, r);
+                CallBack(r);
             }
             else console.error(e);
-        })
+        });
     }
-    static WithdrawFunds() {
-        ViraCoinCart.ViraCart().WithdrawFunds((e, r) => {
-            if (!e) {
-                window.open(EtherScanBaseUrl + r, '_blank');
-            }
-            else console.error(e);
-        })
+
+    static Transfer(to, value, CallBack) {
+        ViraICO.ViraICO().transfer(to, value,
+            (e, r) => {
+                if (!e) {
+                    window.open(EtherScanBaseUrl + r, '_blank');
+                    CallBack(r);
+                }
+                else console.error(e);
+            });
     }
-    static Withdraw() {
-        ViraCoinCart.ViraCart().Withdraw((e, r) => {
-            if (!e) {
-                window.open(EtherScanBaseUrl + r, '_blank');
-            }
-            else console.error(e);
-        })
+
+    //#endregion
+
+    //#region  ICO
+
+    static ICO(to, value, CallBack) {
+        ViraICO.ViraICO().ICO(to, value,
+            (e, r) => {
+                if (!e) {
+                    window.open(EtherScanBaseUrl + r, '_blank');
+                    CallBack(r);
+                }
+                else console.error(e);
+            });
     }
-    static GetFunds() {
-        ViraCoinCart.ViraCart().GetFunds((e, r) => {
-            if (!e) {
-                alert(r);
-            }
-            else console.error(e);
-        })
+
+    static ICOAdd(to, value, CallBack) {
+        ViraICO.ViraICO().ICOAdd(to, value,
+            (e, r) => {
+                if (!e) {
+                    window.open(EtherScanBaseUrl + r, '_blank');
+                    CallBack(r);
+                }
+                else console.error(e);
+        });
     }
-    static UpdateFee(value) {
-        ViraCoinCart.ViraCart().UpdateFee(Web3s.Wei(value), (e, r) => {
-            if (!e) {
-                window.open(EtherScanBaseUrl + r, '_blank');
-            }
-            else console.error(e);
-        })
-    }
-    static Kill() {
-        ViraCoinCart.ViraCart().Kill((e, r) => {
-            if (!e) {
-                window.open(EtherScanBaseUrl + r, '_blank');
-            }
-            else console.error(e);
-        })
-    }
+    //#endregion
 }

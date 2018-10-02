@@ -1,4 +1,4 @@
-export const ViraICOABI=[
+export const ViraICOABI = [
 	{
 		"constant": true,
 		"inputs": [],
@@ -7,6 +7,20 @@ export const ViraICOABI=[
 			{
 				"name": "",
 				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "GetCount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -79,7 +93,7 @@ export const ViraICOABI=[
 		"outputs": [
 			{
 				"name": "",
-				"type": "bytes32"
+				"type": "bool"
 			}
 		],
 		"payable": false,
@@ -116,25 +130,6 @@ export const ViraICOABI=[
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_tokenHolder",
-				"type": "address"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -176,30 +171,24 @@ export const ViraICOABI=[
 		"name": "GetCarpet",
 		"outputs": [
 			{
-				"components": [
-					{
-						"name": "tok",
-						"type": "bytes32"
-					},
-					{
-						"name": "Data",
-						"type": "bytes32"
-					},
-					{
-						"name": "Production",
-						"type": "uint256"
-					},
-					{
-						"name": "Available",
-						"type": "bool"
-					},
-					{
-						"name": "Initaited",
-						"type": "bool"
-					}
-				],
-				"name": "",
-				"type": "tuple"
+				"name": "tok",
+				"type": "bytes32"
+			},
+			{
+				"name": "Data",
+				"type": "bytes32"
+			},
+			{
+				"name": "Production",
+				"type": "uint256"
+			},
+			{
+				"name": "Available",
+				"type": "bool"
+			},
+			{
+				"name": "Initaited",
+				"type": "bool"
 			}
 		],
 		"payable": false,
@@ -273,6 +262,25 @@ export const ViraICOABI=[
 			{
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "no",
+				"type": "uint256"
+			}
+		],
+		"name": "Existe",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
 			}
 		],
 		"payable": false,
