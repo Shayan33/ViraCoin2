@@ -17,11 +17,7 @@ namespace server.Controllers
         {
             context = _context;
         }
-        [HttpGet("Login")]
-        public IActionResult Login()
-        {
-            return Ok();
-        }
+
         [HttpGet("{ID}")]
         public IActionResult Get([FromRoute]Guid ID)
         {
@@ -52,7 +48,8 @@ namespace server.Controllers
             acc.CellNumber = Acc.CellNumber;
             acc.OfficeNumber = Acc.OfficeNumber;
             acc.Address = Acc.Address;
-            acc.Fa = Acc.Fa;
+            acc.PersonalID = Acc.PersonalID;
+            acc.IDPic = Acc.IDPic;
             context.Entry(acc).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             context.Accounts.Update(acc);
             await context.SaveChangesAsync();
