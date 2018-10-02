@@ -45,19 +45,6 @@ namespace server.Controllers
             return NotFound();
         }
 
-        [HttpGet("GetAssets/{id}")]
-        public async Task<IActionResult> GetAssets([FromRoute] Guid id)
-        {
-            var Owner = await _context.Accounts
-            .Include(x => x.Assets)
-            .FirstOrDefaultAsync(x => x.ID == id);
-            if (Owner is null)
-            {
-                return NotFound();
-            }
-            if ((Owner.Assets is null) || (Owner.Assets.Count < 1)) return NoContent();
-            return Ok(Owner.Assets);
-        }
         // GET: api/Assets/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsset([FromRoute] Guid id)
@@ -69,111 +56,15 @@ namespace server.Controllers
 
             var asset = await _context
                             .Assets
-                            .Include(x => x.InShop)
-                            .Include(x => x.Owner)
                             .FirstOrDefaultAsync(x => x.ID == id);
             if (asset is null)
             {
                 return NotFound();
             }
-            if (!asset.Owner.PubKey.Equals(HttpContext.Request.Headers["PubKey"].ToString()))
-                return BadRequest();
-            asset.Issuer = $"({asset.Issuer.Substring(0, 8)}...) {GetName(asset.Issuer)}";
-            asset.FirstOwner = $"({asset.FirstOwner.Substring(0, 8)}...) {GetName(asset.FirstOwner)}";
-            if (asset.PrevOwner.Length > 8)
-                asset.PrevOwner = $"({asset.PrevOwner.Substring(0, 8)}...) {GetName(asset.PrevOwner)}";
-            if (asset.AttorneyOwner.Length > 8)
-                asset.AttorneyOwner = $"({asset.AttorneyOwner.Substring(0, 8)}...) {GetName(asset.AttorneyOwner)}";
+
             return Ok(asset);
         }
-        private string lastCheckId = string.Empty;
-        private string fullName = string.Empty;
-        private string GetName(string ID)
-        {
-            if (string.IsNullOrWhiteSpace(ID)) return string.Empty;
-            if (lastCheckId == ID) return fullName;
-            var account = _context.Accounts.FirstOrDefault(x => x.PubKey.Equals(ID, StringComparison.OrdinalIgnoreCase));
-            if (account == null) return string.Empty;
-            fullName = account.FullName;
-            return account.FullName;
-        }
-        // PUT: api/Assets/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsset([FromRoute] Guid id, [FromBody] Asset ass)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var asset = await _context.Assets.FindAsync(id);
-            asset.AttorneyOwner = string.Empty;
-            var nextOwner = _context.Accounts.FirstOrDefault(x => x.PubKey.Equals(ass.CurrentOwner, StringComparison.OrdinalIgnoreCase));
-            if (!asset.CurrentOwner.Equals(ass.PrevOwner, StringComparison.OrdinalIgnoreCase)) return BadRequest();
-            var t = new Transaction()
-            {
-                ID = Guid.NewGuid(),
-                SenderID = asset.OWnerID,
-                Recipient = ass.CurrentOwner,
-                TxHash = ass.Tx,
-                Confirmed = false,
-                Type = TransactionType.Transfer,
-                Function = "Transfer"
-            };
-            if (!(nextOwner is null)) asset.Owner = nextOwner;
-            asset.CurrentOwner = ass.CurrentOwner;
-            asset.PrevOwner = ass.PrevOwner;
-            _context.Entry(asset).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AssetExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok();
-        }
-
-        [HttpPatch]
-        public async Task<IActionResult> Attorny([FromBody] Asset asset)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var ass = await _context.Assets.FindAsync(asset.ID);
-            if (ass is null) return NotFound();
-            if (asset.AttorneyOwner.Equals("Cls"))
-                ass.AttorneyOwner = string.Empty;
-            else ass.AttorneyOwner = asset.AttorneyOwner;
-            _context.Assets.Update(ass);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AssetExists(asset.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok();
-        }
         // POST: api/Assets
         [HttpPost]
         public async Task<IActionResult> PostAsset([FromBody] Asset asset)
@@ -184,25 +75,16 @@ namespace server.Controllers
             }
 
             asset.ID = Guid.NewGuid();
-            //asset.ChunkData();
-            asset.CurrentOwner = HttpContext.Request.Headers["PubKey"].ToString();
-            asset.PrevOwner = string.Empty;
-            asset.FirstOwner = HttpContext.Request.Headers["PubKey"].ToString();
-            asset.Issuer = HttpContext.Request.Headers["PubKey"].ToString();
-            asset.AttorneyOwner = string.Empty;
-            asset.ForSale = false;
             asset.Available = false;
-            asset.Owner = null;
-            asset.OWnerID = Guid.Parse(HttpContext.Request.Headers["PrivateToken"].ToString());
             var t = new Transaction()
             {
                 ID = Guid.NewGuid(),
-                SenderID = asset.OWnerID,
+                SenderPubKey="ContractOwner",
+                RecipientPubKey=string.Empty,
                 CoinBaseRelatedCoinID = asset.ID,
                 TxHash = asset.Tx,
                 Confirmed = false,
                 Type = TransactionType.CoinBase,
-                Function = "Isuue"
             };
             _context.Transactions.Add(t);
             _context.Assets.Add(asset);
@@ -225,17 +107,8 @@ namespace server.Controllers
             {
                 return NotFound();
             }
-            var tx = HttpContext.Request.Headers["tx"].ToString();
-            var t = new Transaction()
-            {
-                ID = Guid.NewGuid(),
-                SenderID = asset.OWnerID,
-                TxHash = tx,
-                Confirmed = false,
-                Type = TransactionType.Burn,
-                Function = "Burn"
-            };
-            _context.Transactions.Add(t);
+
+
             _context.Assets.Remove(asset);
             await _context.SaveChangesAsync();
 
