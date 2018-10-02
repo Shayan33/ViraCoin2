@@ -1,5 +1,4 @@
 pragma solidity ^0.4.24;
-pragma experimental ABIEncoderV2;
 contract ViraTokens {
     
         struct CarpetData {       
@@ -60,6 +59,10 @@ contract ViraTokens {
         else return false;
     }
     
+    function GetCount() public view ContractOwner returns(uint256){
+        return CarpetsCount;
+    }
+    
     function Add(uint256 _a,uint256 _b)internal pure returns(uint256){
         uint256 c = _a + _b;
         require(c >= _a);
@@ -72,7 +75,7 @@ contract ViraTokens {
         return c;
     }
     
-    function AddCarpet(bytes initVector,bytes32 tok,uint256 production) public ContractOwner returns (bytes32){
+    function AddCarpet(bytes initVector,bytes32 tok,uint256 production) public ContractOwner returns (bool){
         require(InitatingPhase,"The Initating Phase is Over.");
         bytes32 InitVector=keccak256(initVector);
         require(!Registered[InitVector],"Already Exist.");
@@ -86,12 +89,27 @@ contract ViraTokens {
         Carpets[CarpetsCount].Available=true;
         Carpets[CarpetsCount].Initaited=true;
         
-        return Carpets[CarpetsCount].Data;
+        return true;
     }
     
-    function GetCarpet(uint256 no) view returns(CarpetData){
+    function GetCarpet(uint256 no) public view returns(
+        bytes32 tok,
+        bytes32 Data,
+        uint256 Production,
+        bool Available,
+        bool Initaited){
         require(no<=CarpetsCount,"no such carpet exists.");
-        return Carpets[no];
+        tok=Carpets[no].tok;
+        Data=Carpets[no].Data;
+        Production=Carpets[no].Production;
+        Available=Carpets[no].Available;
+        Initaited=Carpets[no].Initaited;
+    }
+    
+    function Existe(uint256 no) public view returns(bool){
+        if(no<=CarpetsCount)
+            if(Carpets[no].Available) return true;
+        return false;
     }
     
     function InitiatingIsOver() public ContractOwner {
@@ -107,9 +125,9 @@ contract ViraTokens {
         CurrentOwner=msg.sender;
     }
     
-    function balanceOf(address _tokenHolder) public view returns (uint256) { 
-        return Balances[_tokenHolder]; 
-    }
+    // function balanceOf(address _tokenHolder) public view returns (uint256) { 
+    //     return Balances[_tokenHolder]; 
+    // }
     
     function myBalance() public view returns (uint256){
         return Balances[msg.sender];
