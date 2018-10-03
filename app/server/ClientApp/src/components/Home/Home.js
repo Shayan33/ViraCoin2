@@ -3,20 +3,40 @@ import { Link, DirectLink, Element, Events, animateScroll as scroll, scrollSpy, 
 import { Glyphicon } from 'react-bootstrap';
 import history from '../history';
 import { Web3s } from '../Web3/Web3';
+import Modal from 'react-modal';
 import './Home.css';
 import $ from 'jquery';
 
+Modal.setAppElement('#root');
 export class Home extends Component {
     displayName = Home.name;
     constructor(props) {
         super(props);
         this.scrollToTop = this.scrollToTop.bind(this);
-        this.state = { scroll: false };
+        this.state = { scroll: false, modalIsOpen: false, modalType: 0, CarpetID: 0 };
         window.onscroll = () => {
             if (window.pageYOffset > 50) this.setState({ scroll: true });
             else this.setState({ scroll: false });
         }
+
+        this.openModal = this.openModal.bind(this);
+        this.afterOpenModal = this.afterOpenModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.Register = this.Register.bind(this);
     }
+
+    openModal() {
+        this.setState({ modalIsOpen: true });
+    }
+
+    afterOpenModal() {
+
+    }
+
+    closeModal() {
+        this.setState({ modalIsOpen: false });
+    }
+
 
     componentDidMount() {
         Events.scrollEvent.register('begin', function () {
@@ -173,6 +193,18 @@ export class Home extends Component {
         Events.scrollEvent.remove('begin');
         Events.scrollEvent.remove('end');
     }
+    Register() {
+        this.setState({ modalType: 0 });
+        this.openModal();
+    }
+    RenderModalData() {
+        let Content = this.state.modalType === 0 ?
+            <div>
+
+            </div>
+            : <div></div>;
+        return Content;
+    }
     render() {
         let ScNav = this.state.scroll ? "NavBar2" : "NavBar";
         let InnerScroll = this.state.scroll ? "NavItems2" : "NavItems1";
@@ -193,8 +225,18 @@ export class Home extends Component {
             :
             <div className="Errs">You dont have <a href="https://metamask.io">metamask</a> installed!</div>
             ;
+        let Modall = this.RenderModalData();
         return (
             <div>
+                <Modal
+                    isOpen={this.state.modalIsOpen}
+                    onAfterOpen={this.afterOpenModal}
+                    onRequestClose={this.closeModal}
+                    className="MModal"
+                    contentLabel="Example Modal"
+                >
+                    {Modall}
+                </Modal>
                 <div className={ScNav}>
                     <div className="container">
                         <div className={InnerScroll}>
@@ -220,7 +262,7 @@ export class Home extends Component {
                                 <Glyphicon glyph='question-sign' style={{ marginRight: '5px' }} />
                                 FAQ
                 </Link>
-                            <Link activeClass="active" to="contact" spy={true} smooth={true} duration={500} className="NavItem">
+                            <Link activeClass="active" spy={true} onClick={this.Register} className="NavItem">
                                 <Glyphicon glyph='check' style={{ marginRight: '5px' }} />
                                 Register for the ICO
                 </Link>
@@ -253,9 +295,11 @@ export class Home extends Component {
                                   <br />
                                     Investors and Founders
                       <h3>Fast and secure asset managment system on top of ethereum blockchain network resulting in a none-fiat tokens
-                                                    whith carpets as their fund.
+                                                                                                                                                                                                                                                                                                                                                                        whith carpets as their fund.
                       </h3>
-                                    <button className="btn btn-primary btn-lg RegisterButton">Register for the ICO</button>
+                                    <button className="btn btn-primary btn-lg RegisterButton"
+                                        onClick={this.Register}
+                                    >Register for the ICO</button>
                                     <button className="btn btn-primary btn-lg">Download white paper</button>
                                 </div>
                                 <div className="HomeTexts2">
@@ -271,7 +315,7 @@ export class Home extends Component {
                     </Element>
                     <div className="Seperator"></div>
                     <Element name="about" className="element BaseComponentClass">
-                        <button >an</button>
+
                     </Element>
 
                     <Element name="cp" className="element BaseComponentClass">
@@ -283,12 +327,12 @@ export class Home extends Component {
             </Element>
                     <Element name="faq" className="element BaseComponentClass">
                         test 4
-            </Element>
+            </Element >
 
                     <Element name="contact" className="element BaseComponentClass">
                         test 4
             </Element>
-                </div>
+                </div >
             </div>
         );
     }
