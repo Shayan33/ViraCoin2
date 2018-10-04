@@ -16,8 +16,29 @@ export class NoMatch extends Component {
     }
     render() {
         return (
-            <div className='PopUp'>
-                <h1>Nomatch</h1>
+            <div className='container'>
+                <div className="eth">
+                    <div className="bottom">
+                        <div className="left"></div>
+                        <div className="right"></div>
+                        <div className="up"></div>
+                        <div className="down"></div>
+                    </div>
+                    <div className="top">
+                        <div className="left"></div>
+                        <div className="right"></div>
+                        <div className="up"></div>
+                        <div className="down"></div>
+                    </div>
+                </div>
+                <div className="ch404">
+                    404
+            <br />
+                    <div className="Chtetx text-center">
+                        Not Found
+            </div>
+                </div>
+
             </div>
         );
     }
