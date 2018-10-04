@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, DirectLink, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll';
-import { Glyphicon } from 'react-bootstrap';
+import { ToastContainer, ToastStore } from 'react-toasts';
+import { Glyphicon, Grid, Row, Col } from 'react-bootstrap';
 import history from '../history';
 import { Web3s } from '../Web3/Web3';
 import Modal from 'react-modal';
@@ -13,7 +14,11 @@ export class Home extends Component {
     constructor(props) {
         super(props);
         this.scrollToTop = this.scrollToTop.bind(this);
-        this.state = { scroll: false, modalIsOpen: false, modalType: 0, CarpetID: 0 };
+        this.state = {
+            scroll: false, modalIsOpen: false, modalType: 0, CarpetID: 0,
+            name: '', middleName: '', lastName: '', emailAddress: '', phoneNumber: '', cellNumber: '', address: '',
+            id: ''
+        };
         window.onscroll = () => {
             if (window.pageYOffset > 50) this.setState({ scroll: true });
             else this.setState({ scroll: false });
@@ -23,8 +28,62 @@ export class Home extends Component {
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.Register = this.Register.bind(this);
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+    }
+    handleSubmit(event) {
+        fetch('api/Account/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }, body: JSON.stringify({
+                name: this.state.name,
+                lastName: this.state.lastName,
+                emailAddress: this.state.emailAddress,
+                phoneNumber: this.state.phoneNumber,
+                cellNumber: this.state.cellNumber,
+                address: this.state.address,
+                personalID: this.state.id,
+                pubKey: Web3s.GetAccount()
+            })
+        }).then(response => {
+            if (response.status === 200) {
+                ToastStore.success('Changes saved successfully.', 2000);
+                this.closeModal();
+                response.json()
+            }
+            else if (response.status === 404) {
+                ToastStore.error('You cannot register twice.', 2000);
+                this.closeModal();
+            }
+            else {
+                ToastStore.warning('Something unxpected happened. try again!!!', 2000);
+            }
+        }).then(data => {
+            this.setState({
+                name: data.name,
+                lastName: data.lastName,
+                emailAddress: data.emailAddress,
+                phoneNumber: data.phoneNumber,
+                cellNumber: data.cellNumber,
+                address: data.address,
+                id: data.personalID
+            });
+        })
+            .catch(r => console.log(r));
+        event.preventDefault();
+    }
     openModal() {
         this.setState({ modalIsOpen: true });
     }
@@ -199,9 +258,153 @@ export class Home extends Component {
     }
     RenderModalData() {
         let Content = this.state.modalType === 0 ?
-            <div>
-
-            </div>
+            Web3s.CheckWeb3() ? Web3s.CheckMainNet() ? Web3s.CheckOnline() ? (String(Web3s.GetAccount()) !== 'undefined') ?
+                <div>
+                    <form onSubmit={this.handleSubmit}>
+                        <Grid fluid>
+                            <Row>
+                                <Col md={6}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            ID
+                                    </label>
+                                        <br />
+                                        <input type="text"
+                                            placeholder="123456789" value={this.state.id}
+                                            onChange={this.handleInputChange} name="id" className="form-control"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Name
+                                    </label>
+                                        <br />
+                                        <input type="text"
+                                            placeholder="Name" value={this.state.name}
+                                            onChange={this.handleInputChange} name="name" className="form-control"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Last Name
+                                    </label>
+                                        <br />
+                                        <input type="text"
+                                            placeholder="Last Name" value={this.state.lastName}
+                                            onChange={this.handleInputChange} name="lastName" className="form-control"
+                                            required
+                                        />
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Email Address
+                                    </label>
+                                        <br />
+                                        <input type="email"
+                                            placeholder="example@gmail.com" value={this.state.emailAddress}
+                                            onChange={this.handleInputChange} name="emailAddress" className="form-control"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Phone Number
+                                    </label>
+                                        <br />
+                                        <input type="tel"
+                                            placeholder="123-456-7890" value={this.state.phoneNumber}
+                                            onChange={this.handleInputChange} name="phoneNumber" className="form-control"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Cell Number
+                                    </label>
+                                        <br />
+                                        <input type="tel"
+                                            placeholder="123-456-7890" value={this.state.cellNumber}
+                                            onChange={this.handleInputChange} name="cellNumber" className="form-control"
+                                            required
+                                        />
+                                    </div>
+                                </Col>
+                                <Col md={12}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Address
+                                    </label>
+                                        <br />
+                                        <textarea value={this.state.address} name="address" onChange={this.handleInputChange} className="form-control"
+                                            rows={8}
+                                        />
+                                    </div>
+                                    <div className="form-group" style={{ float: 'right' }}>
+                                        <input type="submit" value="Submit" className="form-control"
+                                            className="btn btn-primary btnnnn"
+                                        />
+                                    </div>
+                                </Col>
+                            </Row>
+                        </Grid>
+                    </form>
+                </div> :
+                <div className="container">
+                    <div className='LayoutErrors PopUp'>
+                        <h1 className="text-danger text-center" >
+                            <Glyphicon glyph="lock" style={{ paddingTop: '20px', fontSize: '130px' }} />
+                        </h1>
+                        <h1>
+                            <p className="text-danger text-center">
+                                Please log in to your ethereum account.
+              </p>
+                        </h1>
+                    </div>
+                </div>
+                :
+                <div className="container">
+                    <div className='LayoutErrors PopUp'>
+                        <h1 className="text-danger text-center" >
+                            <Glyphicon glyph="off" style={{ paddingTop: '20px', fontSize: '130px' }} />
+                        </h1>
+                        <h1>
+                            <p className="text-danger text-center">
+                                You are not connected to the network!!!
+          </p>
+                        </h1>
+                    </div>
+                </div> :
+                <div className="container">
+                    <div className='LayoutErrors PopUp'>
+                        <h1 className="text-danger text-center" >
+                            <Glyphicon glyph="warning-sign" style={{ paddingTop: '20px', fontSize: '130px' }} />
+                        </h1>
+                        <h1>
+                            <p className="text-danger text-center">
+                                Please switch to main ethereum network!!!
+          </p>
+                        </h1>
+                    </div>
+                </div> :
+                <div className="container">
+                    <div className='LayoutErrors PopUp'>
+                        <h1 className="text-danger text-center" >
+                            <Glyphicon glyph="remove" style={{ paddingTop: '20px', fontSize: '130px' }} />
+                        </h1>
+                        <h1>
+                            <p className="text-danger text-center">
+                                You dont have metamask installed!!!
+          </p>
+                        </h1>
+                        <br />
+                        <p className="text-warning text-center">
+                            Please check <a href="https://metamask.io">metamask.io</a> to install metamask.
+          </p>
+                    </div>
+                </div>
             : <div></div>;
         return Content;
     }
@@ -228,6 +431,7 @@ export class Home extends Component {
         let Modall = this.RenderModalData();
         return (
             <div>
+                <ToastContainer store={ToastStore} position={ToastContainer.POSITION.BOTTOM_RIGHT} />
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onAfterOpen={this.afterOpenModal}
@@ -235,7 +439,12 @@ export class Home extends Component {
                     className="MModal"
                     contentLabel="Example Modal"
                 >
-                    {Modall}
+                    <div style={{ float: 'right', cursor: 'pointer', fontSize: '23px' }} onclick={this.closeModal}>
+                        <Glyphicon glyph="remove" className="text-danger" />
+                    </div>
+                    <div style={{ marginTop: '33px' }}>
+                        {Modall}
+                    </div>
                 </Modal>
                 <div className={ScNav}>
                     <div className="container">
@@ -272,43 +481,45 @@ export class Home extends Component {
                 </div>
                 <div className="container">
                     <Element name="home" className="element" >
-                        <div id="particles-js" className="HomeBack">
-                            <div className='container HomeItems'>
-                                <div className="eth">
-                                    <div className="bottom">
-                                        <div className="left"></div>
-                                        <div className="right"></div>
-                                        <div className="up"></div>
-                                        <div className="down"></div>
+                        <div className="BaseComponentClass">
+                            <div id="particles-js" className="HomeBack">
+                                <div className='container HomeItems'>
+                                    <div className="eth">
+                                        <div className="bottom">
+                                            <div className="left"></div>
+                                            <div className="right"></div>
+                                            <div className="up"></div>
+                                            <div className="down"></div>
+                                        </div>
+                                        <div className="top">
+                                            <div className="left"></div>
+                                            <div className="right"></div>
+                                            <div className="up"></div>
+                                            <div className="down"></div>
+                                        </div>
                                     </div>
-                                    <div className="top">
-                                        <div className="left"></div>
-                                        <div className="right"></div>
-                                        <div className="up"></div>
-                                        <div className="down"></div>
-                                    </div>
-                                </div>
-                                <div className="HomeTexts">
-                                    Fast Growing ICO
+                                    <div className="HomeTexts">
+                                        Fast Growing ICO
                       <br />
-                                    Agency for Blockchain
+                                        Agency for Blockchain
                                   <br />
-                                    Investors and Founders
+                                        Investors and Founders
                       <h3>Fast and secure asset managment system on top of ethereum blockchain network resulting in a none-fiat tokens
-                                                                                                                                                                                                                                                                                                                                                                        whith carpets as their fund.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  whith carpets as their fund.
                       </h3>
-                                    <button className="btn btn-primary btn-lg RegisterButton"
-                                        onClick={this.Register}
-                                    >Register for the ICO</button>
-                                    <button className="btn btn-primary btn-lg">Download white paper</button>
-                                </div>
-                                <div className="HomeTexts2">
-                                    <img src={require('../../img/logo0.png')} className="BottomLogos" />
-                                    <img src={require('../../img/logo1.png')} className="BottomLogos" />
-                                    <img src={require('../../img/logo2.png')} className="BottomLogos" />
-                                    <img src={require('../../img/logo3.png')} className="BottomLogos" />
-                                    <img src={require('../../img/logo4.png')} className="BottomLogos" />
-                                    <img src={require('../../img/logo5.png')} className="BottomLogos" />
+                                        <button className="btn btn-primary btn-lg RegisterButton"
+                                            onClick={this.Register}
+                                        >Register for the ICO</button>
+                                        <button className="btn btn-primary btn-lg">Download white paper</button>
+                                    </div>
+                                    <div className="HomeTexts2">
+                                        <img src={require('../../img/logo0.png')} className="BottomLogos" />
+                                        <img src={require('../../img/logo1.png')} className="BottomLogos" />
+                                        <img src={require('../../img/logo2.png')} className="BottomLogos" />
+                                        <img src={require('../../img/logo3.png')} className="BottomLogos" />
+                                        <img src={require('../../img/logo4.png')} className="BottomLogos" />
+                                        <img src={require('../../img/logo5.png')} className="BottomLogos" />
+                                    </div>
                                 </div>
                             </div>
                         </div>

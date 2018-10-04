@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using server.Models;
 
 namespace server.Controllers
@@ -34,24 +35,19 @@ namespace server.Controllers
             return Ok(account);
         }
 
-        [HttpPost("{ID}")]
-        public async Task<IActionResult> FillProfile([FromRoute] Guid ID, [FromBody] Account Acc)
+        [HttpPost]
+        public async Task<IActionResult> FillProfile([FromBody] Account acc)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var acc = await context.Accounts.FindAsync(ID);
-            if (acc == null) return NotFound();
-            acc.Name = Acc.Name;
-            acc.MiddleName = Acc.MiddleName;
-            acc.LastName = Acc.LastName;
-            acc.EmailAddress = Acc.EmailAddress;
-            acc.PhoneNumber = Acc.PhoneNumber;
-            acc.CellNumber = Acc.CellNumber;
-            acc.OfficeNumber = Acc.OfficeNumber;
-            acc.Address = Acc.Address;
-            acc.PersonalID = Acc.PersonalID;
-            acc.IDPic = Acc.IDPic;
-            context.Entry(acc).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            context.Accounts.Update(acc);
+            if (!((await context.Accounts.FirstOrDefaultAsync(x => x.PubKey == acc.PubKey)) is null))
+                return NotFound();
+            if (!((await context.Accounts.FirstOrDefaultAsync(x => x.PersonalID == acc.PersonalID)) is null))
+                return NotFound();
+            acc.ID = Guid.NewGuid();
+            acc.MiddleName = string.Empty;
+            acc.IDPic = string.Empty;
+            context.Entry(acc).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+            context.Accounts.Add(acc);
             await context.SaveChangesAsync();
             return Ok(acc);
         }
