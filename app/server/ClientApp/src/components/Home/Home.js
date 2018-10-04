@@ -678,7 +678,7 @@ export class Home extends Component {
                         </div>
                     </Element>
 
-                    <Element name="ts" className="element BaseComponentClass TokenSale">
+                    <Element name="ts" className="element BaseComponentClassCharts TokenSale">
                         <h1 className='text-center'>Token Disterbution</h1>
                         <div style={{ marginTop: '-60px', width: '100%', height: '83vh' }}>
                             <Pie3D data={[{

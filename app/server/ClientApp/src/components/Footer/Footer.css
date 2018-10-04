@@ -1,6 +1,9 @@
 footer {
     color: #fff;
-    padding: 10px 20px
+    background-image: linear-gradient(rgb(40, 120, 122),rgb(5, 70, 72));
+}
+.FooterDown{
+    background-color: rgb(5, 70, 72)
 }
 
 .logos {
@@ -13,4 +16,12 @@ footer {
     width: 40px;
     height: 40px;
     cursor: pointer;
+}
+.Btnss{
+    width: 230px;
+}
+.enamad{
+    width: 160px;
+    margin: 15px;
+    height: 100px;
 }
