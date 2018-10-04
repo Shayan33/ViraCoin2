@@ -19,7 +19,7 @@ export class Home extends Component {
         this.state = {
             scroll: false, modalIsOpen: false, modalType: 0, CarpetID: {},
             name: '', middleName: '', lastName: '', emailAddress: '', phoneNumber: '', cellNumber: '', address: '',
-            id: '', Cdata: [], TotallSuply: 70, SpentSupply: 30, accBalance: 0
+            id: '', Cdata: [], TotallSuply: 70, SpentSupply: 30, accBalance: 0, to: '', SendValue: 0, price: 0
         };
         window.onscroll = () => {
             if (window.pageYOffset > 50) this.setState({ scroll: true });
@@ -30,7 +30,8 @@ export class Home extends Component {
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.Register = this.Register.bind(this);
-
+        this.Send = this.Send.bind(this);
+        this.Deposite = this.Deposite.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
 
@@ -45,7 +46,29 @@ export class Home extends Component {
             ViraICO.GetMyBalance((r) => {
                 this.setState({ accBalance: (r / 10000000000000000) })
             });
+            ViraICO.GetPrice((r) => {
+                this.setState({ price: r })
+            });
         }
+    }
+    Send() {
+        this.setState({ modalType: 2, SendValue: 0 });
+        this.openModal();
+    }
+    ConfirmSend() {
+        ViraICO.Transfer(this.state.to, this.state.SendValue, (r) => { })
+        this.closeModal();
+    }
+    GetValue() {
+        return this.state.price;
+    }
+    Deposite() {
+        this.setState({ modalType: 3, SendValue: 0 });
+        this.openModal();
+    }
+    ConfirmDeposite() {
+        ViraICO.Deposite(this.state.SendValue);
+        this.closeModal();
     }
     TotallSuply() {
         let tot = this.state.TotallSuply;
@@ -440,61 +463,116 @@ export class Home extends Component {
           </p>
                     </div>
                 </div>
-            : <div>
-                {this.RenderSlider(this.state.CarpetID.imgPath)}
-                <Grid fluid>
-                    <Row>
-                        <Col md={12}>
-                            <div className="form-group">
-                                <label className="control-label">
-                                    Token
+            : this.state.modalType === 1 ?
+                <div>
+                    {this.RenderSlider(this.state.CarpetID.imgPath)}
+                    <Grid fluid>
+                        <Row>
+                            <Col md={12}>
+                                <div className="form-group">
+                                    <label className="control-label">
+                                        Token
                       </label>
-                                <br />
-                                <label className="form-control">{this.state.CarpetID.token}</label>
-                            </div>
-                        </Col>
-                        <Col md={12}>
-                            <div className="form-group">
-                                <label className="control-label">
-                                    Data
+                                    <br />
+                                    <label className="form-control">{this.state.CarpetID.token}</label>
+                                </div>
+                            </Col>
+                            <Col md={12}>
+                                <div className="form-group">
+                                    <label className="control-label">
+                                        Data
                       </label>
-                                <br />
-                                <label className="form-control">{this.state.CarpetID.data}</label>
-                            </div>
-                        </Col>
-                        <Col md={6}>
-                            <div className="form-group">
-                                <label className="control-label">
-                                    Production Date
+                                    <br />
+                                    <label className="form-control">{this.state.CarpetID.data}</label>
+                                </div>
+                            </Col>
+                            <Col md={6}>
+                                <div className="form-group">
+                                    <label className="control-label">
+                                        Production Date
                       </label>
-                                <br />
-                                <label className="form-control">{String(this.state.CarpetID.production).substr(0, 10)}</label>
-                            </div>
-                        </Col>
-                        <Col md={6}>
-                            <div className="form-group">
-                                <label className="control-label">
-                                    No
+                                    <br />
+                                    <label className="form-control">{String(this.state.CarpetID.production).substr(0, 10)}</label>
+                                </div>
+                            </Col>
+                            <Col md={6}>
+                                <div className="form-group">
+                                    <label className="control-label">
+                                        No
                       </label>
-                                <br />
-                                <label className="form-control">{String(this.state.CarpetID.no).substr(0, 10)}</label>
-                            </div>
-                        </Col>
-                        <Col md={12}>
+                                    <br />
+                                    <label className="form-control">{String(this.state.CarpetID.no).substr(0, 10)}</label>
+                                </div>
+                            </Col>
+                            <Col md={12}>
+                                <div className="form-group">
+                                    <label className="control-label">
+                                        Information
+                                    </label>
+                                    <br />
+                                    <textarea value={this.state.CarpetID.metaDate} className="form-control"
+                                        rows={4}
+                                        readOnly
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+                    </Grid>
+                </div> : this.state.modalType === 2 ?
+                    < div >
+                        <form>
                             <div className="form-group">
                                 <label className="control-label">
-                                    Information
+                                    To:
                                     </label>
                                 <br />
-                                <textarea value={this.state.CarpetID.metaDate} className="form-control"
-                                    rows={4}
-                                    readOnly
+                                <input type="text"
+                                    placeholder="Ethereum walleta ddress" value={this.state.to}
+                                    onChange={this.handleInputChange} name="to" className="form-control"
+                                    required
                                 />
                             </div>
-                        </Col>
-                    </Row>
-                </Grid>
-            </div>;
+                            <div className="form-group">
+                                <label className="control-label">
+                                    Value:
+                                    </label>
+                                <br />
+                                <input type="number"
+                                    placeholder="Ethereum walleta ddress" value={this.state.SendValue}
+                                    onChange={this.handleInputChange} name="SendValue" className="form-control"
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <button className="btn btn-warning SendDepositeButton" onClick={() => this.ConfirmSend()}>Send</button>
+                                <br />
+                            </div>
+                        </form>
+                    </div > :
+                    <div>
+                        <div className="form-group">
+                            <label className="control-label text-center">
+                                Deposite Vira Coin using Eth.
+                                the current price is: 5 Wei
+                            </label>
+                            <br />
+                        </div>
+                        <div className="form-group">
+                            <label className="control-label">
+                                Value in Wei:
+                                    </label>
+                            <br />
+                            <input type="number"
+                                placeholder="Ethereum walleta ddress" value={this.state.SendValue}
+                                onChange={this.handleInputChange} name="SendValue" className="form-control"
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <button className="btn btn-danger SendDepositeButton" onClick={() => this.ConfirmDeposite()}>Deposite</button>
+                            <br />
+                        </div>
+                    </div>;
         return Content;
     }
     RenderSlider(value) {
@@ -557,10 +635,12 @@ export class Home extends Component {
         let Content = Web3s.CheckWeb3() ? Web3s.CheckMainNet() ? Web3s.CheckOnline() ? (String(Web3s.GetAccount()) !== 'undefined') ?
             <div className="SendAndFunds">
                 <text> {this.state.accBalance} VC</text>
-                <br />
-                <Link activeClass="active" className="NavItem Send">
-                    <Glyphicon glyph='send' style={{ marginRight: '5px' }} />
+                <Link className="btn btn-warning btn-sm Send" onClick={this.Send}>
                     Send
+                  </Link>
+                <br />
+                <Link className="btn btn-danger btn-sm deposite" onClick={this.Deposite}>
+                    Deposite
                   </Link>
             </div> :
             <div className="Errs">Please login to your ethereum account.</div>
@@ -582,7 +662,7 @@ export class Home extends Component {
                     className="MModal"
                     contentLabel="Example Modal"
                 >
-                    <div style={{ float: 'right', cursor: 'pointer', fontSize: '23px' }} onclick={this.closeModal}>
+                    <div style={{ float: 'right', cursor: 'pointer', fontSize: '23px' }} onClick={this.closeModal}>
                         <Glyphicon glyph="remove" className="text-danger" />
                     </div>
                     <div style={{ marginTop: '33px' }}>
@@ -648,7 +728,7 @@ export class Home extends Component {
                                   <br />
                                         Investors and Founders
                       <h3>Fast and secure asset managment system on top of ethereum blockchain network resulting in a none-fiat tokens
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      whith carpets as their fund.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                whith carpets as their fund.
                       </h3>
                                         <button className="btn btn-primary btn-lg RegisterButton"
                                             onClick={this.Register}

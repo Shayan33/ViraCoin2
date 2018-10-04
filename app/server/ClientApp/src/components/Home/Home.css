@@ -74,10 +74,12 @@ canvas {
     padding-top: 60px;
     height: 100vh;
 }
-.BaseComponentClassCharts{
+
+.BaseComponentClassCharts {
     padding-top: 60px;
     height: 80vh;
 }
+
 .BaseComponentClassCarpet {
     padding-top: 60px;
     height: 100vh;
@@ -103,10 +105,28 @@ canvas {
 }
 
 .SendAndFunds {
-    font-size: 13px;
-    margin-top: -15px;
     color: white;
     text-align: right;
+    float: right;
+}
+
+.Send {
+    margin-top: -32px;
+    margin-right: 0px;
+    margin-left: 15px;
+    font-size: 7px;
+    width: 60px;
+}
+
+.deposite {
+    margin-top: -22px;
+    margin-right: 0px;
+    margin-left: 15px;
+    width: 60px;
+    font-size: 7px;
+}
+
+.SendDepositeButton {
     float: right;
 }
 
@@ -123,12 +143,6 @@ canvas {
 .Errs a {
     color: white;
     font-style: italic;
-}
-
-.Send {
-    float: left;
-    margin-top: 3px;
-    margin-right: 0px;
 }
 
 .HomeItems {

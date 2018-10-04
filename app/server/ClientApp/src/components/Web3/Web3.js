@@ -1,7 +1,7 @@
 import { Statics } from '../Statics';
 import { ViraICOABI } from './ViraICOABI';
 import history from '../history';
-const ViraICoRopstenAddress = '0xff72eca2497038d6c12ee18219b8438569e138b2';
+const ViraICoRopstenAddress = '0x79e8a96094c242596069337dfe8d9395c9798f3f';
 var Acc = "null";
 var EtherScanBaseUrl = 'https://ropsten.etherscan.io/tx/';
 var LatestTokenData = '';
@@ -194,7 +194,23 @@ export class ViraICO {
                 else console.error(e);
             });
     }
-
+    static Deposite(value) {
+        ViraICO.ViraICO().Deposite({ value: value },
+            (e, r) => {
+                if (!e) {
+                    window.open(EtherScanBaseUrl + r, '_blank');
+                }
+                else console.error(e);
+            });
+    }
+    static GetPrice(CallBack) {
+        ViraICO.ViraICO().price((e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        });
+    }
     //#endregion
 
     //#region  ICO
