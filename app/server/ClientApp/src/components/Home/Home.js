@@ -594,7 +594,7 @@ export class Home extends Component {
             <img src={require('../../img/noimg2.png')} className="ImageClass" />);
         else {
             var p = value.split(',');
-
+            p.shift();
             return (
                 <Slider {...settings}>
                     {p.map(i =>

@@ -1,7 +1,7 @@
 import { Statics } from '../Statics';
 import { ViraICOABI } from './ViraICOABI';
 import history from '../history';
-const ViraICoRopstenAddress = '0x79e8a96094c242596069337dfe8d9395c9798f3f';
+const ViraICoRopstenAddress = '0x0df414a3bdd3e81903f702d6e5c5612125dd9f6a';
 var Acc = "null";
 var EtherScanBaseUrl = 'https://ropsten.etherscan.io/tx/';
 var LatestTokenData = '';
@@ -125,12 +125,12 @@ export class ViraICO {
 
     //#region  Carpet
 
-    static AddCarpet(IV, Tok, Proud, callback, pr, reg, img, meta) {
+    static AddCarpet(IV, Tok, Proud, callback, pr, img, meta) {
         ViraICO.ViraICO().AddCarpet(IV, Tok, Proud,
             (e, r) => {
                 if (!e) {
                     window.open(EtherScanBaseUrl + r, '_blank');
-                    callback(r, IV, Tok, pr, reg, img, meta);
+                    callback(r, IV, Tok, pr, img, meta);
                 }
                 else console.error(e);
             });

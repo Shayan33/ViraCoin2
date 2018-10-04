@@ -1,0 +1,58 @@
+.FileUploader {
+    height: 150px;
+    color: lightgray;
+    text-align: center;
+    overflow: auto;
+}
+
+.Admin {
+    color: black;
+}
+
+.AdminNav {
+    height: 65px;
+    position: fixed;
+    top: 5px;
+}
+
+.AdminContent {
+    margin-top: 70px;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.Files {
+    margin-top: 2px;
+    padding: 3px;
+    text-align: center;
+}
+
+.FileImage {
+    width: 99%;
+    height: 95px;
+}
+
+.FullUpload {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    text-align: center;
+    background-color: rgba(50, 50, 50, 0.5)
+}
+
+.Success {
+    border: 1px solid rgb(40, 167, 69);
+    box-shadow: 0 0 4px rgba(40, 167, 69, 0.9), 0 0 8px 0 rgba(40, 167, 69, 0.8);
+}
+
+.Danger {
+    border: 1px solid rgb(220, 53, 69);
+    box-shadow: 0 0px 4px 0 rgba(220, 53, 69, 0.4), 0 0px 8px 0 rgba(220, 53, 69, 0.3);
+}
