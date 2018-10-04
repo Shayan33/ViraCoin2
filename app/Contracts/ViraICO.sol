@@ -20,6 +20,7 @@ contract ViraTokens {
     string public constant name= "Vira Coin";
     string public constant symbol="VC";
     uint256 public constant decimals = 18;
+    uint256 public price=2;
     uint256 public totalSupply;
     uint256 public SpentSupply;
     
@@ -61,7 +62,9 @@ contract ViraTokens {
     function GetCount() public view ContractOwner returns(uint256){
         return CarpetsCount;
     }
-    
+    function UpdatePrice(uint256 value)public ContractOwner {
+        price=value;
+    }
     function Add(uint256 _a,uint256 _b)internal pure returns(uint256){
         uint256 c = _a + _b;
         require(c >= _a);
@@ -71,6 +74,14 @@ contract ViraTokens {
     function Sub(uint256 a, uint256 b) internal pure returns (uint256) {
         require(b <= a);
         uint256 c = a - b;
+        return c;
+    }
+     function Mul(uint256 a, uint256 b) internal pure returns (uint256) {
+        if (a == 0) {
+            return 0;
+        }
+        uint256 c = a * b;
+        require(c / a == b);
         return c;
     }
     
@@ -150,6 +161,14 @@ contract ViraTokens {
         require(value>0,"no negetive coins allowed.");
         SpentSupply=Add(SpentSupply,value);
         Balances[recipient]=Add(Balances[recipient],value);
+    }
+    
+    function Deposite()public payable Initiated{
+        uint256 value=Mul(msg.value,price);
+        require(Add(SpentSupply,value)<=totalSupply,"insufficient funds.");
+        require(value>0,"no negetive coins allowed.");
+        SpentSupply=Add(SpentSupply,value);
+         Balances[msg.sender]=Add(Balances[msg.sender],value);
     }
 
 }
