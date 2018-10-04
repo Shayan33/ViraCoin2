@@ -157,6 +157,14 @@ export class Admin extends Component {
             draged: true
         });
     }
+    UpadetPrice() {
+        let pr = prompt('Enetr new price (X*Wei)', '5');
+        ViraICO.UpdatePrice(pr);
+    }
+    GetCarpet() {
+        let pr = prompt('Enter Carpet Number', '1');
+        ViraICO.GetCarpet(r => alert(r), pr);
+    }
     render() {
         let DragContent = !this.state.draged ? <div>
             <br />
@@ -187,6 +195,22 @@ export class Admin extends Component {
             <div className='container Admin'>
                 <ToastContainer store={ToastStore} position={ToastContainer.POSITION.TOP_RIGHT} />
                 <div className='AdminNav'>
+                    <button className='btn btn-info AdminNavButton' onClick={() => ViraICO.GetFunds(r => alert(r))}>
+                        Funds</button>
+                    <button className='btn btn-info AdminNavButton' onClick={() => ViraICO.TotallSupply(r => alert(r))}>
+                        Totall Supply</button>
+                    <button className='btn btn-info AdminNavButton' onClick={() => ViraICO.SpentSupply(r => alert(r))}>
+                        Spent Supply</button>
+                    <button className='btn btn-info AdminNavButton' onClick={() => ViraICO.GetCount(r => alert(r))}>
+                        Count</button>
+                    <button className='btn btn-info AdminNavButton' onClick={() => ViraICO.GetPrice(r => alert(r))}>
+                        Get Price</button>
+                    <button className='btn btn-primary AdminNavButton' onClick={() => this.UpadetPrice()}>
+                        UpdatePrice</button>
+                    <button className='btn btn-primary AdminNavButton' onClick={() => this.GetCarpet()}>
+                        Get Carpet</button>
+                    <button className='btn btn-primary AdminNavButton' onClick={() => ViraICO.Withdraw()}>
+                        Withdraw</button>
                 </div>
                 <form onSubmit={this.handleSubmit} className='AdminContent'>
                     <Grid fluid>
@@ -254,7 +278,13 @@ export class Admin extends Component {
                         </Row>
                     </Grid>
                 </form>
-            </div>
+                <div className='DangerZone'>
+                    <button className='btn btn-danger AdminNavButton' onClick={() => ViraICO.InitiatingIsOver()}>
+                        End Initiating</button>
+                    <button className='btn btn-danger AdminNavButton' onClick={() => ViraICO.Kill()}>
+                        Kill</button>
+                </div>
+            </div >
         );
     }
 

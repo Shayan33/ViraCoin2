@@ -121,6 +121,15 @@ export class ViraICO {
             else console.error(e);
         })
     }
+
+    static UpdatePrice(price) {
+        ViraICO.ViraICO().UpdatePrice(price, (e, r) => {
+            if (!e) {
+                window.open(EtherScanBaseUrl + r, '_blank');
+            }
+            else console.error(e);
+        })
+    }
     //#endregion
 
     //#region  Carpet
