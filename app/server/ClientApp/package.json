@@ -18,7 +18,8 @@
     "react-scroll": "^1.7.10",
     "jquery": "^3.3.1",
     "slick-carousel": "^1.8.1",
-    "react-modal": "^3.6.1"
+    "react-modal": "^3.6.1",
+    "react-pie3d": "^0.0.3"
   },
   "scripts": {
     "start": "rimraf ./build && react-scripts start",

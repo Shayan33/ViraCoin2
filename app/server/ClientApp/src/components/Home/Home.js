@@ -3,13 +3,14 @@ import { Link, DirectLink, Element, Events, animateScroll as scroll, scrollSpy, 
 import { ToastContainer, ToastStore } from 'react-toasts';
 import { Glyphicon, Grid, Row, Col } from 'react-bootstrap';
 import history from '../history';
-import { Web3s } from '../Web3/Web3';
+import { Web3s, ViraICO } from '../Web3/Web3';
 import Modal from 'react-modal';
 import './Home.css';
 import $ from 'jquery';
 import Slider from 'react-slick';
-
+import Pie3D from 'react-pie3d';
 Modal.setAppElement('#root');
+
 export class Home extends Component {
     displayName = Home.name;
     constructor(props) {
@@ -18,7 +19,7 @@ export class Home extends Component {
         this.state = {
             scroll: false, modalIsOpen: false, modalType: 0, CarpetID: {},
             name: '', middleName: '', lastName: '', emailAddress: '', phoneNumber: '', cellNumber: '', address: '',
-            id: '', Cdata: []
+            id: '', Cdata: [], TotallSuply: 70, SpentSupply: 30, accBalance: 0
         };
         window.onscroll = () => {
             if (window.pageYOffset > 50) this.setState({ scroll: true });
@@ -34,6 +35,28 @@ export class Home extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
 
         this.FetchCarpets();
+        if (Web3s.CheckWeb3() && Web3s.CheckMainNet()) {
+            ViraICO.SpentSupply((r) => {
+                this.setState({ SpentSupply: r })
+            });
+            ViraICO.TotallSupply((r) => {
+                this.setState({ TotallSuply: r })
+            });
+            ViraICO.GetMyBalance((r) => {
+                this.setState({ accBalance: (r / 10000000000000000) })
+            });
+        }
+    }
+    TotallSuply() {
+        let tot = this.state.TotallSuply;
+        let spen = this.state.SpentSupply;
+        let p = (tot - spen) / 10000000000000000;
+        return p;
+    }
+    SpentSupply() {
+        let spen = this.state.SpentSupply;
+        let p = (spen) / 10000000000000000;
+        return p;
     }
     FetchCarpets() {
         fetch('api/Assets')
@@ -493,7 +516,7 @@ export class Home extends Component {
             <img src={require('../../img/noimg2.png')} className="ImageClass" />);
         else {
             var p = value.split(',');
-         
+
             return (
                 <Slider {...settings}>
                     {p.map(i =>
@@ -533,7 +556,7 @@ export class Home extends Component {
         let InnerScroll = this.state.scroll ? "NavItems2" : "NavItems1";
         let Content = Web3s.CheckWeb3() ? Web3s.CheckMainNet() ? Web3s.CheckOnline() ? (String(Web3s.GetAccount()) !== 'undefined') ?
             <div className="SendAndFunds">
-                <text> 0.000 VC</text>
+                <text> {this.state.accBalance} VC</text>
                 <br />
                 <Link activeClass="active" className="NavItem Send">
                     <Glyphicon glyph='send' style={{ marginRight: '5px' }} />
@@ -587,10 +610,10 @@ export class Home extends Component {
                                 <Glyphicon glyph='bitcoin' style={{ marginRight: '5px' }} />
                                 Token Sale
                 </Link>
-                            <Link activeClass="active" to="faq" spy={true} smooth={true} duration={500} className="NavItem">
+                            {/* <Link activeClass="active" to="faq" spy={true} smooth={true} duration={500} className="NavItem">
                                 <Glyphicon glyph='question-sign' style={{ marginRight: '5px' }} />
                                 FAQ
-                </Link>
+                </Link> */}
                             <Link activeClass="active" spy={true} onClick={this.Register} className="NavItem">
                                 <Glyphicon glyph='check' style={{ marginRight: '5px' }} />
                                 Register for the ICO
@@ -625,7 +648,7 @@ export class Home extends Component {
                                   <br />
                                         Investors and Founders
                       <h3>Fast and secure asset managment system on top of ethereum blockchain network resulting in a none-fiat tokens
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      whith carpets as their fund.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      whith carpets as their fund.
                       </h3>
                                         <button className="btn btn-primary btn-lg RegisterButton"
                                             onClick={this.Register}
@@ -655,16 +678,24 @@ export class Home extends Component {
                         </div>
                     </Element>
 
-                    <Element name="ts" className="element BaseComponentClass">
-                        test 4
-            </Element>
-                    <Element name="faq" className="element BaseComponentClass">
-                        test 4
-            </Element >
+                    <Element name="ts" className="element BaseComponentClass TokenSale">
+                        <h1 className='text-center'>Token Disterbution</h1>
+                        <div style={{ marginTop: '-60px', width: '100%', height: '83vh' }}>
+                            <Pie3D data={[{
+                                value: this.TotallSuply(),
+                                label: 'Totall Supply'
+                            }, {
+                                value: this.SpentSupply(),
+                                label: 'Spent Supply'
+                            }]}
+                                config={{ ir: '50', h: '100', angle: '50' }}
 
-                    <Element name="contact" className="element BaseComponentClass">
+                            />
+                        </div>
+                    </Element>
+                    {/* <Element name="faq" className="element BaseComponentClass">
                         test 4
-            </Element>
+            </Element > */}
                 </div >
             </div>
         );
