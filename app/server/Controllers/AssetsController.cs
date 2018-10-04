@@ -44,7 +44,12 @@ namespace server.Controllers
                 return Ok();
             return NotFound();
         }
-
+        [HttpGet]
+        public async Task<IActionResult> GetAssets()
+        {
+            var p = await _context.Assets.ToListAsync();
+            return Ok(p);
+        }
         // GET: api/Assets/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsset([FromRoute] Guid id)
@@ -79,8 +84,8 @@ namespace server.Controllers
             var t = new Transaction()
             {
                 ID = Guid.NewGuid(),
-                SenderPubKey="ContractOwner",
-                RecipientPubKey=string.Empty,
+                SenderPubKey = "ContractOwner",
+                RecipientPubKey = string.Empty,
                 CoinBaseRelatedCoinID = asset.ID,
                 TxHash = asset.Tx,
                 Type = TransactionType.CoinBase,

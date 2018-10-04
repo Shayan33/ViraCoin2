@@ -7,6 +7,7 @@ import { Web3s } from '../Web3/Web3';
 import Modal from 'react-modal';
 import './Home.css';
 import $ from 'jquery';
+import Slider from 'react-slick';
 
 Modal.setAppElement('#root');
 export class Home extends Component {
@@ -15,9 +16,9 @@ export class Home extends Component {
         super(props);
         this.scrollToTop = this.scrollToTop.bind(this);
         this.state = {
-            scroll: false, modalIsOpen: false, modalType: 0, CarpetID: 0,
+            scroll: false, modalIsOpen: false, modalType: 0, CarpetID: {},
             name: '', middleName: '', lastName: '', emailAddress: '', phoneNumber: '', cellNumber: '', address: '',
-            id: ''
+            id: '', Cdata: []
         };
         window.onscroll = () => {
             if (window.pageYOffset > 50) this.setState({ scroll: true });
@@ -31,8 +32,15 @@ export class Home extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-    }
 
+        this.FetchCarpets();
+    }
+    FetchCarpets() {
+        fetch('api/Assets')
+            .then(res => res.json())
+            .then(d => this.setState({ Cdata: d }))
+            .catch(e => console.error(e));
+    }
     handleInputChange(event) {
         const target = event.target;
         const value = target.value;
@@ -256,6 +264,10 @@ export class Home extends Component {
         this.setState({ modalType: 0 });
         this.openModal();
     }
+    SetCarpetData(data) {
+        this.setState({ modalType: 1, CarpetID: data });
+        this.openModal();
+    }
     RenderModalData() {
         let Content = this.state.modalType === 0 ?
             Web3s.CheckWeb3() ? Web3s.CheckMainNet() ? Web3s.CheckOnline() ? (String(Web3s.GetAccount()) !== 'undefined') ?
@@ -405,10 +417,118 @@ export class Home extends Component {
           </p>
                     </div>
                 </div>
-            : <div></div>;
+            : <div>
+                {this.RenderSlider(this.state.CarpetID.imgPath)}
+                <Grid fluid>
+                    <Row>
+                        <Col md={12}>
+                            <div className="form-group">
+                                <label className="control-label">
+                                    Token
+                      </label>
+                                <br />
+                                <label className="form-control">{this.state.CarpetID.token}</label>
+                            </div>
+                        </Col>
+                        <Col md={12}>
+                            <div className="form-group">
+                                <label className="control-label">
+                                    Data
+                      </label>
+                                <br />
+                                <label className="form-control">{this.state.CarpetID.data}</label>
+                            </div>
+                        </Col>
+                        <Col md={6}>
+                            <div className="form-group">
+                                <label className="control-label">
+                                    Production Date
+                      </label>
+                                <br />
+                                <label className="form-control">{String(this.state.CarpetID.production).substr(0, 10)}</label>
+                            </div>
+                        </Col>
+                        <Col md={6}>
+                            <div className="form-group">
+                                <label className="control-label">
+                                    No
+                      </label>
+                                <br />
+                                <label className="form-control">{String(this.state.CarpetID.no).substr(0, 10)}</label>
+                            </div>
+                        </Col>
+                        <Col md={12}>
+                            <div className="form-group">
+                                <label className="control-label">
+                                    Information
+                                    </label>
+                                <br />
+                                <textarea value={this.state.CarpetID.metaDate} className="form-control"
+                                    rows={4}
+                                    readOnly
+                                />
+                            </div>
+                        </Col>
+                    </Row>
+                </Grid>
+            </div>;
         return Content;
     }
+    RenderSlider(value) {
+        let settings = {
+            dots: true,
+            infinite: true,
+            speed: 500,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            accessibility: true,
+            adaptiveHeight: true,
+            autoplay: true,
+            pauseOnDotsHover: true,
+            pauseOnFocus: true
+        };
+        if (value === undefined) return (
+            <img src={require('../../img/noimg2.png')} className="ImageClass" />);
+        else if (!value.includes(',')) return (
+            <img src={require('../../img/noimg2.png')} className="ImageClass" />);
+        else {
+            var p = value.split(',');
+         
+            return (
+                <Slider {...settings}>
+                    {p.map(i =>
+                        <div>
+                            <img src={"api/Assets/Down/" + i} className="ImageClass" />
+                        </div>)
+                    }
+                </Slider>)
+        }
+    }
+    renderCarpets(items) {
+        return (
+            <Grid fluid>
+                <Row>
+                    {
+                        items.map(i =>
+                            <Col md={3} sm={4} xsm={6} className="CarpetImageContainer" onClick={() => this.SetCarpetData(i)}>
+                                <img src={!i.imgPath.includes(',') ? require('../../img/noimg.png') : "api/Assets/Down/" + i.imgPath.split(',')[1]} alt="img" className="CarpetIMG" />
+                                <div className="CarpetDetailes">
+                                    <text style={{ float: 'left' }}>Token ID:</text>
+                                    <text style={{ float: 'right' }}>{String(i.token).substr(0, 16)}...</text>
+                                    <br />
+                                    <div>
+                                        <text style={{ float: 'left' }}>Production Date:</text>
+                                        <text style={{ float: 'right' }}>{String(i.production).substr(0, 10)}</text>
+                                    </div>
+                                </div>
+                            </Col>
+                        )}
+                </Row>
+            </Grid >
+        );
+    }
     render() {
+        let carpetdata = this.renderCarpets(this.state.Cdata);
         let ScNav = this.state.scroll ? "NavBar2" : "NavBar";
         let InnerScroll = this.state.scroll ? "NavItems2" : "NavItems1";
         let Content = Web3s.CheckWeb3() ? Web3s.CheckMainNet() ? Web3s.CheckOnline() ? (String(Web3s.GetAccount()) !== 'undefined') ?
@@ -505,7 +625,7 @@ export class Home extends Component {
                                   <br />
                                         Investors and Founders
                       <h3>Fast and secure asset managment system on top of ethereum blockchain network resulting in a none-fiat tokens
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  whith carpets as their fund.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      whith carpets as their fund.
                       </h3>
                                         <button className="btn btn-primary btn-lg RegisterButton"
                                             onClick={this.Register}
@@ -529,9 +649,11 @@ export class Home extends Component {
 
                     </Element>
 
-                    <Element name="cp" className="element BaseComponentClass">
-                        test 3
-            </Element>
+                    <Element name="cp" className="element BaseComponentClassCarpet">
+                        <div className="InnerCarprt">
+                            {carpetdata}
+                        </div>
+                    </Element>
 
                     <Element name="ts" className="element BaseComponentClass">
                         test 4
