@@ -19,12 +19,9 @@ namespace server.Models
         public string Name { get; set; }
 
         [StringLength(20)]
-        public string MiddleName { get; set; }
-
-        [StringLength(20)]
         public string LastName { get; set; }
 
-        public string FullName { get => $"{Name} {MiddleName} {LastName}"; }
+        public string FullName { get => $"{Name} {LastName}"; }
 
         [StringLength(100),EmailAddress]
         public string EmailAddress { get; set; }
@@ -46,5 +43,8 @@ namespace server.Models
 
         [StringLength(10)]
         public string IDPic { get; set; }
+
+        public bool GotICOCoin { get; set; }
+
     }
 }
