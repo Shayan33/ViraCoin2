@@ -15,7 +15,6 @@ namespace server.Models
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Asset> Assets { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

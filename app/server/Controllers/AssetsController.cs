@@ -81,16 +81,6 @@ namespace server.Controllers
 
             asset.ID = Guid.NewGuid();
             asset.Available = false;
-            var t = new Transaction()
-            {
-                ID = Guid.NewGuid(),
-                SenderPubKey = "ContractOwner",
-                RecipientPubKey = string.Empty,
-                CoinBaseRelatedCoinID = asset.ID,
-                TxHash = asset.Tx,
-                Type = TransactionType.CoinBase,
-            };
-            _context.Transactions.Add(t);
             _context.Assets.Add(asset);
             await _context.SaveChangesAsync();
 

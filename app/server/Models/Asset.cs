@@ -37,8 +37,6 @@ namespace server.Models
 
         public string ImgPath { get; set; }
 
-        public Transaction CoinBaseTx { get; set; }
-
         [NotMapped]
         public string Tx { get; set; }
 
