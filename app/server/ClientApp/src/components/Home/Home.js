@@ -11,6 +11,7 @@ import Slider from 'react-slick';
 import Pie3D from 'react-pie3d';
 Modal.setAppElement('#root');
 
+var price = 0;
 export class Home extends Component {
     displayName = Home.name;
     constructor(props) {
@@ -47,7 +48,7 @@ export class Home extends Component {
                 this.setState({ accBalance: (r / 10000000000000000) })
             });
             ViraICO.GetPrice((r) => {
-                this.setState({ price: r })
+                price = r
             });
         }
     }
@@ -63,6 +64,7 @@ export class Home extends Component {
         return this.state.price;
     }
     Deposite() {
+        alert('the current price is: ' + price + ' Wei');
         this.setState({ modalType: 3, SendValue: 0 });
         this.openModal();
     }
@@ -553,7 +555,6 @@ export class Home extends Component {
                         <div className="form-group">
                             <label className="control-label text-center">
                                 Deposite Vira Coin using Eth.
-                                the current price is: 5 Wei
                             </label>
                             <br />
                         </div>
@@ -728,7 +729,7 @@ export class Home extends Component {
                                   <br />
                                         Investors and Founders
                       <h3>Fast and secure asset managment system on top of ethereum blockchain network resulting in a none-fiat tokens
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                whith carpets as their fund.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          whith carpets as their fund.
                       </h3>
                                         <button className="btn btn-primary btn-lg RegisterButton"
                                             onClick={this.Register}

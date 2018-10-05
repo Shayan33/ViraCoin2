@@ -3,6 +3,7 @@ import { Glyphicon, Col, Grid, Row } from 'react-bootstrap';
 import { Statics } from '../Statics';
 import { Web3s, ViraICO } from '../Web3/Web3';
 import './Admin.css';
+import Modal from 'react-modal';
 import ReactDropzone from "react-dropzone";
 import { ToastContainer, ToastStore } from 'react-toasts';
 export class Admin extends Component {
@@ -21,11 +22,18 @@ export class Admin extends Component {
             draged: false,
             full: false,
             tokenIsOk: true,
-            fileIndex: 0
+            fileIndex: 0,
+            modalIsOpen: false,
+            icodata: [],
+            icoVale: 1000000000
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.GetGuid();
+
+        this.openModal = this.openModal.bind(this);
+        this.afterOpenModal = this.afterOpenModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
     GetGuid() {
         fetch('Guid').then(res => res.json())
@@ -121,9 +129,9 @@ export class Admin extends Component {
             })
         }).then(res => {
             if (res.status === 201) {
-                alert('Changes saved successfully.');
+                ToastStore.success('Changes saved successfully.', 2000);
             } else {
-                alert('Something went wrong.');
+                ToastStore.error('Something went wrong.', 2000);
             }
         })
             .catch(err => console.error(err));
@@ -157,6 +165,17 @@ export class Admin extends Component {
             draged: true
         });
     }
+    openModal() {
+        this.setState({ modalIsOpen: true });
+    }
+
+    afterOpenModal() {
+
+    }
+
+    closeModal() {
+        this.setState({ modalIsOpen: false });
+    }
     UpadetPrice() {
         let pr = prompt('Enetr new price (X*Wei)', '5');
         ViraICO.UpdatePrice(pr);
@@ -165,7 +184,115 @@ export class Admin extends Component {
         let pr = prompt('Enter Carpet Number', '1');
         ViraICO.GetCarpet(r => alert(r), pr);
     }
+    GetICo() {
+        var p = prompt('How much in %', 80);
+        fetch('api/Account/ICORnd/' + p)
+            .then(r => r.json())
+            .then(d => this.setState({ icodata: d }))
+            .catch(e => console.error(e));
+        this.openModal();
+
+    }
+    GetAddICo() {
+        var p = prompt('How much in %', 20);
+        fetch('api/Account/AddICORnd/' + p)
+            .then(r => r.json())
+            .then(d => this.setState({ icodata: d }))
+            .catch(e => console.error(e));
+        this.openModal();
+
+    }
+    SubmitIcoAdd(id) {
+        fetch('api/Account/' + id, {
+            method: 'PATCH'
+        })
+            .catch(e => console.error(e));
+    }
     render() {
+        let modalData = <div>
+            <Grid fluid>
+                <Row>
+                    {
+                        this.state.icodata.map(i =>
+                            <div className="ICOCOl">
+                                <Col md={6}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Full Name
+                                     </label>
+                                        <br />
+                                        <label className='form-control'>{i.fullName}</label>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Public Key
+                                     </label>
+                                        <br />
+                                        <label className='form-control'>{i.pubKey}</label>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            ID
+                                     </label>
+                                        <br />
+                                        <label className='form-control'>{i.personalID}</label>
+                                    </div>
+                                </Col>
+                                <Col md={6}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Email Address
+                                     </label>
+                                        <br />
+                                        <label className='form-control'>{i.emailAddress}</label>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Phone Number
+                                     </label>
+                                        <br />
+                                        <label className='form-control'>{i.phoneNumber}</label>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Cell Number
+                                     </label>
+                                        <br />
+                                        <label className='form-control'>{i.cellNumber}</label>
+                                    </div>
+                                </Col>
+                                <Col md={12}>
+                                    <div className="form-group">
+                                        <label className="control-label">
+                                            Address
+                                     </label>
+                                        <br />
+                                        <textarea value={i.address}
+                                            className="form-control"
+                                            rows={3}
+                                            readOnly
+                                        />
+                                    </div>
+                                </Col>
+                                {i.gotICOCoin ?
+                                    <div className="form-group">
+                                        <button className="btn btn-danger" style={{ float: 'right' }}
+                                            onClick={() => ViraICO.ICOAdd(i.pubKey, this.state.icoVale, r => console.log(r))}
+                                        >Send More</button>
+                                    </div>
+                                    :
+                                    <div className="form-group">
+                                        <button className="btn btn-danger" style={{ float: 'right' }}
+                                            onClick={() => ViraICO.ICO(i.pubKey, this.state.icoVale, r => this.SubmitIcoAdd(i.id))}
+                                        >Send</button>
+                                    </div>
+                                }
+                            </div>
+                        )
+                    }
+                </Row>
+            </Grid>
+        </div>
         let DragContent = !this.state.draged ? <div>
             <br />
             <h3>Drag a file here...</h3>
@@ -193,6 +320,23 @@ export class Admin extends Component {
         let TokenClass = this.state.tokenIsOk ? "form-control Success" : "form-control Danger";
         return (
             <div className='container Admin'>
+                <Modal
+                    isOpen={this.state.modalIsOpen}
+                    onAfterOpen={this.afterOpenModal}
+                    onRequestClose={this.closeModal}
+                    className="MModall"
+                    contentLabel="Example Modal"
+                >
+                    <div style={{ float: 'right', cursor: 'pointer', fontSize: '23px' }} onClick={this.closeModal}>
+                        <Glyphicon glyph="remove" className="text-danger" />
+                    </div>
+                    <input
+                        type='number'
+                        value={this.state.icoVale} name="icoVale" onChange={this.handleInputChange} className="form-control" />
+                    <div style={{ marginTop: '33px' }} className="MModalll">
+                        {modalData}
+                    </div>
+                </Modal>
                 <ToastContainer store={ToastStore} position={ToastContainer.POSITION.TOP_RIGHT} />
                 <div className='AdminNav'>
                     <button className='btn btn-info AdminNavButton' onClick={() => ViraICO.GetFunds(r => alert(r))}>
@@ -279,10 +423,14 @@ export class Admin extends Component {
                     </Grid>
                 </form>
                 <div className='DangerZone'>
-                    <button className='btn btn-danger AdminNavButton' onClick={() => ViraICO.InitiatingIsOver()}>
+                    <button className='btn btn-danger AdminNavButton' onClick={() => ViraICO.InitiatingIsOver(r => console.log(r))}>
                         End Initiating</button>
-                    <button className='btn btn-danger AdminNavButton' onClick={() => ViraICO.Kill()}>
+                    <button className='btn btn-danger AdminNavButton' onClick={() => ViraICO.Kill(r => console.log(r))}>
                         Kill</button>
+                    <button className='btn btn-warning AdminNavButton' onClick={() => this.GetICo()} style={{ float: 'right' }}>
+                        ICO</button>
+                    <button className='btn btn-warning AdminNavButton' onClick={() => this.GetAddICo()} style={{ float: 'right' }}>
+                        AddICO</button>
                 </div>
             </div >
         );

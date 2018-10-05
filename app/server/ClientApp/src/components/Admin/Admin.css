@@ -20,8 +20,9 @@
     margin: 0px 10px;
     width: 120px;
 }
-.DangerZone{
-    background: rgba(220, 53, 69,0.5);
+
+.DangerZone {
+    background: rgba(220, 53, 69, 0.5);
     margin-bottom: 10px;
     border-radius: 5px;
     width: 100%;
@@ -68,4 +69,32 @@
 .Danger {
     border: 1px solid rgb(220, 53, 69);
     box-shadow: 0 0px 4px 0 rgba(220, 53, 69, 0.4), 0 0px 8px 0 rgba(220, 53, 69, 0.3);
+}
+
+.MModall {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    width: 800px;
+    height: 800px;
+}
+
+.MModalll {
+    height: 750px;
+    overflow: auto;
+}
+
+.ICOCOl {
+    background-color: cornflowerblue;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 400px;
+    padding: 10px;
+    border-radius: 5px;
 }
