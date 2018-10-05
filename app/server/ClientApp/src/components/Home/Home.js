@@ -426,9 +426,9 @@ export class Home extends Component {
                 </div>
                 :
                 <div className="container">
-                    <div className='LayoutErrors PopUp'>
+                    <div className='LayoutErrors'>
                         <h1 className="text-danger text-center" >
-                            <Glyphicon glyph="off" style={{ paddingTop: '20px', fontSize: '130px' }} />
+                            <Glyphicon glyph="off" style={{ paddingTop: '20px', fontSize: '100px' }} />
                         </h1>
                         <h1>
                             <p className="text-danger text-center">
