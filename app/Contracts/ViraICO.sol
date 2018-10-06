@@ -84,6 +84,12 @@ contract ViraTokens {
         require(c / a == b);
         return c;
     }
+    function Div(uint256 a, uint256 b) internal pure returns (uint256) {
+        require(b > 0); // Solidity only automatically asserts when dividing by 0
+        uint256 c = a / b;
+
+        return c;
+    }
     
     function AddCarpet(bytes initVector,bytes32 tok,uint256 production) public ContractOwner returns (bool){
         require(InitatingPhase,"The Initating Phase is Over.");
@@ -164,11 +170,11 @@ contract ViraTokens {
     }
     
     function Deposite()public payable Initiated{
-        uint256 value=Mul(msg.value,price);
+        uint256 value=Div(msg.value,price);
         require(Add(SpentSupply,value)<=totalSupply,"insufficient funds.");
         require(value>0,"no negetive coins allowed.");
         SpentSupply=Add(SpentSupply,value);
-         Balances[msg.sender]=Add(Balances[msg.sender],value);
+        Balances[msg.sender]=Add(Balances[msg.sender],value);
     }
 
 }
