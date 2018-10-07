@@ -28,6 +28,34 @@ export const ViraICOABI = [
 	},
 	{
 		"constant": false,
+		"inputs": [
+			{
+				"name": "con",
+				"type": "address"
+			}
+		],
+		"name": "AddExceptionalContract",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "who",
+				"type": "address"
+			}
+		],
+		"name": "ConfirmForICO",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
 		"inputs": [],
 		"name": "Deposite",
 		"outputs": [],
@@ -74,7 +102,7 @@ export const ViraICOABI = [
 	{
 		"constant": false,
 		"inputs": [],
-		"name": "InitiatingIsOver",
+		"name": "Kill",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -83,7 +111,25 @@ export const ViraICOABI = [
 	{
 		"constant": false,
 		"inputs": [],
-		"name": "Kill",
+		"name": "Register",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_phaseSupply",
+				"type": "uint256"
+			},
+			{
+				"name": "_phaseMaxToken",
+				"type": "uint256"
+			}
+		],
+		"name": "SetPhase",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -113,6 +159,47 @@ export const ViraICOABI = [
 		"type": "fallback"
 	},
 	{
+		"inputs": [
+			{
+				"name": "_totallSupply",
+				"type": "uint256"
+			},
+			{
+				"name": "_reserverdSupply",
+				"type": "uint256"
+			},
+			{
+				"name": "_teamSupply",
+				"type": "uint256"
+			},
+			{
+				"name": "_price",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_phaseSupply",
+				"type": "uint256"
+			},
+			{
+				"name": "_phaseMaxToken",
+				"type": "uint256"
+			}
+		],
+		"name": "UpdatePhase",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -136,15 +223,32 @@ export const ViraICOABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [
+		"constant": true,
+		"inputs": [],
+		"name": "CrowdSaleSpentSupply",
+		"outputs": [
 			{
-				"name": "_totallSupply",
+				"name": "",
 				"type": "uint256"
 			}
 		],
 		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "CrowdSaleSupply",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
 		"constant": true,
@@ -245,6 +349,48 @@ export const ViraICOABI = [
 	{
 		"constant": true,
 		"inputs": [],
+		"name": "GetPhaseMax",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "GetPhaseSpentSupply",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "GetPhaseSupply",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
 		"name": "myBalance",
 		"outputs": [
 			{
@@ -301,6 +447,20 @@ export const ViraICOABI = [
 	{
 		"constant": true,
 		"inputs": [],
+		"name": "ReservedSupply",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
 		"name": "SpentSupply",
 		"outputs": [
 			{
@@ -320,6 +480,20 @@ export const ViraICOABI = [
 			{
 				"name": "",
 				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "TeamSupply",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
