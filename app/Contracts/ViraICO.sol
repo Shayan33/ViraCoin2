@@ -1,7 +1,7 @@
 pragma solidity ^0.4.24;
 contract ViraTokens {
     
-        struct CarpetData {       
+    struct CarpetData {       
         bytes32 tok;
         bytes32 Data;
         uint256 Production;
@@ -9,20 +9,42 @@ contract ViraTokens {
         bool Initaited;
     }
     
+    struct Phase{
+        uint256 PhaseTotallSupply;
+        uint256 PhaseSpentSupply;
+        uint256 PhaseMaxTokenDisterbutionAllowed;
+    }
+    
+    struct ICORegister{
+        bool Registered;
+        bool Confirmed;
+    }
+    
+    
     mapping ( uint256 => CarpetData ) Carpets;
     mapping(bytes32=>bool) Registered;
     uint256 CarpetsCount;
-    bool InitatingPhase;    
+    bool InitatingPhase;   
     
     mapping(address => uint)  Balances;
+    mapping(address=>ICORegister) RegisteredForICO;
     
         
     string public constant name= "Vira Coin";
     string public constant symbol="VC";
     uint256 public constant decimals = 18;
-    uint256 public price=2;
+    uint256 public price;
     uint256 public totalSupply;
     uint256 public SpentSupply;
+    uint256 public TeamSupply;
+    uint256 public ReservedSupply;
+    uint256 public CrowdSaleSupply;
+    uint256 public CrowdSaleSpentSupply;
+    
+    Phase[5] phases;
+    int32 phaseNumber=-1;
+    
+    mapping (address=>bool) ExceptionalContracts;
     
     address CurrentOwner;
     
@@ -91,6 +113,12 @@ contract ViraTokens {
         return c;
     }
     
+    function IsContract(address addr)internal view returns (bool) {
+        uint size;
+        assembly { size := extcodesize(addr) }
+        return size > 0;
+    }
+    
     function AddCarpet(bytes initVector,bytes32 tok,uint256 production) public ContractOwner returns (bool){
         require(InitatingPhase,"The Initating Phase is Over.");
         bytes32 InitVector=keccak256(initVector);
@@ -128,13 +156,39 @@ contract ViraTokens {
         return false;
     }
     
-    function InitiatingIsOver() public ContractOwner {
-        InitatingPhase=false;
+    function AddExceptionalContract(address con)public ContractOwner{
+        ExceptionalContracts[con]=true;
     }
     
-    constructor(uint256 _totallSupply) public {
+    function SetPhase(uint256 _phaseSupply,uint256 _phaseMaxToken) public ContractOwner{
+        InitatingPhase=false;
+        require(phaseNumber<4,"ICO is done.");
+        phaseNumber++;
+        phases[uint256(phaseNumber)].PhaseTotallSupply=_phaseSupply;
+        phases[uint256(phaseNumber)].PhaseMaxTokenDisterbutionAllowed=_phaseMaxToken;
+        phases[uint256(phaseNumber)].PhaseSpentSupply=0;
+       
+    }
+    function UpdatePhase(uint256 _phaseSupply,uint256 _phaseMaxToken) public ContractOwner{
+        require(phaseNumber>=0,"ICO is not started yet");
+        require(phaseNumber<4,"ICO is done.");
+        phases[uint256(phaseNumber)].PhaseTotallSupply=_phaseSupply;
+        phases[uint256(phaseNumber)].PhaseMaxTokenDisterbutionAllowed=_phaseMaxToken;
+        phases[uint256(phaseNumber)].PhaseSpentSupply=0;
+       
+    }
+    
+    function ConfirmForICO(address who)public ContractOwner{
+        RegisteredForICO[who].Confirmed=true;
+    }
+    constructor(uint256 _totallSupply,uint256 _reserverdSupply,uint256 _teamSupply,uint256 _price) public {
         totalSupply = _totallSupply;
+        TeamSupply=_teamSupply;
+        ReservedSupply=_reserverdSupply;
+        CrowdSaleSupply=_totallSupply-(_reserverdSupply+_teamSupply);
+        CrowdSaleSpentSupply=0;
         SpentSupply=0;
+        price=_price;
         
         InitatingPhase=true;
         CarpetsCount=0;
@@ -151,6 +205,7 @@ contract ViraTokens {
     function transfer(address _to,uint256 value)public Initiated {
         require(value>0,"no negetive coins allowed.");
         require(Balances[msg.sender]>=value,"insufficient funds.");
+        if(IsContract(_to)) require(ExceptionalContracts[_to],"You cant Send Any Token to this Contract!!!");
         Balances[msg.sender]=Sub(Balances[msg.sender],value);
         Balances[_to]=Add(Balances[_to],value);
     }
@@ -168,13 +223,32 @@ contract ViraTokens {
         SpentSupply=Add(SpentSupply,value);
         Balances[recipient]=Add(Balances[recipient],value);
     }
+    function Register()public Initiated{
+        RegisteredForICO[msg.sender].Registered=true;
+    }
     
     function Deposite()public payable Initiated{
+        require(RegisteredForICO[msg.sender].Registered,"You should Registered For ICO.");
+        require(RegisteredForICO[msg.sender].Confirmed,"You are not accepted For ICO.");
         uint256 value=Div(msg.value,price);
-        require(Add(SpentSupply,value)<=totalSupply,"insufficient funds.");
         require(value>0,"no negetive coins allowed.");
+        require(Add(SpentSupply,value)<=totalSupply,"insufficient funds.");
+        require(phases[uint256(phaseNumber)].PhaseMaxTokenDisterbutionAllowed>=value,"You cant buy this much at this phase.");
+        require(Add(phases[uint256(phaseNumber)].PhaseSpentSupply,value)<=phases[uint256(phaseNumber)].PhaseTotallSupply,"insufficient funds fot this phase.");
+        phases[uint256(phaseNumber)].PhaseSpentSupply=Add(phases[uint256(phaseNumber)].PhaseSpentSupply,value);
         SpentSupply=Add(SpentSupply,value);
         Balances[msg.sender]=Add(Balances[msg.sender],value);
     }
-
+    
+    function GetPhaseSupply()public view returns(uint256){
+        return phases[uint256(phaseNumber)].PhaseTotallSupply;
+    }
+    
+    function GetPhaseSpentSupply()public view returns(uint256){
+        return phases[uint256(phaseNumber)].PhaseSpentSupply;
+    }
+    
+    function GetPhaseMax()public view returns(uint256){
+        return phases[uint256(phaseNumber)].PhaseMaxTokenDisterbutionAllowed;
+    }
 }
