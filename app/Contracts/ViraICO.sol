@@ -239,5 +239,16 @@ contract ViraTokens {
         SpentSupply=Add(SpentSupply,value);
         Balances[msg.sender]=Add(Balances[msg.sender],value);
     }
-
+    
+    function GetPhaseSupply()public view returns(uint256){
+        return phases[uint256(phaseNumber)].PhaseTotallSupply;
+    }
+    
+    function GetPhaseSpentSupply()public view returns(uint256){
+        return phases[uint256(phaseNumber)].PhaseSpentSupply;
+    }
+    
+    function GetPhaseMax()public view returns(uint256){
+        return phases[uint256(phaseNumber)].PhaseMaxTokenDisterbutionAllowed;
+    }
 }
