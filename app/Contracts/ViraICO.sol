@@ -188,7 +188,7 @@ contract ViraTokens {
         ReservedSupply=_reserverdSupply;
         CrowdSaleSupply=_totallSupply-(_reserverdSupply+_teamSupply);
         CrowdSaleSpentSupply=0;
-        SpentSupply=0;
+        SpentSupply=(_reserverdSupply+_teamSupply);
         price=_price;
         
         InitatingPhase=true;
