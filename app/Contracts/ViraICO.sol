@@ -179,6 +179,7 @@ contract ViraTokens {
     }
     
     function ConfirmForICO(address who)public ContractOwner{
+        require(RegisteredForICO[who].Registered,"no such a address.");
         RegisteredForICO[who].Confirmed=true;
     }
     constructor(uint256 _totallSupply,uint256 _reserverdSupply,uint256 _teamSupply,uint256 _price) public {
