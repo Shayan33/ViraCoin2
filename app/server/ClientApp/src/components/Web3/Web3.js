@@ -163,15 +163,15 @@ export class ViraICO {
             else console.error(e);
         })
     }
-    static InitiatingIsOver(CallBack) {
-        ViraICO.ViraICO().InitiatingIsOver((e, r) => {
-            if (!e) {
-                window.open(EtherScanBaseUrl + r, '_blank');
-                CallBack();
-            }
-            else console.error(e);
-        })
-    }
+    // static InitiatingIsOver(CallBack) {
+    //     ViraICO.ViraICO().InitiatingIsOver((e, r) => {
+    //         if (!e) {
+    //             window.open(EtherScanBaseUrl + r, '_blank');
+    //             CallBack();
+    //         }
+    //         else console.error(e);
+    //     })
+    // }
 
     static GetCarpet(CallBack, no) {
         ViraICO.ViraICO().GetCarpet(no, (e, r) => {

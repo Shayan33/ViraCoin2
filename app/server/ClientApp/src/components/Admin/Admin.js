@@ -172,13 +172,26 @@ export class Admin extends Component {
     afterOpenModal() {
 
     }
-
+    SetICO() {
+        let supp = prompt('enter supply in VC');
+        let max = prompt('enter max stake for this phase');
+        ViraICO.SetPhase(supp, max, r => console.log(r));
+    }
+    UpdateICO() {
+        let supp = prompt('enter supply in VC');
+        let max = prompt('enter max stake for this phase');
+        ViraICO.UpdatePhase(supp, max, r => console.log(r));
+    }
     closeModal() {
         this.setState({ modalIsOpen: false });
     }
     UpadetPrice() {
         let pr = prompt('Enetr new price (X*Wei)', '5');
         ViraICO.UpdatePrice(pr);
+    }
+    ExceptionalContract() {
+        let pr = prompt('Enetr contract address.');
+        ViraICO.AddEceptionalContract(pr, x => console.log(x));
     }
     GetCarpet() {
         let pr = prompt('Enter Carpet Number', '1');
@@ -281,10 +294,15 @@ export class Admin extends Component {
                                         >Send More</button>
                                     </div>
                                     :
-                                    <div className="form-group">
-                                        <button className="btn btn-danger" style={{ float: 'right' }}
-                                            onClick={() => ViraICO.ICO(i.pubKey, this.state.icoVale, r => this.SubmitIcoAdd(i.id))}
-                                        >Send</button>
+                                    <div>
+                                        <div className="form-group">
+                                            <button className="btn btn-primary" style={{ float: 'right', marginLeft: '5px' }}
+                                                onClick={() => ViraICO.ConfirmForICO(i.pubKey, r => this.SubmitIcoAdd(i.id))}
+                                            >Confirm for ICO</button>
+                                            <button className="btn btn-danger" style={{ float: 'right' }}
+                                                onClick={() => ViraICO.ICO(i.pubKey, this.state.icoVale, r => this.SubmitIcoAdd(i.id))}
+                                            >Send</button>
+                                        </div>
                                     </div>
                                 }
                             </div>
@@ -349,8 +367,8 @@ export class Admin extends Component {
                         Count</button>
                     <button className='btn btn-info AdminNavButton' onClick={() => ViraICO.GetPrice(r => alert(r))}>
                         Get Price</button>
-                    <button className='btn btn-primary AdminNavButton' onClick={() => this.UpadetPrice()}>
-                        UpdatePrice</button>
+                    <button className='btn btn-warning AdminNavButton' onClick={() => this.ExceptionalContract()}>
+                        Excep Contract</button>
                     <button className='btn btn-primary AdminNavButton' onClick={() => this.GetCarpet()}>
                         Get Carpet</button>
                     <button className='btn btn-primary AdminNavButton' onClick={() => ViraICO.Withdraw()}>
@@ -422,15 +440,21 @@ export class Admin extends Component {
                         </Row>
                     </Grid>
                 </form>
+                <div className='WarningZone'>
+                    <button className='btn btn-warning AdminNavButton' onClick={() => this.GetICo()} >
+                        ICO</button>
+                    <button className='btn btn-warning AdminNavButton' onClick={() => this.GetAddICo()} >
+                        AddICO</button>
+                    <button className='btn btn-warning AdminNavButton' onClick={() => this.SetICO()} >
+                        Set ICO</button>
+                    <button className='btn btn-warning AdminNavButton' onClick={() => this.UpdateICO()} >
+                        Update ICO</button>
+                    <button className='btn btn-warning AdminNavButton' onClick={() => this.UpadetPrice()} >
+                        Update Price</button>
+                </div>
                 <div className='DangerZone'>
-                    <button className='btn btn-danger AdminNavButton' onClick={() => ViraICO.InitiatingIsOver(r => console.log(r))}>
-                        End Initiating</button>
                     <button className='btn btn-danger AdminNavButton' onClick={() => ViraICO.Kill(r => console.log(r))}>
                         Kill</button>
-                    <button className='btn btn-warning AdminNavButton' onClick={() => this.GetICo()} style={{ float: 'right' }}>
-                        ICO</button>
-                    <button className='btn btn-warning AdminNavButton' onClick={() => this.GetAddICo()} style={{ float: 'right' }}>
-                        AddICO</button>
                 </div>
             </div >
         );
