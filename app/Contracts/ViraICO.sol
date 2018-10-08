@@ -188,7 +188,7 @@ contract ViraTokens {
         ReservedSupply=_reserverdSupply;
         CrowdSaleSupply=_totallSupply-(_reserverdSupply+_teamSupply);
         CrowdSaleSpentSupply=0;
-        SpentSupply=0;
+        SpentSupply=(_reserverdSupply+_teamSupply);
         price=_price;
         
         InitatingPhase=true;
@@ -234,9 +234,11 @@ contract ViraTokens {
         uint256 value=Div(msg.value,price);
         require(value>0,"no negetive coins allowed.");
         require(Add(SpentSupply,value)<=totalSupply,"insufficient funds.");
+        require(Add(CrowdSaleSpentSupply,value)<CrowdSaleSupply,"more than CrowdSaleSupply");
         require(phases[uint256(phaseNumber)].PhaseMaxTokenDisterbutionAllowed>=value,"You cant buy this much at this phase.");
         require(Add(phases[uint256(phaseNumber)].PhaseSpentSupply,value)<=phases[uint256(phaseNumber)].PhaseTotallSupply,"insufficient funds fot this phase.");
         phases[uint256(phaseNumber)].PhaseSpentSupply=Add(phases[uint256(phaseNumber)].PhaseSpentSupply,value);
+        CrowdSaleSpentSupply=Add(CrowdSaleSpentSupply,value);
         SpentSupply=Add(SpentSupply,value);
         Balances[msg.sender]=Add(Balances[msg.sender],value);
     }
