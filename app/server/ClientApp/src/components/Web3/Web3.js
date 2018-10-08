@@ -122,6 +122,7 @@ export class ViraICO {
         })
     }
 
+
     static UpdatePrice(price) {
         ViraICO.ViraICO().UpdatePrice(price, (e, r) => {
             if (!e) {
@@ -244,6 +245,110 @@ export class ViraICO {
                 }
                 else console.error(e);
             });
+    }
+    //#endregion
+
+    //#region phasing functions
+
+    static ReservedSupply(CallBack) {
+        ViraICO.ViraICO().ReservedSupply((e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+    static TeamSupply(CallBack) {
+        ViraICO.ViraICO().TeamSupply((e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+    static CrowdSaleSupply(CallBack) {
+        ViraICO.ViraICO().CrowdSaleSupply((e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+    static CrowdSaleSpentSupply(CallBack) {
+        ViraICO.ViraICO().CrowdSaleSpentSupply((e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+    static PhaseSupply(CallBack) {
+        ViraICO.ViraICO().GetPhaseSupply((e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+    static PhaseSpentSupply(CallBack) {
+        ViraICO.ViraICO().GetPhaseSpentSupply((e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+    static PhaseMax(CallBack) {
+        ViraICO.ViraICO().GetPhaseMax((e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+
+    static AddEceptionalContract(address, CallBack) {
+        ViraICO.ViraICO().AddExceptionalContract(address, (e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+
+    static ConfirmForICO(address, CallBack) {
+        ViraICO.ViraICO().ConfirmForICO(address, (e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+
+    static Register(CallBack) {
+        ViraICO.ViraICO().Register((e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+    static SetPhase(Supply, maxStake, CallBack) {
+        ViraICO.ViraICO().SetPhase(Supply, maxStake, (e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
+    }
+
+    static UpdatePhase(Supply, maxStake, CallBack) {
+        ViraICO.ViraICO().UpdatePhase(Supply, maxStake, (e, r) => {
+            if (!e) {
+                CallBack(r);
+            }
+            else console.error(e);
+        })
     }
     //#endregion
 }
