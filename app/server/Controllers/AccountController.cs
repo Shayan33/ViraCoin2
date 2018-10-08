@@ -58,15 +58,19 @@ namespace server.Controllers
         [HttpGet("GetForConfirm/{id}")]
         public async Task<IActionResult> GetForConfirm([FromRoute]string id)
         {
-            if (id == "NaN")
+            if (id != "NaN")
             {
                 var p = await context.Accounts
-                            .Where(x => x.PersonalID.Contains(id) || x.PubKey.Contains(id))
+                            .Where(x => (x.PersonalID.Contains(id) || x.PubKey.Contains(id))
+                                && !x.Registered)
                             .ToListAsync();
                 if (p is null) return NotFound();
                 return Ok(p);
             }
-            return Ok(await context.Accounts.ToListAsync());
+            var pp = await context.Accounts
+                .Where(x => !x.Registered)
+                .ToListAsync();
+            return Ok(pp);
         }
 
         [HttpGet("{ID}")]

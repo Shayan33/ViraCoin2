@@ -25,7 +25,10 @@ export class Admin extends Component {
             fileIndex: 0,
             modalIsOpen: false,
             icodata: [],
-            icoVale: 1000000000
+            icoVale: 1000000000,
+            Register: false,
+            RegisterData: [],
+            RegisterSearch: 'NaN'
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -183,7 +186,7 @@ export class Admin extends Component {
         ViraICO.UpdatePhase(supp, max, r => console.log(r));
     }
     closeModal() {
-        this.setState({ modalIsOpen: false });
+        this.setState({ modalIsOpen: false, RegisterSearch: 'NaN' });
     }
     UpadetPrice() {
         let pr = prompt('Enetr new price (X*Wei)', '5');
@@ -201,16 +204,23 @@ export class Admin extends Component {
         var p = prompt('How much in %', 80);
         fetch('api/Account/ICORnd/' + p)
             .then(r => r.json())
-            .then(d => this.setState({ icodata: d }))
+            .then(d => this.setState({ icodata: d, Register: false }))
             .catch(e => console.error(e));
         this.openModal();
 
+    }
+    GetConfirm() {
+        fetch('api/Account/GetForConfirm/' + this.state.RegisterSearch)
+            .then(r => r.json())
+            .then(d => this.setState({ RegisterData: d, Register: true }))
+            .catch(e => console.error(e));
+        this.openModal();
     }
     GetAddICo() {
         var p = prompt('How much in %', 20);
         fetch('api/Account/AddICORnd/' + p)
             .then(r => r.json())
-            .then(d => this.setState({ icodata: d }))
+            .then(d => this.setState({ icodata: d, Register: false }))
             .catch(e => console.error(e));
         this.openModal();
 
@@ -221,12 +231,19 @@ export class Admin extends Component {
         })
             .catch(e => console.error(e));
     }
+    SubmitRegister(id) {
+        fetch('api/Account/Confirm/' + id, {
+            method: 'PATCH'
+        })
+            .catch(e => console.error(e));
+        this.GetConfirm();
+    }
     render() {
-        let modalData = <div>
+        let modalData = this.state.Register ? <div>
             <Grid fluid>
                 <Row>
                     {
-                        this.state.icodata.map(i =>
+                        this.state.RegisterData.map(i =>
                             <div className="ICOCOl">
                                 <Col md={6}>
                                     <div className="form-group">
@@ -287,27 +304,104 @@ export class Admin extends Component {
                                         />
                                     </div>
                                 </Col>
-                                {i.gotICOCoin ?
-                                    <div className="form-group">
-                                        <button className="btn btn-danger" style={{ float: 'right' }}
-                                            onClick={() => ViraICO.ICOAdd(i.pubKey, this.state.icoVale, r => console.log(r))}
-                                        >Send More</button>
-                                    </div>
-                                    :
-                                    <div>
-                                        <div className="form-group">
-                                            <button className="btn btn-danger" style={{ float: 'right' }}
-                                                onClick={() => ViraICO.ICO(i.pubKey, this.state.icoVale, r => this.SubmitIcoAdd(i.id))}
-                                            >Send</button>
-                                        </div>
-                                    </div>
-                                }
+                                <div className="form-group">
+                                    <button className="btn btn-danger" style={{ float: 'right' }}
+                                        onClick={() => ViraICO.ConfirmForICO(i.pubKey, r => this.SubmitRegister(i.id))}
+                                    >Confirm</button>
+                                </div>
                             </div>
                         )
                     }
                 </Row>
             </Grid>
         </div>
+            :
+            <div>
+                <Grid fluid>
+                    <Row>
+                        {
+                            this.state.icodata.map(i =>
+                                <div className="ICOCOl">
+                                    <Col md={6}>
+                                        <div className="form-group">
+                                            <label className="control-label">
+                                                Full Name
+                                     </label>
+                                            <br />
+                                            <label className='form-control'>{i.fullName}</label>
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="control-label">
+                                                Public Key
+                                     </label>
+                                            <br />
+                                            <label className='form-control'>{i.pubKey}</label>
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="control-label">
+                                                ID
+                                     </label>
+                                            <br />
+                                            <label className='form-control'>{i.personalID}</label>
+                                        </div>
+                                    </Col>
+                                    <Col md={6}>
+                                        <div className="form-group">
+                                            <label className="control-label">
+                                                Email Address
+                                     </label>
+                                            <br />
+                                            <label className='form-control'>{i.emailAddress}</label>
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="control-label">
+                                                Phone Number
+                                     </label>
+                                            <br />
+                                            <label className='form-control'>{i.phoneNumber}</label>
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="control-label">
+                                                Cell Number
+                                     </label>
+                                            <br />
+                                            <label className='form-control'>{i.cellNumber}</label>
+                                        </div>
+                                    </Col>
+                                    <Col md={12}>
+                                        <div className="form-group">
+                                            <label className="control-label">
+                                                Address
+                                     </label>
+                                            <br />
+                                            <textarea value={i.address}
+                                                className="form-control"
+                                                rows={3}
+                                                readOnly
+                                            />
+                                        </div>
+                                    </Col>
+                                    {i.gotICOCoin ?
+                                        <div className="form-group">
+                                            <button className="btn btn-danger" style={{ float: 'right' }}
+                                                onClick={() => ViraICO.ICOAdd(i.pubKey, this.state.icoVale, r => console.log(r))}
+                                            >Send More</button>
+                                        </div>
+                                        :
+                                        <div>
+                                            <div className="form-group">
+                                                <button className="btn btn-danger" style={{ float: 'right' }}
+                                                    onClick={() => ViraICO.ICO(i.pubKey, this.state.icoVale, r => this.SubmitIcoAdd(i.id))}
+                                                >Send</button>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            )
+                        }
+                    </Row>
+                </Grid>
+            </div>;
         let DragContent = !this.state.draged ? <div>
             <br />
             <h3>Drag a file here...</h3>
@@ -348,6 +442,25 @@ export class Admin extends Component {
                     <input
                         type='number'
                         value={this.state.icoVale} name="icoVale" onChange={this.handleInputChange} className="form-control" />
+                    {
+                        this.state.Register ? <div>
+                            <br />
+                            <Grid fluid>
+                                <Row>
+                                    <Col md={10}>
+                                        <input
+                                            type='text'
+                                            value={this.state.RegisterSearch} name="RegisterSearch" onChange={this.handleInputChange} className="form-control" />
+                                    </Col>
+                                    <Col md={2}>
+                                        <button className="btn btn-info" style={{ float: 'right' }}
+                                            onClick={() => this.GetConfirm()}
+                                        >Search</button>
+                                    </Col>
+                                </Row>
+                            </Grid>
+                        </div> : <div></div>
+                    }
                     <div style={{ marginTop: '33px' }} className="MModalll">
                         {modalData}
                     </div>
@@ -448,6 +561,8 @@ export class Admin extends Component {
                         Update ICO</button>
                     <button className='btn btn-warning AdminNavButton' onClick={() => this.UpadetPrice()} >
                         Update Price</button>
+                    <button className='btn btn-primary AdminNavButton' onClick={() => this.GetConfirm()} style={{ float: 'right', width: '300px' }}>
+                        Confirm Registered</button>
                 </div>
                 <div className='DangerZone'>
                     <button className='btn btn-danger AdminNavButton' onClick={() => ViraICO.Kill(r => console.log(r))}>
