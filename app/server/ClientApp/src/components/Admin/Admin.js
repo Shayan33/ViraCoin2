@@ -296,9 +296,6 @@ export class Admin extends Component {
                                     :
                                     <div>
                                         <div className="form-group">
-                                            <button className="btn btn-primary" style={{ float: 'right', marginLeft: '5px' }}
-                                                onClick={() => ViraICO.ConfirmForICO(i.pubKey, r => this.SubmitIcoAdd(i.id))}
-                                            >Confirm for ICO</button>
                                             <button className="btn btn-danger" style={{ float: 'right' }}
                                                 onClick={() => ViraICO.ICO(i.pubKey, this.state.icoVale, r => this.SubmitIcoAdd(i.id))}
                                             >Send</button>

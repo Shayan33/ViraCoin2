@@ -39,6 +39,7 @@ namespace server.Controllers
             }
             return Ok(p.Take((l * id) / 100));
         }
+
         [HttpGet("AddICORnd/{id}")]
         public async Task<IActionResult> GetforAddIco([FromRoute]int id)
         {
@@ -53,6 +54,19 @@ namespace server.Controllers
                 (p[i], p[o]) = (p[o], p[i]);
             }
             return Ok(p.Take((l * id) / 100));
+        }
+        [HttpGet("GetForConfirm/{id}")]
+        public async Task<IActionResult> GetForConfirm([FromRoute]string id)
+        {
+            if (id == "NaN")
+            {
+                var p = await context.Accounts
+                            .Where(x => x.PersonalID.Contains(id) || x.PubKey.Contains(id))
+                            .ToListAsync();
+                if (p is null) return NotFound();
+                return Ok(p);
+            }
+            return Ok(await context.Accounts.ToListAsync());
         }
 
         [HttpGet("{ID}")]
@@ -82,6 +96,7 @@ namespace server.Controllers
             acc.ID = Guid.NewGuid();
             acc.IDPic = string.Empty;
             acc.GotICOCoin = false;
+            acc.Registered = false;
             context.Entry(acc).State = Microsoft.EntityFrameworkCore.EntityState.Added;
             context.Accounts.Add(acc);
             await context.SaveChangesAsync();
@@ -94,6 +109,18 @@ namespace server.Controllers
             var p = await context.Accounts.FindAsync(id);
             if (p is null) return NotFound();
             p.GotICOCoin = true;
+            context.Entry(p).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+
+
+        [HttpPatch("Confirm/{id}")]
+        public async Task<IActionResult> Confirm([FromRoute]Guid id)
+        {
+            var p = await context.Accounts.FindAsync(id);
+            if (p is null) return NotFound();
+            p.Registered = true;
             context.Entry(p).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return Ok();

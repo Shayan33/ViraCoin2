@@ -23,7 +23,7 @@ namespace server.Models
 
         public string FullName { get => $"{Name} {LastName}"; }
 
-        [StringLength(100),EmailAddress]
+        [StringLength(100), EmailAddress]
         public string EmailAddress { get; set; }
 
         [StringLength(30)]
@@ -45,6 +45,8 @@ namespace server.Models
         public string IDPic { get; set; }
 
         public bool GotICOCoin { get; set; }
+
+        public bool Registered { get; set; }
 
     }
 }
