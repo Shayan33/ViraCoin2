@@ -20,7 +20,8 @@ export class Home extends Component {
         this.state = {
             scroll: false, modalIsOpen: false, modalType: 0, CarpetID: {},
             name: '', middleName: '', lastName: '', emailAddress: '', phoneNumber: '', cellNumber: '', address: '',
-            id: '', Cdata: [], TotallSuply: 70, SpentSupply: 30, accBalance: 0, to: '', SendValue: 0, price: 0
+            id: '', Cdata: [], TotallSuply: 70, SpentSupply: 30, accBalance: 0, to: '', SendValue: 0, price: 0,
+            CrowdSale: 0, Team: 0, CrowdSaleSpent: 0, reserved: 0
         };
         window.onscroll = () => {
             if (window.pageYOffset > 50) this.setState({ scroll: true });
@@ -43,6 +44,18 @@ export class Home extends Component {
             });
             ViraICO.TotallSupply((r) => {
                 this.setState({ TotallSuply: r })
+            });
+            ViraICO.TeamSupply((r) => {
+                this.setState({ Team: r })
+            });
+            ViraICO.ReservedSupply((r) => {
+                this.setState({ reserved: r })
+            });
+            ViraICO.CrowdSaleSupply((r) => {
+                this.setState({ CrowdSale: r })
+            });
+            ViraICO.CrowdSaleSpentSupply((r) => {
+                this.setState({ CrowdSaleSpent: r })
             });
             ViraICO.GetMyBalance((r) => {
                 this.setState({ accBalance: (r / 10000000000000000) })
@@ -83,6 +96,27 @@ export class Home extends Component {
         let p = (spen) / 10000000000000000;
         return p;
     }
+    TeamSupply() {
+        let spen = this.state.Team;
+        let p = (spen) / 10000000000000000;
+        return p;
+    }
+    ReservedSupply() {
+        let spen = this.state.reserved;
+        let p = (spen) / 10000000000000000;
+        return p;
+    }
+    CrowdSaleSpentSupply() {
+        let spen = this.state.CrowdSaleSpent;
+        let p = (spen) / 10000000000000000;
+        return p;
+    }
+    CrowdSaleSupply() {
+        let tot = this.state.CrowdSale;
+        let spen = this.state.CrowdSaleSpent;
+        let p = (tot - spen) / 10000000000000000;
+        return p;
+    }
     FetchCarpets() {
         fetch('api/Assets')
             .then(res => res.json())
@@ -98,7 +132,9 @@ export class Home extends Component {
             [name]: value
         });
     }
+
     handleSubmit(event) {
+        ViraICO.Register(r => console.log(r));
         fetch('api/Account/', {
             method: 'POST',
             headers: {
@@ -729,7 +765,7 @@ export class Home extends Component {
                                   <br />
                                         Investors and Founders
                       <h3>Fast and secure asset managment system on top of ethereum blockchain network resulting in a none-fiat tokens
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          whith carpets as their fund.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      whith carpets as their fund.
                       </h3>
                                         <button className="btn btn-primary btn-lg RegisterButton"
                                             onClick={this.Register}
@@ -763,11 +799,18 @@ export class Home extends Component {
                         <h1 className='text-center'>Token Disterbution</h1>
                         <div style={{ marginTop: '-60px', width: '100%', height: '83vh' }}>
                             <Pie3D data={[{
-                                value: this.TotallSuply(),
-                                label: 'Totall Supply'
+                                value: this.TeamSupply(),
+                                label: 'Team Supply'
                             }, {
-                                value: this.SpentSupply(),
-                                label: 'Spent Supply'
+                                value: this.ReservedSupply(),
+                                label: 'Reserved Supply'
+                            },
+                            {
+                                value: this.CrowdSaleSupply(),
+                                label: 'CrowdSale Supply'
+                            }, {
+                                value: this.CrowdSaleSpentSupply(),
+                                label: 'CrowdSale Spent Supply'
                             }]}
                                 config={{ ir: '50', h: '100', angle: '50' }}
 

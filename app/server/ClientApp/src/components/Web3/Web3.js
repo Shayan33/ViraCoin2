@@ -1,7 +1,7 @@
 import { Statics } from '../Statics';
 import { ViraICOABI } from './ViraICOABI';
 import history from '../history';
-const ViraICoRopstenAddress = '0x37d609fce87dc53015ceda0f938e2c3a74a32494';
+const ViraICoRopstenAddress = '0x88be76208a01e9e27fa3a6b5642c50e44e88180f';
 var Acc = "null";
 var EtherScanBaseUrl = 'https://ropsten.etherscan.io/tx/';
 var LatestTokenData = '';
